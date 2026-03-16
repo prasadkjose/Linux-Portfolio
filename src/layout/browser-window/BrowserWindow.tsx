@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { WindowState } from "../../types/window";
 import Tabs from "../tabs/Tabs";
-import HomeTab from "../../components/welcome-tabs/HomeTab";
-import ExperienceTab from "../../components/welcome-tabs/ExperienceTab";
-import EducationTab from "../../components/welcome-tabs/EducationTab";
+import { TAB_CONFIGS } from "../../components/welcome-tabs/TabConfig";
+
 import {
   Handle,
   Frame,
@@ -237,26 +236,7 @@ const LandingWindow: React.FC<WindowState> = ({
       </Toolbar>
 
       <Content maximized={maximized}>
-        <Tabs
-          tabs={[
-            {
-              id: "home",
-              label: "Home",
-              content: <HomeTab />,
-            },
-            {
-              id: "experience",
-              label: "Experience",
-              content: <ExperienceTab />,
-            },
-            {
-              id: "education",
-              label: "Education & Certifications",
-              content: <EducationTab />,
-            },
-          ]}
-          activeTabId="home"
-        />
+        <Tabs tabs={TAB_CONFIGS.welcome} activeTabId="home" />
       </Content>
     </Frame>
   );

@@ -1,4 +1,4 @@
-import React, { useState, ReactNode, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TabBar,
   TabButton,
@@ -11,7 +11,7 @@ import {
 export interface TabData {
   id: string;
   label: string;
-  content: ReactNode;
+  content: React.FC;
 }
 
 // Tab component props
@@ -93,7 +93,9 @@ const Tabs: React.FC<TabsProps> = ({
         id={`tab-panel-${currentTab?.id}`}
         aria-labelledby={`tab-${currentTab?.id}`}
       >
-        {currentTab?.content || null}
+        {currentTab?.content
+          ? React.createElement(currentTab.content, {})
+          : null}
       </TabContent>
     </TabContainer>
   );

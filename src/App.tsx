@@ -6,7 +6,7 @@ import { useFullscreenManager } from "./hooks/useFullscreenManger";
 import GlobalStyle from "./styles/GlobalStyle";
 import TerminalWindow from "./components/terminal/TerminalWindow";
 import DesktopShortcuts from "./components/DesktopShortcuts";
-import LandingWindow from "./layout/browser-window/LandingWindow";
+import LandingWindow from "./layout/browser-window/BrowserWindow";
 import ResumeWindow from "./components/ResumeWindow";
 import FullscreenToggle from "./components/FullscreenToggle";
 import {

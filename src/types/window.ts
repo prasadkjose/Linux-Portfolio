@@ -125,3 +125,16 @@ export interface WindowManager {
   /** Initialize all windows with appropriate states based on device type */
   initializeWindows: () => void;
 }
+
+/**
+ * Welcome Window Tab Registration
+ *
+ * @property {string} id - Unique identifier for the tab
+ * @property {string} title - Display title shown in the tab header
+ * @property {React.FC} content - Minimum allowed width for the window
+ */
+export interface TabConfig {
+  id: string;
+  label: string;
+  content: React.FC;
+}
