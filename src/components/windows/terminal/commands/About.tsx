@@ -2,7 +2,7 @@ import {
   AboutWrapper,
   HighlightAlt,
   HighlightSpan,
-} from "../../../styles/About.styled";
+} from "../../../../styles/About.styled";
 
 const About: React.FC = () => {
   return (

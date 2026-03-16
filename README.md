@@ -14,8 +14,8 @@
     </a>
 </p>
 <p align="center">
-    <b>A sleek, developer portfolio website themed after Kali Linux.<br></b>
-    Built with React & TypeScript, simulating Kali Linux desktop environment to showcase projects, resume, and contact info.
+    <b>A sleek, developer portfolio website themed after Linux.<br></b>
+    Built with React & TypeScript, simulating Linux desktop environment to showcase projects, resume, and contact info.
 </p>
 
 ## Table of contents
@@ -31,7 +31,7 @@
 ## Features
 
 - Responsive, terminal-style portfolio UI
-- Kali Linux color theme and visuals
+- Linux color theme and visuals
 - Autocomplete (TAB / Ctrl+i)
 - Command history navigation (Up / Down)
 - Built-in commands: about, help, projects, resume, socials, email, education, etc.

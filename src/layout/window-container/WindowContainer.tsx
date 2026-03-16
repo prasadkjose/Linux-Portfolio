@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { WindowState } from "../../types/window";
-import Tabs from "../tabs/Tabs";
-import { TAB_CONFIGS } from "../../components/welcome-tabs/TabConfig";
 
 import {
   Handle,
@@ -10,9 +8,6 @@ import {
   WindowTitle,
   WindowControls,
   ControlButton,
-  Toolbar,
-  LocationBar,
-  Content,
 } from "./BrowserWindow.styled";
 
 const MIN_W = 520;
@@ -20,7 +15,11 @@ const MIN_H = 340;
 const clamp = (v: number, min: number, max: number) =>
   Math.max(min, Math.min(max, v));
 
-const LandingWindow: React.FC<WindowState> = ({
+interface WindowContainerProps extends Omit<WindowState, "mounted"> {
+  children: React.ReactNode;
+}
+
+const WindowContainer: React.FC<WindowContainerProps> = ({
   close,
   minimize,
   maximized = false,
@@ -34,6 +33,7 @@ const LandingWindow: React.FC<WindowState> = ({
   visible = true,
   bringToFront,
   z,
+  children,
 }) => {
   const posRef = useRef({ x, y });
   const sizeRef = useRef({ width, height });
@@ -231,15 +231,9 @@ const LandingWindow: React.FC<WindowState> = ({
         </>
       )}
 
-      <Toolbar>
-        <LocationBar>https://prasadkjose.com</LocationBar>
-      </Toolbar>
-
-      <Content maximized={maximized}>
-        <Tabs tabs={TAB_CONFIGS.welcome} activeTabId="home" />
-      </Content>
+      {children}
     </Frame>
   );
 };
 
-export default LandingWindow;
+export default WindowContainer;

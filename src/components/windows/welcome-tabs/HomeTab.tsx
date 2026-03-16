@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Pill from "../Pill";
+import Pill from "../../Pill";
 
 const HeroSection = styled.section`
   display: grid;

@@ -3,14 +3,14 @@ import {
   checkRedirect,
   getCurrentCmdArry,
   isArgInvalid,
-} from "../../../utils/funcs";
+} from "../../../../utils/funcs";
 import {
   ProjectContainer,
   ProjectDesc,
   ProjectTitle,
-} from "../../../styles/Projects.styled";
+} from "../../../../styles/Projects.styled";
 import { termContext } from "../Terminal";
-import Usage from "../../Usage";
+import Usage from "../../../Usage";
 
 const Projects: React.FC = () => {
   const { arg, history, rerender } = useContext(termContext);

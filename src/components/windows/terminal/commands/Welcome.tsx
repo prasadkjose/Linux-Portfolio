@@ -5,7 +5,7 @@ import {
   PreName,
   PreNameMobile,
   PreWrapper,
-} from "../../../styles/Welcome.styled";
+} from "../../../../styles/Welcome.styled";
 import { termContext } from "../Terminal";
 
 const Welcome: React.FC = () => {

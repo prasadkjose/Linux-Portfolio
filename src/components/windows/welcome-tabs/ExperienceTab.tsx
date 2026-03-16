@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import HighlightCard from "../HighlightCard";
+import HighlightCard from "../../HighlightCard";
 
 const ExperienceSection = styled.section`
   display: grid;

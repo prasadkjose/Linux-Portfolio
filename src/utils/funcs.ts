@@ -76,8 +76,6 @@ export const argTab = (
   setHints: (value: React.SetStateAction<string[]>) => void,
   hintsCmds: string[]
 ): string[] | undefined => {
-  // Themes autocompletion disabled (Kali-only)
-
   // 5) if input is 'projects' or 'socials'
   if (inputVal === "projects " || inputVal === "socials ") {
     setInputVal(`${inputVal}go`);

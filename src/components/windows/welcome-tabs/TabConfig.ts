@@ -1,7 +1,7 @@
-import { TabData } from "../../layout/tabs/Tabs";
-import HomeTab from "../../components/welcome-tabs/HomeTab";
-import ExperienceTab from "../../components/welcome-tabs/ExperienceTab";
-import EducationTab from "../../components/welcome-tabs/EducationTab";
+import { TabData } from "../../../layout/tabs/Tabs";
+import HomeTab from "./HomeTab";
+import ExperienceTab from "./ExperienceTab";
+import EducationTab from "./EducationTab";
 
 export const TAB_CONFIGS: Record<string, TabData[]> = {
   welcome: [

@@ -9,18 +9,16 @@ interface UseThemeResult {
 }
 
 export const useTheme = (): UseThemeResult => {
-  // Kali-only theme
-  const [theme, setTheme] = useState<DefaultTheme>(themes.kali);
+  const [theme, setTheme] = useState<DefaultTheme>(themes.tech);
   const [themeLoaded, setThemeLoaded] = useState(false);
 
   const setMode = () => {
-    // Only Kali theme for now
-    setTheme(themes.kali);
+    setTheme(themes.tech);
   };
 
   useEffect(() => {
-    // Immediately mark as loaded with Kali theme
-    setTheme(themes.kali);
+    // Immediately mark as loaded with tech theme
+    setTheme(themes.tech);
     setThemeLoaded(true);
   }, []);
 

@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
-import HighlightCard from "../HighlightCard";
+import HighlightCard from "../../HighlightCard";
 
 const LOGOS = {
   oracle: "/icons/oracle_logo_icon.png",
