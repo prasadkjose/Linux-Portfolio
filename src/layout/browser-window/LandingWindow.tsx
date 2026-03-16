@@ -3,6 +3,7 @@ import { WindowState } from "../../types/window";
 import Tabs from "../tabs/Tabs";
 import HomeTab from "../../components/welcome-tabs/HomeTab";
 import ExperienceTab from "../../components/welcome-tabs/ExperienceTab";
+import EducationTab from "../../components/welcome-tabs/EducationTab";
 import {
   Handle,
   Frame,
@@ -246,6 +247,11 @@ const LandingWindow: React.FC<WindowState> = ({
               id: "experience",
               label: "Experience",
               content: <ExperienceTab />,
+            },
+            {
+              id: "education",
+              label: "Education & Certifications",
+              content: <EducationTab />,
             },
           ]}
           activeTabId="home"

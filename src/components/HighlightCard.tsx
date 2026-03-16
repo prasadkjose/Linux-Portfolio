@@ -43,7 +43,7 @@ const HighlightCard: React.FC<Props> = ({
           gap: "10px",
         }}
       >
-        <img src={icon} alt={value} width="24" height="24"></img>
+        <img src={icon} alt={value} height="24"></img>
         <h3 style={{ margin: 0, color: "#88C0D0", fontSize: "1.05rem" }}>
           {value}
         </h3>
