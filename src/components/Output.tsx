@@ -10,8 +10,8 @@ import Welcome from "./commands/Welcome";
 import History from "./commands/History";
 import Projects from "./commands/Projects";
 import Socials from "./commands/Socials";
-import { OutputContainer, UsageDiv } from "./styles/Output.styled";
-import { termContext } from "./Terminal";
+import { OutputContainer, UsageDiv } from "../styles/Output.styled";
+import { termContext } from "./terminal/Terminal";
 import { useContext } from "react";
 
 type Props = {

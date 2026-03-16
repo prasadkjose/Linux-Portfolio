@@ -1,13 +1,13 @@
 import { useContext, useEffect } from "react";
-import { ProjectsIntro } from "../styles/Projects.styled";
-import { Cmd, CmdDesc, CmdList, HelpWrapper } from "../styles/Help.styled";
+import { ProjectsIntro } from "../../styles/Projects.styled";
+import { Cmd, CmdDesc, CmdList, HelpWrapper } from "../../styles/Help.styled";
 import {
   checkRedirect,
   generateTabs,
   getCurrentCmdArry,
   isArgInvalid,
 } from "../../utils/funcs";
-import { termContext } from "../Terminal";
+import { termContext } from "../terminal/Terminal";
 import Usage from "../Usage";
 
 const Socials: React.FC = () => {

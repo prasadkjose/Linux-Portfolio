@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import _ from "lodash";
-import { Wrapper } from "../styles/Output.styled";
-import { termContext } from "../Terminal";
+import { Wrapper } from "../../styles/Output.styled";
+import { termContext } from "../terminal/Terminal";
 
 const History: React.FC = () => {
   const { history, index, executeCommand } = useContext(termContext);

@@ -1,0 +1,116 @@
+import styled, { css } from "styled-components";
+
+export const TabContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: rgba(24, 24, 24, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+export const TabBar = styled.div`
+  display: flex;
+  background: linear-gradient(
+    to bottom,
+    rgba(32, 32, 32, 0.9),
+    rgba(24, 24, 24, 0.9)
+  );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0 8px;
+  height: 40px;
+  align-items: center;
+  gap: 2px;
+`;
+
+export const TabButton = styled.button<{ isActive: boolean }>`
+  position: relative;
+  background: transparent;
+  border: none;
+  color: #d8dee9;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  transition: all 0.2s ease;
+  margin: 0;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #eceff4;
+  }
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      background: rgba(0, 212, 255, 0.15);
+      color: #00d4ff;
+      border-bottom: 2px solid #00d4ff;
+      box-shadow: 0 2px 8px rgba(0, 212, 255, 0.2);
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #00d4ff;
+      }
+    `}
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.3);
+  }
+`;
+
+export const TabContent = styled.div`
+  flex: 1;
+  padding: 36px;
+  background: rgba(24, 24, 24, 0.85);
+  color: #eceff4;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  overflow: auto;
+  animation: fadeIn 0.3s ease-out;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+
+export const TabCloseButton = styled.button`
+  background: transparent;
+  border: none;
+  color: #88c0d0;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(136, 192, 208, 0.2);
+    color: #eceff4;
+  }
+
+  svg {
+    width: 10px;
+    height: 10px;
+    fill: currentColor;
+  }
+`;

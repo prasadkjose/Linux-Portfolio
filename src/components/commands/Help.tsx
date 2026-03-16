@@ -4,8 +4,8 @@ import {
   CmdList,
   HelpWrapper,
   KeyContainer,
-} from "../styles/Help.styled";
-import { commands, termContext } from "../Terminal";
+} from "../../styles/Help.styled";
+import { commands, termContext } from "../terminal/Terminal";
 import { generateTabs } from "../../utils/funcs";
 import { useContext } from "react";
 

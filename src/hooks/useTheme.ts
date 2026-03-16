@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import themes from "../components/styles/themes";
+import themes from "../styles/themes";
 import { DefaultTheme } from "styled-components";
 
 interface UseThemeResult {

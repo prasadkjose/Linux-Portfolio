@@ -1,5 +1,5 @@
-import { EduIntro, EduList } from "../styles/Education.styled";
-import { Wrapper } from "../styles/Output.styled";
+import { EduIntro, EduList } from "../../styles/Education.styled";
+import { Wrapper } from "../../styles/Output.styled";
 
 const Education: React.FC = () => {
   return (

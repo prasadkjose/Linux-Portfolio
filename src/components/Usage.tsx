@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { UsageDiv } from "./styles/Output.styled";
-import { termContext } from "./Terminal";
+import { UsageDiv } from "../styles/Output.styled";
+import { termContext } from "./terminal/Terminal";
 
 type Props = {
   cmd: "projects" | "socials";

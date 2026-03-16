@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import _ from "lodash";
-import { termContext } from "../Terminal";
+import { termContext } from "../terminal/Terminal";
 
 const Resume: React.FC = () => {
   const { history, rerender } = useContext(termContext);
