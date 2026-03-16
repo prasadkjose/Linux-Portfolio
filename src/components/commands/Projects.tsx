@@ -9,7 +9,7 @@ import {
   ProjectDesc,
   ProjectsIntro,
   ProjectTitle,
-} from "../styles/Projects.styled";
+} from "../../styles/Projects.styled";
 import { termContext } from "../Terminal";
 import Usage from "../Usage";
 

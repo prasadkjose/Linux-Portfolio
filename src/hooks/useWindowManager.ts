@@ -11,7 +11,7 @@ const DEFAULT_TERMINAL_SIZE = { width: 960, height: 640 };
  * Default size configuration for the welcome browser window
  * @type {{width: number, height: number}}
  */
-const DEFAULT_BROWSER_SIZE = { width: 900, height: 560 };
+const DEFAULT_BROWSER_SIZE = { width: 900, height: 760 };
 
 /**
  * Default size configuration for the resume window

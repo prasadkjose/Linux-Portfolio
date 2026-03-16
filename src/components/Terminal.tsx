@@ -17,7 +17,7 @@ import {
   MobileBr,
   MobileSpan,
   Wrapper,
-} from "./styles/Terminal.styled";
+} from "../styles/Terminal.styled";
 import { argTab } from "../utils/funcs";
 
 type Command = {

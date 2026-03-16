@@ -4,7 +4,7 @@ import {
   CmdList,
   HelpWrapper,
   KeyContainer,
-} from "../styles/Help.styled";
+} from "../../styles/Help.styled";
 import { commands, termContext } from "../Terminal";
 import { generateTabs } from "../../utils/funcs";
 import { useContext } from "react";

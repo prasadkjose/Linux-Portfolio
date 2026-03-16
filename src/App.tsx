@@ -3,10 +3,10 @@ import { DefaultTheme, ThemeProvider } from "styled-components";
 import { useTheme } from "./hooks/useTheme";
 import { useWindowManager } from "./hooks/useWindowManager";
 import { useFullscreenManager } from "./hooks/useFullscreenManger";
-import GlobalStyle from "./components/styles/GlobalStyle";
+import GlobalStyle from "./styles/GlobalStyle";
 import TerminalWindow from "./components/TerminalWindow";
 import DesktopShortcuts from "./components/DesktopShortcuts";
-import ExperienceWindow from "./components/ExperienceWindow";
+import LandingWindow from "./layout/browser-window/LandingWindow";
 import ResumeWindow from "./components/ResumeWindow";
 import FullscreenToggle from "./components/FullscreenToggle";
 import {
@@ -117,7 +117,7 @@ function App() {
 
             {/* Welcome Browser Window opens on start on desktop only */}
             {welcome.mounted && (
-              <ExperienceWindow
+              <LandingWindow
                 close={welcome.close}
                 // On mobile: only close button (omit minimize/maximize)
                 minimize={!isMobile ? welcome.minimize : undefined}

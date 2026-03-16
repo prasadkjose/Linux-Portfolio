@@ -1,4 +1,4 @@
-import { Wrapper } from "../styles/Output.styled";
+import { Wrapper } from "../../styles/Output.styled";
 
 type Props = {
   children: React.ReactNode;
