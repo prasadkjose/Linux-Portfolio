@@ -9,9 +9,9 @@ export const WINDOW_CONFIGS: Record<string, WindowConfig> = {
     defaultWidth: 960,
     defaultHeight: 640,
   },
-  welcome: {
-    id: "welcome",
-    title: "Welcome",
+  landing: {
+    id: "landing",
+    title: "Landing",
     minWidth: 400,
     minHeight: 300,
     defaultWidth: 900,

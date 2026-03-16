@@ -15,7 +15,7 @@ const MIN_H = 340;
 const clamp = (v: number, min: number, max: number) =>
   Math.max(min, Math.min(max, v));
 
-interface WindowContainerProps extends Omit<WindowState, "mounted"> {
+interface WindowContainerProps extends WindowState {
   children: React.ReactNode;
 }
 

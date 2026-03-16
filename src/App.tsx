@@ -5,7 +5,7 @@ import { useWindowManager } from "./hooks/useWindowManager";
 import { useFullscreenManager } from "./hooks/useFullscreenManger";
 import GlobalStyle from "./styles/GlobalStyle";
 import TerminalWindow from "./components/windows/terminal/TerminalWindow";
-import DesktopShortcuts from "./components/DesktopShortcuts";
+import DesktopShortcuts from "./components/desktop-shortcuts/DesktopShortcuts";
 import ResumeWindow from "./components/windows/ResumeWindow";
 import Landing from "./components/windows/welcome-tabs/Landing";
 import FullscreenToggle from "./components/FullscreenToggle";

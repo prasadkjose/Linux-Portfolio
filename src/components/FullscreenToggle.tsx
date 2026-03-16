@@ -7,7 +7,7 @@ type Props = {
   hidden?: boolean;
 };
 
-const Wrap = styled.button<{ hidden?: boolean }>`
+const FullscreenButton = styled.button<{ hidden?: boolean }>`
   position: fixed;
   top: 16px;
   right: 16px;
@@ -75,14 +75,14 @@ const FullscreenToggle: React.FC<Props> = ({
   hidden,
 }) => {
   return (
-    <Wrap
+    <FullscreenButton
       hidden={hidden}
       onClick={onToggle}
       aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
     >
       <Icon exit={isFullscreen} />
       <span>{isFullscreen ? "Exit Fullscreen" : "Fullscreen"}</span>
-    </Wrap>
+    </FullscreenButton>
   );
 };
 

@@ -23,9 +23,11 @@ const BrowserWindow: React.FC<BrowserWindowProps> = ({
   bringToFront,
   z,
   children,
+  mounted,
 }) => {
   return (
     <WindowContainer
+      mounted={mounted}
       close={close}
       minimize={minimize}
       maximized={maximized}
