@@ -4,9 +4,9 @@ import {
   CmdList,
   HelpWrapper,
   KeyContainer,
-} from "../../styles/Help.styled";
-import { commands, termContext } from "../terminal/Terminal";
-import { generateTabs } from "../../utils/funcs";
+} from "../../../styles/Help.styled";
+import { commands, termContext } from "../Terminal";
+import { generateTabs } from "../../../utils/funcs";
 import { useContext } from "react";
 
 const Help: React.FC = () => {

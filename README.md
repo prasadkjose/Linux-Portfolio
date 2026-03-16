@@ -76,3 +76,10 @@ Contributions are welcome. If you'd like to contribute:
 [![Website](https://img.shields.io/badge/Website-prasadkjose.com-17BB98?style=for-the-badge)](https://prasadkjose.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/prasadkjose)
 [![X / Twitter](https://img.shields.io/badge/X-%231DA1F2?style=for-the-badge&logo=x&logoColor=white)](https://x.com/prasadkjose)
+
+## Acknowledgements
+
+This project is based on a fork of [Kali-Linux-Hacker-Portfolio](https://github.com/jihedkdiss/Kali-Linux-Hacker-Portfolio).
+I would like to thank the original authors and contributors for their excellent work and for making the project open source.
+
+This fork builds upon their work with additional modifications and improvements.

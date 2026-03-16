@@ -100,11 +100,9 @@ export const argTab = (
 
   // 8) if input is 'projects go '
   else if (_.startsWith(inputVal, "projects go ")) {
-    ["1.Blog", "2.Radio Medenine Website", "3.Deagle", "4.Writeups"].forEach(
-      t => {
-        hintsCmds = [...hintsCmds, t];
-      }
-    );
+    ["1.Blog"].forEach(t => {
+      hintsCmds = [...hintsCmds, t];
+    });
     return hintsCmds;
   }
 };

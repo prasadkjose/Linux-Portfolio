@@ -409,11 +409,12 @@ export const useWindowManager = (): WindowManager => {
 
       setTerminal(prev => ({
         ...prev,
-        mounted: false,
-        visible: false,
+        mounted: true,
+        visible: true,
         maximized: false,
-        x: 0,
-        y: 0,
+        // Displace the terminal window a little bit so it's visible on startup
+        x: welcome.x - 20,
+        y: welcome.x - 20,
         width: DEFAULT_TERMINAL_SIZE.width,
         height: DEFAULT_TERMINAL_SIZE.height,
       }));

@@ -3,15 +3,14 @@ import {
   checkRedirect,
   getCurrentCmdArry,
   isArgInvalid,
-} from "../../utils/funcs";
+} from "../../../utils/funcs";
 import {
   ProjectContainer,
   ProjectDesc,
-  ProjectsIntro,
   ProjectTitle,
-} from "../../styles/Projects.styled";
-import { termContext } from "../terminal/Terminal";
-import Usage from "../Usage";
+} from "../../../styles/Projects.styled";
+import { termContext } from "../Terminal";
+import Usage from "../../Usage";
 
 const Projects: React.FC = () => {
   const { arg, history, rerender } = useContext(termContext);
@@ -43,10 +42,6 @@ const Projects: React.FC = () => {
     checkArg()
   ) : (
     <div data-testid="projects">
-      <ProjectsIntro>
-        “Talk is cheap. Show me the code”? I got you! <br />
-        Here are some of my projects you shouldn't miss
-      </ProjectsIntro>
       {projects.map(({ id, title, desc, url }) => (
         <ProjectContainer key={id}>
           <ProjectTitle
@@ -66,27 +61,21 @@ const Projects: React.FC = () => {
 const projects = [
   {
     id: 1,
-    title: "Blog",
-    desc: "My personal blog where I write down my thoughts and experiences.",
-    url: "https://dev.to/prasadkjose",
+    title: "Confidential Computing of Machine Learning using Intel SGX",
+    desc: "A TEE-based application to securely upload and train multiparty data-sets with confidential computing.",
+    url: "https://github.com/prasadkjose/confidential-ml-sgx",
   },
   {
     id: 2,
-    title: "Radio Medenine Website",
-    desc: "Wordpress website developed for Radio Medenine. A local radio station in Medenine, Tunisia.",
-    url: "https://radiomednine.com/",
+    title: "OrganizeIt",
+    desc: "A Python-based utility to help users automate the organization of their file system.",
+    url: "https://github.com/prasadkjose/OrganizeIt",
   },
   {
     id: 3,
-    title: "Deagle",
-    desc: "System Scanner for Windows. A tool to scan and detect system information.",
-    url: "https://github.com/jihedkdiss/Deagle/",
-  },
-  {
-    id: 4,
-    title: "CTF Challenges & Writeups",
-    desc: "A collection of reverse engineering challenges and solutions.",
-    url: "https://github.com/jihedkdiss/Writeups/",
+    title: "Practice Coding",
+    desc: "A lightweight local setup for practicing coding problems in Python, TypeScript, and C++ without logging into LeetCode or any online judge.",
+    url: "https://github.com/prasadkjose/coding",
   },
 ];
 

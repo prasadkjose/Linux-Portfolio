@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import _ from "lodash";
-import { Wrapper } from "../../styles/Output.styled";
-import { termContext } from "../terminal/Terminal";
+import { Wrapper } from "../../../styles/Output.styled";
+import { termContext } from "../Terminal";
 
 const Email: React.FC = () => {
   const { history, rerender } = useContext(termContext);

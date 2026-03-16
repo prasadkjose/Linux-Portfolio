@@ -159,6 +159,7 @@ const LandingWindow: React.FC<WindowState> = ({
       hidden={!visible}
       isTransforming={!dragging.current && !resizing.current}
       z={z}
+      onClick={bringToFront}
     >
       <TitleBar
         onMouseDown={e => {

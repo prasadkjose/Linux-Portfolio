@@ -387,6 +387,7 @@ const TerminalWindow: React.FC<Props> = ({
       height={height}
       isTransforming={!dragging.current && !resizing.current}
       zIndex={zIndex}
+      onClick={onFocus}
     >
       <TitleBar
         onMouseDown={e => {
