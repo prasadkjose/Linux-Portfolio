@@ -7,7 +7,7 @@ import {
   getCurrentCmdArry,
   isArgInvalid,
 } from "../../utils/funcs";
-import { termContext } from "../Terminal";
+import { termContext } from "../terminal/Terminal";
 import Usage from "../Usage";
 
 const Socials: React.FC = () => {

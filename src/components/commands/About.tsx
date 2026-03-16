@@ -11,13 +11,9 @@ const About: React.FC = () => {
         Hi, my name is <HighlightSpan>Prasad Koshy Jose</HighlightSpan>.
       </p>
       <p>
-        I'm a <HighlightAlt>Junior Cyber Security Analyst</HighlightAlt> based
-        in Tunisia.
+        I'm a <HighlightAlt>Software Engineer</HighlightAlt> based in Colorado.
       </p>
-      <p>
-        I am passionate about reverse engineering and <br />
-        penetration testing. I also enjoy coding and playing CTFs.
-      </p>
+      <p>I enjoy writing code that generates other things.</p>
     </AboutWrapper>
   );
 };

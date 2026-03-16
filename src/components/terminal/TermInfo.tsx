@@ -1,4 +1,4 @@
-import { User, WebsiteName, Wrapper } from "../styles/TerminalInfo.styled";
+import { User, WebsiteName, Wrapper } from "./TerminalInfo.styled";
 
 const TermInfo = () => {
   return (
