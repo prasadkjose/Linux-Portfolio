@@ -14,8 +14,8 @@
     </a>
 </p>
 <p align="center">
-    <b>A sleek, developer portfolio website themed after Kali Linux.<br></b>
-    Built with React & TypeScript, simulating Kali Linux desktop environment to showcase projects, resume, and contact info.
+    <b>A sleek, developer portfolio website themed after Linux.<br></b>
+    Built with React & TypeScript, simulating Linux desktop environment to showcase projects, resume, and contact info.
 </p>
 
 ## Table of contents
@@ -31,7 +31,7 @@
 ## Features
 
 - Responsive, terminal-style portfolio UI
-- Kali Linux color theme and visuals
+- Linux color theme and visuals
 - Autocomplete (TAB / Ctrl+i)
 - Command history navigation (Up / Down)
 - Built-in commands: about, help, projects, resume, socials, email, education, etc.
@@ -76,3 +76,10 @@ Contributions are welcome. If you'd like to contribute:
 [![Website](https://img.shields.io/badge/Website-prasadkjose.com-17BB98?style=for-the-badge)](https://prasadkjose.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/prasadkjose)
 [![X / Twitter](https://img.shields.io/badge/X-%231DA1F2?style=for-the-badge&logo=x&logoColor=white)](https://x.com/prasadkjose)
+
+## Acknowledgements
+
+This project is based on a fork of [Kali-Linux-Hacker-Portfolio](https://github.com/jihedkdiss/Kali-Linux-Hacker-Portfolio).
+I would like to thank the original authors and contributors for their excellent work and for making the project open source.
+
+This fork builds upon their work with additional modifications and improvements.

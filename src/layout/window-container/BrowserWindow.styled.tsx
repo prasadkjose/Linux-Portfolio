@@ -9,6 +9,7 @@ export const Frame = styled.div<{
   hidden?: boolean;
   isTransforming?: boolean;
   z?: number;
+  onClick: () => void;
 }>`
   position: fixed;
   box-sizing: border-box;

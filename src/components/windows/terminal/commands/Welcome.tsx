@@ -5,8 +5,8 @@ import {
   PreName,
   PreNameMobile,
   PreWrapper,
-} from "../../styles/Welcome.styled";
-import { termContext } from "../terminal/Terminal";
+} from "../../../../styles/Welcome.styled";
+import { termContext } from "../Terminal";
 
 const Welcome: React.FC = () => {
   const { executeCommand } = useContext(termContext);

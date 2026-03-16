@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import _ from "lodash";
-import Output from "../Output";
+import Output from "../../Output";
 import TermInfo from "./TermInfo";
 import {
   CmdNotFound,
@@ -18,7 +18,7 @@ import {
   MobileSpan,
   Wrapper,
 } from "./Terminal.styled";
-import { argTab } from "../../utils/funcs";
+import { argTab } from "../../../utils/funcs";
 
 type Command = {
   cmd: string;

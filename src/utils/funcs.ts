@@ -76,8 +76,6 @@ export const argTab = (
   setHints: (value: React.SetStateAction<string[]>) => void,
   hintsCmds: string[]
 ): string[] | undefined => {
-  // Themes autocompletion disabled (Kali-only)
-
   // 5) if input is 'projects' or 'socials'
   if (inputVal === "projects " || inputVal === "socials ") {
     setInputVal(`${inputVal}go`);
@@ -100,11 +98,9 @@ export const argTab = (
 
   // 8) if input is 'projects go '
   else if (_.startsWith(inputVal, "projects go ")) {
-    ["1.Blog", "2.Radio Medenine Website", "3.Deagle", "4.Writeups"].forEach(
-      t => {
-        hintsCmds = [...hintsCmds, t];
-      }
-    );
+    ["1.Blog"].forEach(t => {
+      hintsCmds = [...hintsCmds, t];
+    });
     return hintsCmds;
   }
 };

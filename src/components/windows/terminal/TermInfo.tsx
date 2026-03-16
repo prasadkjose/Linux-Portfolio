@@ -3,7 +3,7 @@ import { User, WebsiteName, Wrapper } from "./TerminalInfo.styled";
 const TermInfo = () => {
   return (
     <Wrapper>
-      <User>kali</User>@<WebsiteName>kali</WebsiteName>:~$
+      <User>linux</User>@<WebsiteName>linux</WebsiteName>:~$
     </Wrapper>
   );
 };

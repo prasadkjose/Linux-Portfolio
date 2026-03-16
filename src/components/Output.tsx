@@ -1,17 +1,17 @@
-import About from "./commands/About";
-import Clear from "./commands/Clear";
-import Echo from "./commands/Echo";
-import Education from "./commands/Education";
-import Email from "./commands/Email";
-import GeneralOutput from "./commands/GeneralOutput";
-import Resume from "./commands/Resume";
-import Help from "./commands/Help";
-import Welcome from "./commands/Welcome";
-import History from "./commands/History";
-import Projects from "./commands/Projects";
-import Socials from "./commands/Socials";
+import About from "./windows/terminal/commands/About";
+import Clear from "./windows/terminal/commands/Clear";
+import Echo from "./windows/terminal/commands/Echo";
+import Education from "./windows/terminal/commands/Education";
+import Email from "./windows/terminal/commands/Email";
+import GeneralOutput from "./windows/terminal/commands/GeneralOutput";
+import Resume from "./windows/terminal/commands/Resume";
+import Help from "./windows/terminal/commands/Help";
+import Welcome from "./windows/terminal/commands/Welcome";
+import History from "./windows/terminal/commands/History";
+import Projects from "./windows/terminal/commands/Projects";
+import Socials from "./windows/terminal/commands/Socials";
 import { OutputContainer, UsageDiv } from "../styles/Output.styled";
-import { termContext } from "./terminal/Terminal";
+import { termContext } from "./windows/terminal/Terminal";
 import { useContext } from "react";
 
 type Props = {
@@ -36,7 +36,7 @@ const Output: React.FC<Props> = ({ index, cmd }) => {
       <OutputContainer>
         <GeneralOutput>{full}: command not found</GeneralOutput>
         <GeneralOutput>
-          Hint: sudo: unable to resolve host kali: Name or service not known
+          Hint: sudo: unable to resolve host linux: Name or service not known
         </GeneralOutput>
         <GeneralOutput>Hint: you are already root</GeneralOutput>
       </OutputContainer>
@@ -45,7 +45,7 @@ const Output: React.FC<Props> = ({ index, cmd }) => {
   if (cmd === "neofetch") {
     return (
       <OutputContainer>
-        <GeneralOutput>{`kali 2024.2 \n Kernel: 6.5.0-kali1-amd64 \n Shell: bash 5.2.15 \n Resolution: 1920x1080 \n DE: XFCE \n WM: Xfwm4 \n CPU: Intel i7-9750H (12) @ 4.5GHz \n Memory: 2.1GiB / 16GiB`}</GeneralOutput>
+        <GeneralOutput>{`Linux 2026.2 \n Kernel: 6.5.0-linux-amd64 \n Shell: bash 5.2.15 \n Resolution: 1920x1080 \n DE: XFCE \n WM: Xfwm4 \n CPU: Intel i7-9750H (12) @ 4.5GHz \n Memory: 2.1GiB / 16GiB`}</GeneralOutput>
       </OutputContainer>
     );
   }
@@ -82,7 +82,7 @@ const Output: React.FC<Props> = ({ index, cmd }) => {
           pwd: <GeneralOutput>/home/prasadkjose</GeneralOutput>,
           socials: <Socials />,
           welcome: <Welcome />,
-          whoami: <GeneralOutput>kali</GeneralOutput>,
+          whoami: <GeneralOutput>linux</GeneralOutput>,
         }[cmd]
       }
     </OutputContainer>

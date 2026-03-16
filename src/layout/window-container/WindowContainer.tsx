@@ -1,9 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { WindowState } from "../../types/window";
-import Tabs from "../tabs/Tabs";
-import HomeTab from "../../components/welcome-tabs/HomeTab";
-import ExperienceTab from "../../components/welcome-tabs/ExperienceTab";
-import EducationTab from "../../components/welcome-tabs/EducationTab";
+
 import {
   Handle,
   Frame,
@@ -11,9 +8,6 @@ import {
   WindowTitle,
   WindowControls,
   ControlButton,
-  Toolbar,
-  LocationBar,
-  Content,
 } from "./BrowserWindow.styled";
 
 const MIN_W = 520;
@@ -21,7 +15,11 @@ const MIN_H = 340;
 const clamp = (v: number, min: number, max: number) =>
   Math.max(min, Math.min(max, v));
 
-const LandingWindow: React.FC<WindowState> = ({
+interface WindowContainerProps extends WindowState {
+  children: React.ReactNode;
+}
+
+const WindowContainer: React.FC<WindowContainerProps> = ({
   close,
   minimize,
   maximized = false,
@@ -35,6 +33,7 @@ const LandingWindow: React.FC<WindowState> = ({
   visible = true,
   bringToFront,
   z,
+  children,
 }) => {
   const posRef = useRef({ x, y });
   const sizeRef = useRef({ width, height });
@@ -159,6 +158,7 @@ const LandingWindow: React.FC<WindowState> = ({
       hidden={!visible}
       isTransforming={!dragging.current && !resizing.current}
       z={z}
+      onClick={bringToFront}
     >
       <TitleBar
         onMouseDown={e => {
@@ -231,34 +231,9 @@ const LandingWindow: React.FC<WindowState> = ({
         </>
       )}
 
-      <Toolbar>
-        <LocationBar>https://prasadkjose.com</LocationBar>
-      </Toolbar>
-
-      <Content maximized={maximized}>
-        <Tabs
-          tabs={[
-            {
-              id: "home",
-              label: "Home",
-              content: <HomeTab />,
-            },
-            {
-              id: "experience",
-              label: "Experience",
-              content: <ExperienceTab />,
-            },
-            {
-              id: "education",
-              label: "Education & Certifications",
-              content: <EducationTab />,
-            },
-          ]}
-          activeTabId="home"
-        />
-      </Content>
+      {children}
     </Frame>
   );
 };
 
-export default LandingWindow;
+export default WindowContainer;

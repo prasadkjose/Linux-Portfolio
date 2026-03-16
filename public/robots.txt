@@ -3,5 +3,5 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://jihedkdiss.tn/sitemap.xml
+Sitemap: https://prasadkjose.com/sitemap.xml
 
