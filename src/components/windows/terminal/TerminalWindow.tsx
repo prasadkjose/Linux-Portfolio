@@ -39,7 +39,7 @@ const TerminalContent = styled.div<{ maximized?: boolean }>`
 
 const TerminalWindow: React.FC<WindowState> = props => {
   return (
-    <WindowContainer {...props}>
+    <WindowContainer {...props} title="Terminal">
       <MenuBar maximized={props.maximized}>
         <MenuItem>File</MenuItem>
         <MenuItem>Edit</MenuItem>

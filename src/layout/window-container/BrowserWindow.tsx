@@ -41,6 +41,7 @@ const BrowserWindow: React.FC<BrowserWindowProps> = ({
       visible={visible}
       bringToFront={bringToFront}
       z={z}
+      title="Browser"
     >
       <Toolbar>
         <LocationBar>https://prasadkjose.com</LocationBar>

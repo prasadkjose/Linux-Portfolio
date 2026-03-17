@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { WindowState } from "../../types/window";
 
 import {
   Handle,
@@ -9,15 +8,12 @@ import {
   WindowControls,
   ControlButton,
 } from "./BrowserWindow.styled";
+import { WindowContainerProps } from "../../types/window";
 
 const MIN_W = 520;
 const MIN_H = 340;
 const clamp = (v: number, min: number, max: number) =>
   Math.max(min, Math.min(max, v));
-
-interface WindowContainerProps extends WindowState {
-  children: React.ReactNode;
-}
 
 const WindowContainer: React.FC<WindowContainerProps> = ({
   close,
@@ -33,6 +29,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
   visible = true,
   bringToFront,
   z,
+  title,
   children,
 }) => {
   const posRef = useRef({ x, y });
@@ -166,7 +163,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
           bringToFront && bringToFront();
         }}
       >
-        <WindowTitle>Browser</WindowTitle>
+        <WindowTitle>{title}</WindowTitle>
         <WindowControls aria-label="Window controls">
           {minimize && (
             <ControlButton

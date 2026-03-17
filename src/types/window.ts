@@ -97,8 +97,8 @@ export interface WindowState {
   x: number;
   y: number;
   z: number;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 
   bringToFront: () => void;
   open?: () => void;
@@ -107,6 +107,17 @@ export interface WindowState {
   toggleMaximize?: () => void;
   resize: (width: number, height: number, x?: number, y?: number) => void;
   move: (x: number, y: number) => void;
+}
+
+/**
+ * Local state management for the state of the common window container
+ *
+ * @property {React.ReactNode} children - The child node to be passed into the container
+ * @property {string} title - The window title to be displayed
+ */
+export interface WindowContainerProps extends WindowState {
+  children: React.ReactNode;
+  title: string;
 }
 
 /**
