@@ -9,11 +9,8 @@ import DesktopShortcuts from "./components/desktop-shortcuts/DesktopShortcuts";
 import ResumeWindow from "./components/windows/ResumeWindow";
 import Landing from "./components/windows/welcome-tabs/Landing";
 import FullscreenToggle from "./components/FullscreenToggle";
-import {
-  ThemeSwitcher,
-  FullscreenManager,
-  WindowManager,
-} from "./types/window";
+import ThemeSwitcher from "./components/ThemeSwitcher";
+import { FullscreenManager, WindowManager } from "./types/window";
 import { isMobileDevice } from "./utils/typeGuards";
 
 export const themeContext = createContext<ThemeSwitcher | null>(null);
@@ -91,6 +88,11 @@ function App() {
       {themeLoaded && (
         <ThemeProvider theme={selectedTheme}>
           <GlobalStyle />
+          {/* Theme Switcher - 3-way toggle for Linux, Fedora, Kali themes */}
+          <ThemeSwitcher
+            themeSwitcher={themeSwitcher}
+            currentTheme={selectedTheme}
+          />
           <themeContext.Provider value={themeSwitcher}>
             {/* Desktop Icons - below windows, hidden when any window is maximized */}
             <DesktopShortcuts

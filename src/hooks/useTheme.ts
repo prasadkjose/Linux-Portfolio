@@ -12,8 +12,8 @@ export const useTheme = (): UseThemeResult => {
   const [theme, setTheme] = useState<DefaultTheme>(themes.tech);
   const [themeLoaded, setThemeLoaded] = useState(false);
 
-  const setMode = () => {
-    setTheme(themes.tech);
+  const setMode = (newTheme: DefaultTheme) => {
+    setTheme(newTheme);
   };
 
   useEffect(() => {
