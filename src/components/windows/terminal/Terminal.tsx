@@ -53,6 +53,7 @@ type Term = {
   index: number;
   clearHistory?: () => void;
   executeCommand?: (cmd: string) => void;
+  setRerender?: (rerender: boolean) => void;
 };
 
 export const termContext = createContext<Term>({
@@ -213,6 +214,7 @@ const Terminal = () => {
           index,
           clearHistory,
           executeCommand,
+          setRerender,
         };
         return (
           <div key={_.uniqueId(`${cmdH}_`)}>
