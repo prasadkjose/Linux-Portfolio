@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { WindowState } from "../../types/window";
 
 import {
   Handle,
@@ -9,15 +8,12 @@ import {
   WindowControls,
   ControlButton,
 } from "./BrowserWindow.styled";
+import { WindowContainerProps } from "../../types/window";
 
 const MIN_W = 520;
 const MIN_H = 340;
 const clamp = (v: number, min: number, max: number) =>
   Math.max(min, Math.min(max, v));
-
-interface WindowContainerProps extends WindowState {
-  children: React.ReactNode;
-}
 
 const WindowContainer: React.FC<WindowContainerProps> = ({
   close,
@@ -33,6 +29,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
   visible = true,
   bringToFront,
   z,
+  title,
   children,
 }) => {
   const posRef = useRef({ x, y });
@@ -67,13 +64,13 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
         const wh = window.innerHeight;
         const nx = clamp(
           dragStart.current.sx + dx,
-          0,
-          Math.max(0, ww - sizeRef.current.width)
+          -sizeRef.current.width + 10,
+          ww - 10
         );
         const ny = clamp(
           dragStart.current.sy + dy,
-          0,
-          Math.max(0, wh - sizeRef.current.height)
+          -sizeRef.current.height + 10,
+          wh - 10
         );
         move && move(nx, ny);
       } else if (resizing.current) {
@@ -98,8 +95,8 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
         nh = Math.max(MIN_H, nh);
         const ww = window.innerWidth;
         const wh = window.innerHeight;
-        nx = clamp(nx, 0, Math.max(0, ww - nw));
-        ny = clamp(ny, 0, Math.max(0, wh - nh));
+        nx = clamp(nx, -nw + 10, ww - 10);
+        ny = clamp(ny, -nh + 10, wh - 10);
         resize && resize(nw, nh, nx, ny);
       }
     },
@@ -166,7 +163,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
           bringToFront && bringToFront();
         }}
       >
-        <WindowTitle>Browser</WindowTitle>
+        <WindowTitle>{title}</WindowTitle>
         <WindowControls aria-label="Window controls">
           {minimize && (
             <ControlButton

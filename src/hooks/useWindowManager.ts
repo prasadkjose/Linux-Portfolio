@@ -1,23 +1,15 @@
 import { useState, useCallback } from "react";
 import { isMobileDevice } from "../utils/typeGuards";
 import { WindowManager, WindowState } from "../types/window";
-/**
- * Default size configuration for the terminal window
- * @type {{width: number, height: number}}
- */
-const DEFAULT_TERMINAL_SIZE = { width: 960, height: 640 };
 
 /**
  * Default size configuration for the welcome browser window
  * @type {{width: number, height: number}}
  */
-const DEFAULT_BROWSER_SIZE = { width: 900, height: 760 };
-
-/**
- * Default size configuration for the resume window
- * @type {{width: number, height: number}}
- */
-const DEFAULT_RESUME_SIZE = { width: 900, height: 560 };
+const DEFAULT_WINDOW_SIZE = {
+  width: window.innerWidth - 150,
+  height: window.innerHeight - 150,
+};
 
 /**
  * Calculate centered position for a window within the viewport
@@ -40,7 +32,7 @@ const centerWindow = (
 };
 
 export const useWindowManager = (): WindowManager => {
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(isMobileDevice());
 
   // Initialize device detection
   useState(() => {
@@ -168,7 +160,7 @@ export const useWindowManager = (): WindowManager => {
 
   // Terminal operations
   const openTerminal = useCallback(() => {
-    openWindow(setTerminal, DEFAULT_TERMINAL_SIZE);
+    openWindow(setTerminal, DEFAULT_WINDOW_SIZE);
     bringTerminalToFront();
   }, [openWindow, bringTerminalToFront]);
 
@@ -221,7 +213,7 @@ export const useWindowManager = (): WindowManager => {
 
   // Welcome operations
   const openWelcome = useCallback(() => {
-    openWindow(setWelcome, DEFAULT_BROWSER_SIZE);
+    openWindow(setWelcome, DEFAULT_WINDOW_SIZE);
     bringBrowserToFront();
   }, [openWindow, bringBrowserToFront]);
 
@@ -274,7 +266,7 @@ export const useWindowManager = (): WindowManager => {
 
   // Resume operations
   const openResume = useCallback(() => {
-    openWindow(setResume, DEFAULT_RESUME_SIZE);
+    openWindow(setResume, DEFAULT_WINDOW_SIZE);
     bringResumeToFront();
   }, [openWindow, bringResumeToFront]);
 
@@ -333,8 +325,8 @@ export const useWindowManager = (): WindowManager => {
     x: 0,
     y: 0,
     z: 200,
-    width: DEFAULT_TERMINAL_SIZE.width,
-    height: DEFAULT_TERMINAL_SIZE.height,
+    width: DEFAULT_WINDOW_SIZE.width,
+    height: DEFAULT_WINDOW_SIZE.height,
     bringToFront: bringTerminalToFront,
     open: openTerminal,
     close: closeTerminal,
@@ -351,8 +343,8 @@ export const useWindowManager = (): WindowManager => {
     x: 140,
     y: 60,
     z: 300,
-    width: DEFAULT_BROWSER_SIZE.width,
-    height: DEFAULT_BROWSER_SIZE.height,
+    width: DEFAULT_WINDOW_SIZE.width,
+    height: DEFAULT_WINDOW_SIZE.height,
     bringToFront: bringBrowserToFront,
     open: openWelcome,
     close: closeWelcome,
@@ -369,8 +361,8 @@ export const useWindowManager = (): WindowManager => {
     x: 160,
     y: 80,
     z: 400,
-    width: DEFAULT_RESUME_SIZE.width,
-    height: DEFAULT_RESUME_SIZE.height,
+    width: DEFAULT_WINDOW_SIZE.width,
+    height: DEFAULT_WINDOW_SIZE.height,
     bringToFront: bringResumeToFront,
     open: openResume,
     close: closeResume,
@@ -399,24 +391,25 @@ export const useWindowManager = (): WindowManager => {
         maximized: false,
         x: 0,
         y: 0,
-        width: DEFAULT_TERMINAL_SIZE.width,
-        height: DEFAULT_TERMINAL_SIZE.height,
       }));
     } else {
       // Desktop: browser centered
-      centerWindowOnDesktop(setWelcome, DEFAULT_BROWSER_SIZE);
+      centerWindowOnDesktop(setWelcome, DEFAULT_WINDOW_SIZE);
       bringBrowserToFront();
 
+      const centerDimensions = centerWindow(
+        window.innerWidth,
+        window.innerHeight,
+        DEFAULT_WINDOW_SIZE
+      );
       setTerminal(prev => ({
         ...prev,
         mounted: true,
         visible: true,
         maximized: false,
         // Displace the terminal window a little bit so it's visible on startup
-        x: welcome.x - 20,
-        y: welcome.x - 20,
-        width: DEFAULT_TERMINAL_SIZE.width,
-        height: DEFAULT_TERMINAL_SIZE.height,
+        x: centerDimensions.x - 30,
+        y: centerDimensions.y - 30,
       }));
     }
   }, [

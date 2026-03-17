@@ -27,7 +27,7 @@ const TerminalContent = styled.div<{ maximized?: boolean }>`
   ${({ theme }) =>
     theme.backgroundImage &&
     `
-    background: transparent; display: flex; flex-direction: column; align-items: stretch; overflow: hidden;
+    font-size: 0.8rem; background: transparent; display: flex; flex-direction: column; align-items: stretch; overflow: hidden;
   `}
   height: ${({ maximized }) =>
     maximized ? "calc(100vh - 32px - 28px)" : "calc(100% - 32px - 28px)"};
@@ -39,7 +39,7 @@ const TerminalContent = styled.div<{ maximized?: boolean }>`
 
 const TerminalWindow: React.FC<WindowState> = props => {
   return (
-    <WindowContainer {...props}>
+    <WindowContainer {...props} title="Terminal">
       <MenuBar maximized={props.maximized}>
         <MenuItem>File</MenuItem>
         <MenuItem>Edit</MenuItem>
