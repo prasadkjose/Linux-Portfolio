@@ -80,7 +80,7 @@ const PDFContainer = styled.div`
 `;
 
 const ResumeWindow: React.FC<WindowState> = props => {
-  const pdfUrl = "/Prasad Resume - SDE.pdf"; // Ensure this file exists in public root
+  const pdfUrl = "resume.pdf"; // Ensure this file exists in public root
 
   return (
     <WindowContainer {...props} title="Resume">
