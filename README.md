@@ -1,85 +1,143 @@
-<h1 align="center">Linux-like Portfolio Website</h1>
+# Linux-like Portfolio Website
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9818157c-d810-4ad6-b218-038707143a3c/deploy-status?style=flat-square)](https://app.netlify.com/sites/prasadkjose/deploys)
+[![License](https://img.shields.io/github/license/prasadkjose/Kali-Linux-Portfolio?style=flat-square)](LICENSE)
+[![Repo Size](https://img.shields.io/github/repo-size/prasadkjose/Kali-Linux-Portfolio?style=flat-square)](https://github.com/prasadkjose/Kali-Linux-Portfolio)
+[![Top Language](https://img.shields.io/github/languages/top/prasadkjose/Kali-Linux-Portfolio?style=flat-square)](https://github.com/prasadkjose/Kali-Linux-Portfolio)
 
-<p align="center">
-    <img src="https://api.netlify.com/api/v1/badges/9818157c-d810-4ad6-b218-038707143a3c/deploy-status?style=flat-square" alt="Netlify Status" />
-    <img src="https://img.shields.io/github/license/prasadkjose/Kali-Linux-Portfolio?style=flat-square" alt="License" />
-    <img src="https://img.shields.io/github/repo-size/prasadkjose/Kali-Linux-Portfolio?style=flat-square" alt="Repo size" />
-    <img src="https://img.shields.io/github/languages/top/prasadkjose/Kali-Linux-Portfolio?style=flat-square" alt="Top language" />
+[![Live Demo](https://img.shields.io/badge/View%20Live%20Demo-prasadkjose.com-17BB98?style=for-the-badge)](https://prasadkjose.com)
 
-</p>
-<p align="center">
-    <a href="https://prasadkjose.com">
-        <img src="https://img.shields.io/badge/View%20Live%20Demo-prasadkjose.com-17BB98?style=for-the-badge" alt="Forks" />
-    </a>
-</p>
-<p align="center">
-    <b>A sleek, developer portfolio website themed after Linux.<br></b>
-    Built with React & TypeScript, simulating Linux desktop environment to showcase projects, resume, and contact info.
-</p>
+My developer portfolio website themed after Linux, built with React & TypeScript, simulating a Linux desktop environment to showcase projects, resume, and contact information.
 
-## Table of contents
+## 🚀 Features
 
-- [Table of contents](#table-of-contents)
-- [Features](#features)
-- [Tech stack   ](#tech-stack---)
-- [Run locally](#run-locally)
-  - [If you are using Docker](#if-you-are-using-docker)
-- [Contributing](#contributing)
-- [Author](#author)
+- **Linux Desktop Experience**: With Linux themes and colours.
+- **Interactive Terminal**: Built-in Linux Terminal for you command line junkies with autocomplete (TAB/Ctrl+i) and command history (Up/Down)
+- **Rich Command Set**: Navigate through `about`, `help`, `projects`, `resume`, `socials`, `email`, `education`, and more
+- **Keyboard-First Design**: Type commands, open windows, toggle fullscreen for optimal developer experience
+- **Responsive Design**: Works seamlessly across desktop, tablet, and mobile devices
 
-## Features
+## 🛠️ Tech Stack
 
-- Responsive, terminal-style portfolio UI
-- Linux color theme and visuals
-- Autocomplete (TAB / Ctrl+i)
-- Command history navigation (Up / Down)
-- Built-in commands: about, help, projects, resume, socials, email, education, etc.
-- Keyboard-first experience (type commands, open windows, toggle fullscreen)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3.9%2B-blue?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-17%2B-%2361DAFB?style=flat-square&logo=react&logoColor=white)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-%40vitejs-%23646cff?style=flat-square&logo=vite)](https://vitejs.dev/)
+[![Styled Components](https://img.shields.io/badge/Styled--Components-102029?style=flat-square&logo=styled-components&logoColor=white)](https://styled-components.com/)
 
-## Tech stack 
-[![TypeScript](https://img.shields.io/badge/TypeScript-3.9%2B-blue?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![React](https://img.shields.io/badge/React-17%2B-%2361DAFB?style=flat-square&logo=react&logoColor=white)](https://reactjs.org/) [![Vite](https://img.shields.io/badge/Vite-%40vitejs-%23646cff?style=flat-square&logo=vite)](https://vitejs.dev/)
+## 📦 Installation & Setup
 
+### Prerequisites
 
-## Run locally
+- Node.js (version 16 or higher)
+- pnpm (recommended) or npm
 
-Clone the project and install dependencies:
+### Local Development
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/prasadkjose/Linux-Portfolio.git
+   cd Linux-Portfolio
+   ```
+2. **Install dependencies:**
+   ```bash
+   # Using pnpm (recommended)
+   pnpm install
+   
+   # Or using npm
+   npm install
+   ```
+
+3. **Start development server:**
+   ```bash
+   pnpm dev
+   ```
+
+4. **Open your browser:**
+   Navigate to `http://localhost:3000` to view the portfolio
+
+### Docker Setup
+
+For containerized development:
 
 ```bash
-git clone https://github.com/prasadkjose/Kali-Linux-Portfolio.git
-cd Kali-Linux-Portfolio
-git remote remove origin
-pnpm install
-pnpm dev
+# Build the Docker image
+docker build -t prasad-portfolio .
+
+# Run the container
+docker run -p 127.0.0.1:3000:3000 prasad-portfolio
 ```
 
-> The repo uses pnpm in the workspace; `npm install` also works but `pnpm` is recommended for speed and deterministic installs.
+## 🎯 Usage
 
-### If you are using Docker
+Once the application is running, you'll be greeted with a Linux-style desktop interface. Here are some commands you can try:
 
-```bash
-docker build -t site .
-docker run -p 127.0.0.1:3000:3000 site
-```
+- `help` - Display available commands
+- `about` - Learn about the developer
+- `projects` - View featured projects
+- `resume` - Access the professional resume
+- `socials` - View social media links
+- `email` - Get contact information
+- `education` - View educational background
+- `clear` - Clear the terminal output
 
-## Contributing
+### Keyboard Shortcuts
 
-Contributions are welcome. If you'd like to contribute:
+- **TAB** or **Ctrl+i** - Autocomplete commands
+- **Up/Down Arrow** - Navigate command history
+- **F11** - Toggle fullscreen mode
 
-1. Fork the repo
-2. Create a feature branch
-3. Open a PR describing your change
+## 🤝 Contributing
 
+We welcome contributions! Here's how to get started:
 
-## Author
+1. **Fork the repository** on GitHub
+2. **Clone your fork** locally
+3. **Create a feature branch** with a descriptive name
+4. **Make your changes** following our coding standards
+5. **Test your changes** thoroughly
+6. **Submit a pull request** with a clear description
+
+### Development Guidelines
+
+- Use TypeScript for type safety
+- Follow the existing code style and patterns
+- Add appropriate comments for complex logic
+- Ensure responsive design across all screen sizes
+- Test in multiple browsers
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Author
+
+**Prasad Jose**
 
 [![Website](https://img.shields.io/badge/Website-prasadkjose.com-17BB98?style=for-the-badge)](https://prasadkjose.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/prasadkjose)
 [![X / Twitter](https://img.shields.io/badge/X-%231DA1F2?style=for-the-badge&logo=x&logoColor=white)](https://x.com/prasadkjose)
 
-## Acknowledgements
+## 🙏 Acknowledgements
 
-This project is based on a fork of [Kali-Linux-Hacker-Portfolio](https://github.com/jihedkdiss/Kali-Linux-Hacker-Portfolio).
-I would like to thank the original authors and contributors for their excellent work and for making the project open source.
+This project is based on a fork of [Kali-Linux-Hacker-Portfolio](https://github.com/jihedkdiss/Kali-Linux-Hacker-Portfolio). I would like to thank the original authors and contributors for their excellent work and for making the project open source.
 
-This fork builds upon their work with additional modifications and improvements.
+This fork builds upon their work with additional modifications and improvements to better showcase my professional portfolio.
+
+## 📊 Project Statistics
+
+- **Languages**: TypeScript, React, CSS-in-JS with styled components.
+- **Framework**: React 17+
+- **Build Tool**: Vite
+- **Package Manager**: pnpm (recommended)
+- **License**: MIT
+
+## 🔗 Quick Links
+
+- [Live Demo](https://prasadkjose.com)
+- [GitHub Repository](https://github.com/prasadkjose/Linux-Portfolio)
+- [Issues](https://github.com/prasadkjose/Linux-Portfolio/issues)
+- [Pull Requests](https://github.com/prasadkjose/Linux-Portfolio/pulls)
+
+---
+
+**Built with ❤️ using React & TypeScript**
