@@ -32,7 +32,7 @@ const centerWindow = (
 };
 
 export const useWindowManager = (): WindowManager => {
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(isMobileDevice());
 
   // Initialize device detection
   useState(() => {
