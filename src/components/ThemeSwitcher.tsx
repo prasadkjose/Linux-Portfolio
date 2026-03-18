@@ -107,6 +107,61 @@ const ThemeButton = styled.button<ThemeButtonProps>`
     `}
 `;
 
+const TypingText = styled.div<{ themeColor: string }>`
+  font-family: "Courier New", Courier, monospace;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 8px 16px 12px 16px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+
+  /* Typing effect container */
+  span {
+    color: white;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 3s steps(18, end);
+    position: relative;
+  }
+
+  /* Cursor that blinks at the end of the text */
+  span::after {
+    content: "";
+    position: absolute;
+    right: -2px;
+    bottom: 2px;
+    width: 2px;
+    height: 12px;
+    background: white;
+    animation: blink 1s infinite;
+    opacity: 0;
+    animation-delay: 3.2s;
+  }
+
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  @keyframes blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0;
+    }
+  }
+`;
+
 const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   themeSwitcher,
   currentTheme,
@@ -141,6 +196,9 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
           {label}
         </ThemeButton>
       ))}
+      <TypingText themeColor={currentTheme.colors.primary}>
+        <span>Portfolio by Prasad</span>
+      </TypingText>
     </Container>
   );
 };

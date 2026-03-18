@@ -27,11 +27,8 @@ function App() {
   const { theme, themeLoaded, setMode } = useTheme();
   const { terminal, welcome, resume, initializeWindows }: WindowManager =
     useWindowManager();
-  const {
-    isFullscreen,
-    toggleFullscreen,
-    requestFullscreen,
-  }: FullscreenManager = useFullscreenManager();
+  const { isFullscreen, toggleFullscreen }: FullscreenManager =
+    useFullscreenManager();
 
   const [selectedTheme, setSelectedTheme] = useState(theme);
 
@@ -41,12 +38,6 @@ function App() {
     const update = () => setIsMobile(isMobileDevice());
     update();
   }, []);
-
-  useEffect(() => {
-    if (themeLoaded) {
-      requestFullscreen();
-    }
-  }, [themeLoaded]);
 
   // Startup layout: mobile => browser only, maximized; desktop => browser only centered
   useEffect(() => {
