@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled, { css, DefaultTheme } from "styled-components";
 import themes from "../styles/themes";
 import type { ThemeSwitcher } from "../types/window";
+import { useTheme } from "../hooks/useTheme";
 
 interface ThemeSwitcherProps {
   themeSwitcher: ThemeSwitcher;
@@ -15,47 +16,18 @@ interface ThemeButtonProps {
 
 const Container = styled.div<{ isVisible: boolean }>`
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  display: ${props => (props.isVisible ? "flex" : "none")};
+  top: ${props => (props.isVisible ? "50%" : "60px")};
+  left: ${props => (props.isVisible ? "50%" : "")};
+  right: ${props => (props.isVisible ? null : "16px")};
+  transform: ${props => (props.isVisible ? "translate(-50%, -50%)" : "")};
+
+  z-index: ${props => (props.isVisible ? 1000 : 100)};
+  display: "flex";
   background: rgba(0, 0, 0, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: -15px;
-  right: -10px;
-  width: 24px;
-  height: 24px;
-  border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1001;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.1);
-  }
-
-  &:focus {
-    outline: 2px solid rgba(255, 255, 255, 0.5);
-    outline-offset: 2px;
-  }
 `;
 
 const ThemeButton = styled.button<ThemeButtonProps>`
@@ -80,6 +52,7 @@ const ThemeButton = styled.button<ThemeButtonProps>`
   &:hover {
     background: rgba(255, 255, 255, 0.1);
     transform: translateY(-1px);
+    color: white;
   }
 
   ${props =>
@@ -138,7 +111,8 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   themeSwitcher,
   currentTheme,
 }) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const { themeLoaded } = useTheme();
+  const [isVisible, setIsVisible] = useState(!themeLoaded);
 
   const themesList = [
     { key: "tech", label: "Linux", theme: themes.tech },
@@ -149,22 +123,12 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   const handleThemeChange = (newTheme: DefaultTheme) => {
     if (newTheme.id !== currentTheme.id) {
       themeSwitcher(newTheme);
+      setIsVisible(themeLoaded);
     }
-  };
-
-  const handleClose = () => {
-    setIsVisible(false);
   };
 
   return (
     <Container isVisible={isVisible}>
-      <CloseButton
-        onClick={handleClose}
-        aria-label="Close theme switcher"
-        title="Close theme switcher"
-      >
-        ×
-      </CloseButton>
       {themesList.map(({ key, label, theme }) => (
         <ThemeButton
           key={key}

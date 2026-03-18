@@ -9,17 +9,18 @@ interface UseThemeResult {
 }
 
 export const useTheme = (): UseThemeResult => {
-  const [theme, setTheme] = useState<DefaultTheme>(themes.tech);
+  const [theme, setTheme] = useState<DefaultTheme>(themes.empty);
   const [themeLoaded, setThemeLoaded] = useState(false);
 
   const setMode = (newTheme: DefaultTheme) => {
     setTheme(newTheme);
+    setThemeLoaded(true);
   };
 
   useEffect(() => {
     // Immediately mark as loaded with tech theme
-    setTheme(themes.tech);
-    setThemeLoaded(true);
+    // setTheme(themes.tech);
+    // setThemeLoaded(true);
   }, []);
 
   return { theme, themeLoaded, setMode };

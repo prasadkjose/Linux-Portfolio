@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { DefaultTheme, ThemeProvider } from "styled-components";
+import styled, { DefaultTheme, ThemeProvider } from "styled-components";
 import { useTheme } from "./hooks/useTheme";
 import { useWindowManager } from "./hooks/useWindowManager";
 import { useFullscreenManager } from "./hooks/useFullscreenManger";
@@ -14,7 +14,14 @@ import { FullscreenManager, WindowManager } from "./types/window";
 import { isMobileDevice } from "./utils/typeGuards";
 
 export const themeContext = createContext<ThemeSwitcher | null>(null);
-
+const Overlay = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background-color: rgba(180, 176, 176, 0.8);
+  z-index: 999;
+  margin: -8px;
+`;
 function App() {
   // themes
   const { theme, themeLoaded, setMode } = useTheme();
@@ -82,17 +89,19 @@ function App() {
 
   return (
     <>
-      <h1 className="sr-only" aria-label="Prasad Koshy Jose">
-        Prasad Koshy Jose
-      </h1>
-      {themeLoaded && (
+      {/* Theme Switcher - 3-way toggle for Linux, Fedora, Kali themes */}
+      <ThemeSwitcher
+        themeSwitcher={themeSwitcher}
+        currentTheme={selectedTheme}
+      />
+      {!themeLoaded ? (
+        <Overlay />
+      ) : (
         <ThemeProvider theme={selectedTheme}>
           <GlobalStyle />
-          {/* Theme Switcher - 3-way toggle for Linux, Fedora, Kali themes */}
-          <ThemeSwitcher
-            themeSwitcher={themeSwitcher}
-            currentTheme={selectedTheme}
-          />
+          <h1 className="sr-only" aria-label="Prasad Koshy Jose">
+            Prasad Koshy Jose
+          </h1>
           <themeContext.Provider value={themeSwitcher}>
             {/* Desktop Icons - below windows, hidden when any window is maximized */}
             <DesktopShortcuts
