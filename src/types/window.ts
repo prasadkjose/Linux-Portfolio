@@ -70,6 +70,14 @@ export interface DeviceInfo {
 export type ThemeSwitcher = (theme: DefaultTheme) => void;
 
 /**
+ * Theme context properties.
+ */
+export interface ThemeSwitcherProps {
+  themeSwitcher: ThemeSwitcher;
+  currentTheme: DefaultTheme;
+}
+
+/**
  * Local state management for the state of each window
  * which manages three main windows: terminal, welcome browser, and resume.
  *

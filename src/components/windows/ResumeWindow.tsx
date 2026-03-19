@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import WindowContainer from "../../layout/window-container/WindowContainer";
 import { WindowState } from "../../types/window";
-import { useTheme } from "../../hooks/useTheme";
+import { themeContext } from "../../hooks/useTheme";
 
 // Resume window with integrated PDF viewer
 const Toolbar = styled.div`
@@ -81,13 +81,14 @@ const PDFContainer = styled.div`
 `;
 
 const ResumeWindow: React.FC<WindowState> = props => {
-  const { theme } = useTheme();
+  const themeContextValue = useContext(themeContext);
+  const theme = themeContextValue?.currentTheme;
   const [pdfUrl, setPdfUrl] = useState("/resume.pdf");
 
   useEffect(() => {
-    if (theme.id === "fedora") {
+    if (theme?.id === "fedora") {
       setPdfUrl("/resumeCons.pdf");
-    } else if (theme.id === "kali") {
+    } else if (theme?.id === "kali") {
       setPdfUrl("/resumeSec.pdf");
     } else {
       // Default case for tech theme or any other theme
