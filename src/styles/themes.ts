@@ -23,7 +23,7 @@ const theme: Themes = {
   },
   tech: {
     id: "tech",
-    name: "Linux",
+    name: "Ubuntu",
     colors: {
       body: "#77216e67;",
       scrollHandle: "#c2c2c2fd",

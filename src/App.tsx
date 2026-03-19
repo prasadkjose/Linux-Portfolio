@@ -30,8 +30,6 @@ function App() {
   const { isFullscreen, toggleFullscreen }: FullscreenManager =
     useFullscreenManager();
 
-  const [selectedTheme, setSelectedTheme] = useState(theme);
-
   // Device detection
   const [isMobile, setIsMobile] = useState<boolean>(false);
   useEffect(() => {
@@ -56,10 +54,6 @@ function App() {
     );
   }, []);
 
-  useEffect(() => {
-    setSelectedTheme(theme);
-  }, [themeLoaded]);
-
   // Update meta tag colors when switching themes
   useEffect(() => {
     const themeColor = theme.colors?.body;
@@ -71,24 +65,20 @@ function App() {
     metaThemeColor && metaThemeColor.setAttribute("content", themeColor);
     metaMsTileColor && metaMsTileColor.setAttribute("content", themeColor);
     maskIcon && maskIcon.setAttribute("color", themeColor);
-  }, [selectedTheme]);
+  }, [theme]);
 
   const themeSwitcher = (switchTheme: DefaultTheme) => {
-    setSelectedTheme(switchTheme);
     setMode(switchTheme);
   };
 
   return (
     <>
       {/* Theme Switcher - 3-way toggle for Linux, Fedora, Kali themes */}
-      <ThemeSwitcher
-        themeSwitcher={themeSwitcher}
-        currentTheme={selectedTheme}
-      />
+      <ThemeSwitcher themeSwitcher={themeSwitcher} currentTheme={theme} />
       {!themeLoaded ? (
         <Overlay />
       ) : (
-        <ThemeProvider theme={selectedTheme}>
+        <ThemeProvider theme={theme}>
           <GlobalStyle />
           <h1 className="sr-only" aria-label="Prasad Koshy Jose">
             Prasad Koshy Jose

@@ -169,11 +169,15 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   const { themeLoaded } = useTheme();
   const [isVisible, setIsVisible] = useState(!themeLoaded);
 
-  const themesList = [
-    { key: "tech", label: "Linux", theme: themes.tech },
-    { key: "fedora", label: "Fedora", theme: themes.fedora },
-    { key: "kali", label: "Kali", theme: themes.kali },
-  ];
+  const themesList = Object.keys(themes)
+    .map((key: string) => {
+      return {
+        key: themes[key].id,
+        label: themes[key].name,
+        theme: themes[key],
+      };
+    })
+    .filter(({ key }) => key !== "empty");
 
   const handleThemeChange = (newTheme: DefaultTheme) => {
     if (newTheme.id !== currentTheme.id) {
