@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { DefaultTheme, ThemeProvider } from "styled-components";
+import styled, { DefaultTheme, ThemeProvider } from "styled-components";
 import { useTheme } from "./hooks/useTheme";
 import { useWindowManager } from "./hooks/useWindowManager";
 import { useFullscreenManager } from "./hooks/useFullscreenManger";
@@ -9,27 +9,26 @@ import DesktopShortcuts from "./components/desktop-shortcuts/DesktopShortcuts";
 import ResumeWindow from "./components/windows/ResumeWindow";
 import Landing from "./components/windows/welcome-tabs/Landing";
 import FullscreenToggle from "./components/FullscreenToggle";
-import {
-  ThemeSwitcher,
-  FullscreenManager,
-  WindowManager,
-} from "./types/window";
+import ThemeSwitcher from "./components/ThemeSwitcher";
+import { FullscreenManager, WindowManager } from "./types/window";
 import { isMobileDevice } from "./utils/typeGuards";
 
 export const themeContext = createContext<ThemeSwitcher | null>(null);
-
+const Overlay = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background-color: rgba(220, 220, 220, 0.8);
+  z-index: 999;
+  margin: -8px;
+`;
 function App() {
   // themes
   const { theme, themeLoaded, setMode } = useTheme();
   const { terminal, welcome, resume, initializeWindows }: WindowManager =
     useWindowManager();
-  const {
-    isFullscreen,
-    toggleFullscreen,
-    requestFullscreen,
-  }: FullscreenManager = useFullscreenManager();
-
-  const [selectedTheme, setSelectedTheme] = useState(theme);
+  const { isFullscreen, toggleFullscreen }: FullscreenManager =
+    useFullscreenManager();
 
   // Device detection
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -37,12 +36,6 @@ function App() {
     const update = () => setIsMobile(isMobileDevice());
     update();
   }, []);
-
-  useEffect(() => {
-    if (themeLoaded) {
-      requestFullscreen();
-    }
-  }, [themeLoaded]);
 
   // Startup layout: mobile => browser only, maximized; desktop => browser only centered
   useEffect(() => {
@@ -61,10 +54,6 @@ function App() {
     );
   }, []);
 
-  useEffect(() => {
-    setSelectedTheme(theme);
-  }, [themeLoaded]);
-
   // Update meta tag colors when switching themes
   useEffect(() => {
     const themeColor = theme.colors?.body;
@@ -76,21 +65,24 @@ function App() {
     metaThemeColor && metaThemeColor.setAttribute("content", themeColor);
     metaMsTileColor && metaMsTileColor.setAttribute("content", themeColor);
     maskIcon && maskIcon.setAttribute("color", themeColor);
-  }, [selectedTheme]);
+  }, [theme]);
 
   const themeSwitcher = (switchTheme: DefaultTheme) => {
-    setSelectedTheme(switchTheme);
     setMode(switchTheme);
   };
 
   return (
     <>
-      <h1 className="sr-only" aria-label="Prasad Koshy Jose">
-        Prasad Koshy Jose
-      </h1>
-      {themeLoaded && (
-        <ThemeProvider theme={selectedTheme}>
+      {/* Theme Switcher - 3-way toggle for Linux, Fedora, Kali themes */}
+      <ThemeSwitcher themeSwitcher={themeSwitcher} currentTheme={theme} />
+      {!themeLoaded ? (
+        <Overlay />
+      ) : (
+        <ThemeProvider theme={theme}>
           <GlobalStyle />
+          <h1 className="sr-only" aria-label="Prasad Koshy Jose">
+            Prasad Koshy Jose
+          </h1>
           <themeContext.Provider value={themeSwitcher}>
             {/* Desktop Icons - below windows, hidden when any window is maximized */}
             <DesktopShortcuts
