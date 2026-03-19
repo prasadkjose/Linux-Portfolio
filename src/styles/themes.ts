@@ -71,8 +71,7 @@ const theme: Themes = {
         300: "#88C0D0",
       },
     },
-    backgroundImage:
-      "https://www.kali.org/wallpapers/images/2025/kali-waves.png",
+    backgroundImage: "https://www.kali.org/wallpapers/images/2026/kali-net.jpg",
   },
 };
 

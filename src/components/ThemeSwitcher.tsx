@@ -22,12 +22,23 @@ const Container = styled.div<{ isVisible: boolean }>`
   transform: ${props => (props.isVisible ? "translate(-50%, -50%)" : "")};
 
   z-index: ${props => (props.isVisible ? 1000 : 100)};
-  display: "flex";
+  display: grid;
+  grid-template-columns: 3fr 3fr 3fr;
   background: rgba(0, 0, 0, 0.96);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  width: auto;
+
+  // isMobile
+  ${props =>
+    !props.isVisible &&
+    `@media (max-width: 550px) {
+    width: 100%;
+    right: 0;
+    top:95%
+  }`}
 `;
 
 const ThemeButton = styled.button<ThemeButtonProps>`
@@ -116,6 +127,7 @@ const TypingText = styled.div`
   overflow: hidden;
   white-space: nowrap;
   letter-spacing: 0.5px;
+  grid-column: 1 / 3;
 
   /* Typing effect container */
   span {

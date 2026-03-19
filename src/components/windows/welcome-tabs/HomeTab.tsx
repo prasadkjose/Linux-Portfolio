@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Pill from "../../Pill";
+import { PreImg } from "../../../styles/Welcome.styled";
 
 const HeroSection = styled.section`
   display: grid;
@@ -54,7 +55,9 @@ const HomeTab: React.FC = () => {
     <div>
       {/* Hero Section */}
       <HeroSection>
-        <ProfileImage src="/photo1.jpg" alt="Prasad Koshy Jose" />
+        <PreImg>
+          <ProfileImage src="/photo1.jpg" alt="Prasad Koshy Jose" />
+        </PreImg>
         <HeroContent>
           <NameHeading>Prasad Koshy Jose</NameHeading>
           <TitleText>Software Engineer | Security | AI | Open Source</TitleText>
