@@ -18,7 +18,7 @@ const Overlay = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
-  background-color: rgba(180, 176, 176, 0.8);
+  background-color: rgba(220, 220, 220, 0.8);
   z-index: 999;
   margin: -8px;
 `;

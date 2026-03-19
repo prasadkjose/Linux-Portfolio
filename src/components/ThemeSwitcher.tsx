@@ -23,7 +23,7 @@ const Container = styled.div<{ isVisible: boolean }>`
 
   z-index: ${props => (props.isVisible ? 1000 : 100)};
   display: "flex";
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.96);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   backdrop-filter: blur(10px);
@@ -107,7 +107,7 @@ const ThemeButton = styled.button<ThemeButtonProps>`
     `}
 `;
 
-const TypingText = styled.div<{ themeColor: string }>`
+const TypingText = styled.div`
   font-family: "Courier New", Courier, monospace;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.8);
@@ -196,9 +196,11 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
           {label}
         </ThemeButton>
       ))}
-      <TypingText themeColor={currentTheme.colors.primary}>
-        <span>Portfolio by Prasad</span>
-      </TypingText>
+      {isVisible && (
+        <TypingText>
+          <span>Portfolio by Prasad</span>
+        </TypingText>
+      )}
     </Container>
   );
 };

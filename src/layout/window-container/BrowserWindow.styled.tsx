@@ -16,7 +16,7 @@ export const Frame = styled.div<{
   ${({ theme }) =>
     theme.backgroundImage &&
     `
-    background: rgba(0, 0, 0, 0.35);
+    background: ${theme.colors.body};
     border-radius: 12px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
     overflow: hidden;

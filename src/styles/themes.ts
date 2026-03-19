@@ -20,15 +20,13 @@ const theme: Themes = {
         300: "#88C0D0",
       },
     },
-    backgroundImage:
-      "https://images.unsplash.com/photo-1485470733090-0aae1788d5af?q=80&w=2117&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   tech: {
     id: "tech",
     name: "Linux",
     colors: {
-      body: "#0C0C0C",
-      scrollHandle: "#2E3440",
+      body: "#77216e67;",
+      scrollHandle: "#c2c2c2fd",
       scrollHandleHover: "#434C5E",
       primary: "#00D4FF",
       secondary: "#FF6B6B",
@@ -39,14 +37,14 @@ const theme: Themes = {
       },
     },
     backgroundImage:
-      "https://images.unsplash.com/photo-1485470733090-0aae1788d5af?q=80&w=2117&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,c_fill,w_1681/https%3A%2F%2Fubuntu.com%2Fwp-content%2Fuploads%2F834a%2FHigh-contrastResolute_Raccoon_Wallpaper_Color_1920x1080.png",
   },
   fedora: {
     id: "fedora",
     name: "Fedora",
     colors: {
-      body: "#0C0C0C",
-      scrollHandle: "red",
+      body: "#3c6eb482",
+      scrollHandle: "#2E3440",
       scrollHandleHover: "#434C5E",
       primary: "#00D4FF",
       secondary: "#FF6B6B",
@@ -56,14 +54,13 @@ const theme: Themes = {
         300: "#88C0D0",
       },
     },
-    backgroundImage:
-      "https://images.unsplash.com/photo-1485470733090-0aae1788d5af?q=80&w=2117&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    backgroundImage: "https://wallpapercave.com/wp/BFBePbi.jpg",
   },
   kali: {
     id: "kali",
     name: "Kali",
     colors: {
-      body: "#0C0C0C",
+      body: "#0c0c0cbe",
       scrollHandle: "#2E3440",
       scrollHandleHover: "#434C5E",
       primary: "#00D4FF",
@@ -75,7 +72,7 @@ const theme: Themes = {
       },
     },
     backgroundImage:
-      "https://images.unsplash.com/photo-1485470733090-0aae1788d5af?q=80&w=2117&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://www.kali.org/wallpapers/images/2025/kali-waves.png",
   },
 };
 

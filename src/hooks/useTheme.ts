@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import themes from "../styles/themes";
 import { DefaultTheme } from "styled-components";
 
@@ -16,12 +16,6 @@ export const useTheme = (): UseThemeResult => {
     setTheme(newTheme);
     setThemeLoaded(true);
   };
-
-  useEffect(() => {
-    // Immediately mark as loaded with tech theme
-    // setTheme(themes.tech);
-    // setThemeLoaded(true);
-  }, []);
 
   return { theme, themeLoaded, setMode };
 };
