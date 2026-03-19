@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import WindowContainer from "../../layout/window-container/WindowContainer";
 import { WindowState } from "../../types/window";
@@ -80,21 +80,19 @@ const PDFContainer = styled.div`
   }
 `;
 
+const resumeOSMap: Record<string, string> = {
+  fedora: "/resumeCons.pdf",
+  ubuntu: "/resume.pdf",
+  kali: "/resumeSec.pdf",
+};
+
 const ResumeWindow: React.FC<WindowState> = props => {
   const themeContextValue = useContext(themeContext);
-  const theme = themeContextValue?.currentTheme;
-  const [pdfUrl, setPdfUrl] = useState("/resume.pdf");
-
-  useEffect(() => {
-    if (theme?.id === "fedora") {
-      setPdfUrl("/resumeCons.pdf");
-    } else if (theme?.id === "kali") {
-      setPdfUrl("/resumeSec.pdf");
-    } else {
-      // Default case for tech theme or any other theme
-      setPdfUrl("/resume.pdf");
-    }
-  }, [theme]);
+  let pdfUrl;
+  if (themeContextValue) {
+    const theme = themeContextValue.currentTheme;
+    pdfUrl = resumeOSMap[theme.id];
+  }
 
   return (
     <WindowContainer {...props} title="Resume">
