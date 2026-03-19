@@ -4,8 +4,7 @@ import Pill from "../../Pill";
 import { PreImg } from "../../../styles/Welcome.styled";
 
 const HeroSection = styled.section`
-  display: grid;
-  grid-template-columns: 120px 1fr;
+  display: flex;
   gap: 20px;
   align-items: center;
   margin-bottom: 24px;

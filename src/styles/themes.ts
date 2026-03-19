@@ -22,7 +22,7 @@ const theme: Themes = {
     },
   },
   tech: {
-    id: "tech",
+    id: "ubuntu",
     name: "Ubuntu",
     colors: {
       body: "#77216e67;",
