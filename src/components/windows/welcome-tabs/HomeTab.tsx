@@ -2,6 +2,20 @@ import React from "react";
 import styled from "styled-components";
 import Pill from "../../Pill";
 import { PreImg } from "../../../styles/Welcome.styled";
+import { GrReactjs, GrOracle } from "react-icons/gr";
+import { IoLogoJavascript } from "react-icons/io5";
+import {
+  FaPython,
+  FaNodeJs,
+  FaExpeditedssl,
+  FaAws,
+  FaDocker,
+  FaGitAlt,
+  FaJenkins,
+} from "react-icons/fa";
+import { TbBrandCpp, TbBrandNextjs, TbBrandOauth } from "react-icons/tb";
+import { SiStyledcomponents, SiOwasp, SiKalilinux } from "react-icons/si";
+import { BiLogoTypescript } from "react-icons/bi";
 
 const HeroSection = styled.section`
   display: flex;
@@ -130,11 +144,15 @@ const HomeTab: React.FC = () => {
             fontSize: "1rem",
           }}
         >
-          I'm a passionate Software Engineer with expertise in security, AI, and
-          open source technologies. With experience across multiple industries
-          including enterprise software, telecommunications, and social media
-          platforms, I specialize in building robust, scalable applications that
-          solve real-world problems.
+          Software Engineer offering five years of experience designing,
+          implementing, and optimizing secure software and web applications in
+          languages like JavaScript, Python, and C++. This is supported by a
+          Master’s degree in Computer Science from the University of Geneva,
+          Switzerland and a Bachelor's of Engineering degree in Computer
+          Science. Experience in working with globally distributed teams, across
+          startups and Fortune 500 companies, programming with latest
+          technological stack and cloud services, delivering with agile
+          methodology on schedule.
         </p>
       </section>
 
@@ -159,6 +177,8 @@ const HomeTab: React.FC = () => {
         >
           <div
             style={{
+              display: "flex",
+              flexDirection: "column",
               background: "rgba(136, 192, 208, 0.1)",
               padding: "12px",
               borderRadius: "8px",
@@ -174,8 +194,48 @@ const HomeTab: React.FC = () => {
             >
               Languages
             </h3>
-            <p style={{ margin: 0, color: "#D8DEE9", fontSize: "0.9rem" }}>
-              JavaScript, TypeScript, Python, C++
+            <p
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+                margin: 0,
+                color: "#D8DEE9",
+                fontSize: "1.5rem",
+              }}
+            >
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <IoLogoJavascript />
+              </a>
+              <a
+                href="https://www.typescriptlang.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <BiLogoTypescript />
+              </a>
+              <a
+                href="https://www.python.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <FaPython />
+              </a>
+              <a
+                href="https://isocpp.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <TbBrandCpp />
+              </a>
             </p>
           </div>
           <div
@@ -195,8 +255,48 @@ const HomeTab: React.FC = () => {
             >
               Frameworks
             </h3>
-            <p style={{ margin: 0, color: "#D8DEE9", fontSize: "0.9rem" }}>
-              ReactJS, Node.js, ViteJS, Styled Components,
+            <p
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+                margin: 0,
+                color: "#D8DEE9",
+                fontSize: "1.5rem",
+              }}
+            >
+              <a
+                href="https://react.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <GrReactjs />
+              </a>
+              <a
+                href="https://nodejs.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <FaNodeJs />
+              </a>
+              <a
+                href="https://nextjs.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <TbBrandNextjs />
+              </a>
+              <a
+                href="https://styled-components.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <SiStyledcomponents />
+              </a>
             </p>
           </div>
           <div
@@ -216,8 +316,48 @@ const HomeTab: React.FC = () => {
             >
               Security
             </h3>
-            <p style={{ margin: 0, color: "#D8DEE9", fontSize: "0.9rem" }}>
-              OWASP, Authentication, Authorization, Cryptography
+            <p
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+                margin: 0,
+                color: "#D8DEE9",
+                fontSize: "1.5rem",
+              }}
+            >
+              <a
+                href="https://owasp.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <SiOwasp />
+              </a>
+              <a
+                href="https://oauth.net/2/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <TbBrandOauth />
+              </a>
+              <a
+                href="https://www.ssl.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <FaExpeditedssl />
+              </a>
+              <a
+                href="https://www.kali.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <SiKalilinux />
+              </a>
             </p>
           </div>
           <div
@@ -237,8 +377,56 @@ const HomeTab: React.FC = () => {
             >
               Cloud & DevOps
             </h3>
-            <p style={{ margin: 0, color: "#D8DEE9", fontSize: "0.9rem" }}>
-              OCI, AWS, Docker, CI/CD, Git
+            <p
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+                margin: 0,
+                color: "#D8DEE9",
+                fontSize: "1.5rem",
+              }}
+            >
+              <a
+                href="https://www.oracle.com/cloud/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <GrOracle />
+              </a>
+              <a
+                href="https://aws.amazon.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <FaAws />
+              </a>
+              <a
+                href="https://www.docker.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <FaDocker />
+              </a>
+              <a
+                href="https://git-scm.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <FaGitAlt />
+              </a>
+              <a
+                href="https://www.jenkins.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                <FaJenkins />
+              </a>
             </p>
           </div>
         </div>
