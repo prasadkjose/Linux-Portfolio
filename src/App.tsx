@@ -1,6 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { DefaultTheme, ThemeProvider } from "styled-components";
-import { useTheme } from "./hooks/useTheme";
+import { themeContext, useTheme } from "./hooks/useTheme";
 import { useWindowManager } from "./hooks/useWindowManager";
 import { useFullscreenManager } from "./hooks/useFullscreenManger";
 import GlobalStyle from "./styles/GlobalStyle";
@@ -13,7 +13,6 @@ import ThemeSwitcher from "./components/ThemeSwitcher";
 import { FullscreenManager, WindowManager } from "./types/window";
 import { isMobileDevice } from "./utils/typeGuards";
 
-export const themeContext = createContext<ThemeSwitcher | null>(null);
 const Overlay = styled.div`
   width: 100vw;
   height: 100vh;
@@ -83,7 +82,7 @@ function App() {
           <h1 className="sr-only" aria-label="Prasad Koshy Jose">
             Prasad Koshy Jose
           </h1>
-          <themeContext.Provider value={themeSwitcher}>
+          <themeContext.Provider value={{ themeSwitcher, currentTheme: theme }}>
             {/* Desktop Icons - below windows, hidden when any window is maximized */}
             <DesktopShortcuts
               onOpenTerminal={terminal.open}

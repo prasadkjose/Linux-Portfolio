@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Pill from "../../Pill";
 import { PreImg } from "../../../styles/Welcome.styled";
-
+import { SKILL_DETAILS_MAP } from "./skills.config";
 const HeroSection = styled.section`
   display: flex;
   gap: 20px;
@@ -130,11 +130,15 @@ const HomeTab: React.FC = () => {
             fontSize: "1rem",
           }}
         >
-          I'm a passionate Software Engineer with expertise in security, AI, and
-          open source technologies. With experience across multiple industries
-          including enterprise software, telecommunications, and social media
-          platforms, I specialize in building robust, scalable applications that
-          solve real-world problems.
+          Software Engineer offering five years of experience designing,
+          implementing, and optimizing secure software and web applications in
+          languages like JavaScript, Python, and C++. This is supported by a
+          Master’s degree in Computer Science from the University of Geneva,
+          Switzerland and a Bachelor's of Engineering degree in Computer
+          Science. Experience in working with globally distributed teams, across
+          startups and Fortune 500 companies, programming with latest
+          technological stack and cloud services, delivering with agile
+          methodology on schedule.
         </p>
       </section>
 
@@ -159,6 +163,8 @@ const HomeTab: React.FC = () => {
         >
           <div
             style={{
+              display: "flex",
+              flexDirection: "column",
               background: "rgba(136, 192, 208, 0.1)",
               padding: "12px",
               borderRadius: "8px",
@@ -174,8 +180,28 @@ const HomeTab: React.FC = () => {
             >
               Languages
             </h3>
-            <p style={{ margin: 0, color: "#D8DEE9", fontSize: "0.9rem" }}>
-              JavaScript, TypeScript, Python, C++
+            <p
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+                margin: 0,
+                color: "#D8DEE9",
+                fontSize: "1.5rem",
+              }}
+            >
+              {SKILL_DETAILS_MAP.Languages.map((skill, index) => (
+                <a
+                  key={index}
+                  href={skill.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                  title={skill.label}
+                >
+                  <skill.icon />
+                </a>
+              ))}
             </p>
           </div>
           <div
@@ -195,8 +221,28 @@ const HomeTab: React.FC = () => {
             >
               Frameworks
             </h3>
-            <p style={{ margin: 0, color: "#D8DEE9", fontSize: "0.9rem" }}>
-              ReactJS, Node.js, ViteJS, Styled Components,
+            <p
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+                margin: 0,
+                color: "#D8DEE9",
+                fontSize: "1.5rem",
+              }}
+            >
+              {SKILL_DETAILS_MAP.Frameworks.map((skill, index) => (
+                <a
+                  key={index}
+                  href={skill.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                  title={skill.label}
+                >
+                  <skill.icon />
+                </a>
+              ))}
             </p>
           </div>
           <div
@@ -216,8 +262,28 @@ const HomeTab: React.FC = () => {
             >
               Security
             </h3>
-            <p style={{ margin: 0, color: "#D8DEE9", fontSize: "0.9rem" }}>
-              OWASP, Authentication, Authorization, Cryptography
+            <p
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+                margin: 0,
+                color: "#D8DEE9",
+                fontSize: "1.5rem",
+              }}
+            >
+              {SKILL_DETAILS_MAP.Security.map((skill, index) => (
+                <a
+                  key={index}
+                  href={skill.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                  title={skill.label}
+                >
+                  <skill.icon />
+                </a>
+              ))}
             </p>
           </div>
           <div
@@ -237,8 +303,28 @@ const HomeTab: React.FC = () => {
             >
               Cloud & DevOps
             </h3>
-            <p style={{ margin: 0, color: "#D8DEE9", fontSize: "0.9rem" }}>
-              OCI, AWS, Docker, CI/CD, Git
+            <p
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+                margin: 0,
+                color: "#D8DEE9",
+                fontSize: "1.5rem",
+              }}
+            >
+              {SKILL_DETAILS_MAP["Cloud & DevOps"].map((skill, index) => (
+                <a
+                  key={index}
+                  href={skill.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                  title={skill.label}
+                >
+                  <skill.icon />
+                </a>
+              ))}
             </p>
           </div>
         </div>

@@ -11,11 +11,12 @@ My developer portfolio website themed after Linux, built with React & TypeScript
 
 ## 🚀 Features
 
-- **Linux Desktop Experience**: With Linux themes and colours.
+- **Linux Desktop Experience**: With Linux themes and colours. Choose between Ubuntu, Kali and Fedora distros at any time and see the UI change. 
 - **Interactive Terminal**: Built-in Linux Terminal for you command line junkies with autocomplete (TAB/Ctrl+i) and command history (Up/Down)
 - **Rich Command Set**: Navigate through `about`, `help`, `projects`, `resume`, `socials`, `email`, `education`, and more
 - **Keyboard-First Design**: Type commands, open windows, toggle fullscreen for optimal developer experience
 - **Responsive Design**: Works seamlessly across desktop, tablet, and mobile devices
+- **Dynamic Resume**: Choose between Ubuntu, Kali, and Fedora themes to view different professional resumes - Ubuntu shows Consultant resume, Kali shows Information Security resume, and Fedora shows SDE resume
 
 ## 🛠️ Tech Stack
 
@@ -111,7 +112,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Author
 
-**Prasad Jose**
+**Prasad Koshy Jose**
 
 [![Website](https://img.shields.io/badge/Website-prasadkjose.com-17BB98?style=for-the-badge)](https://prasadkjose.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/prasadkjose)

@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 import styled, { css, DefaultTheme } from "styled-components";
 import themes from "../styles/themes";
-import type { ThemeSwitcher } from "../types/window";
+import type { ThemeSwitcherProps } from "../types/window";
 import { useTheme } from "../hooks/useTheme";
-
-interface ThemeSwitcherProps {
-  themeSwitcher: ThemeSwitcher;
-  currentTheme: DefaultTheme;
-}
 
 interface ThemeButtonProps {
   isActive: boolean;
