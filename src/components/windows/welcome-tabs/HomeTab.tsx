@@ -2,21 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Pill from "../../Pill";
 import { PreImg } from "../../../styles/Welcome.styled";
-import { GrReactjs, GrOracle } from "react-icons/gr";
-import { IoLogoJavascript } from "react-icons/io5";
-import {
-  FaPython,
-  FaNodeJs,
-  FaExpeditedssl,
-  FaAws,
-  FaDocker,
-  FaGitAlt,
-  FaJenkins,
-} from "react-icons/fa";
-import { TbBrandCpp, TbBrandNextjs, TbBrandOauth } from "react-icons/tb";
-import { SiStyledcomponents, SiOwasp, SiKalilinux } from "react-icons/si";
-import { BiLogoTypescript } from "react-icons/bi";
-
+import { SKILL_DETAILS_MAP } from "./skills.config";
 const HeroSection = styled.section`
   display: flex;
   gap: 20px;
@@ -204,38 +190,18 @@ const HomeTab: React.FC = () => {
                 fontSize: "1.5rem",
               }}
             >
-              <a
-                href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <IoLogoJavascript />
-              </a>
-              <a
-                href="https://www.typescriptlang.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <BiLogoTypescript />
-              </a>
-              <a
-                href="https://www.python.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <FaPython />
-              </a>
-              <a
-                href="https://isocpp.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <TbBrandCpp />
-              </a>
+              {SKILL_DETAILS_MAP.Languages.map((skill, index) => (
+                <a
+                  key={index}
+                  href={skill.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                  title={skill.label}
+                >
+                  <skill.icon />
+                </a>
+              ))}
             </p>
           </div>
           <div
@@ -265,38 +231,18 @@ const HomeTab: React.FC = () => {
                 fontSize: "1.5rem",
               }}
             >
-              <a
-                href="https://react.dev/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <GrReactjs />
-              </a>
-              <a
-                href="https://nodejs.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <FaNodeJs />
-              </a>
-              <a
-                href="https://nextjs.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <TbBrandNextjs />
-              </a>
-              <a
-                href="https://styled-components.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <SiStyledcomponents />
-              </a>
+              {SKILL_DETAILS_MAP.Frameworks.map((skill, index) => (
+                <a
+                  key={index}
+                  href={skill.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                  title={skill.label}
+                >
+                  <skill.icon />
+                </a>
+              ))}
             </p>
           </div>
           <div
@@ -326,38 +272,18 @@ const HomeTab: React.FC = () => {
                 fontSize: "1.5rem",
               }}
             >
-              <a
-                href="https://owasp.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <SiOwasp />
-              </a>
-              <a
-                href="https://oauth.net/2/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <TbBrandOauth />
-              </a>
-              <a
-                href="https://www.ssl.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <FaExpeditedssl />
-              </a>
-              <a
-                href="https://www.kali.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <SiKalilinux />
-              </a>
+              {SKILL_DETAILS_MAP.Security.map((skill, index) => (
+                <a
+                  key={index}
+                  href={skill.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                  title={skill.label}
+                >
+                  <skill.icon />
+                </a>
+              ))}
             </p>
           </div>
           <div
@@ -387,46 +313,18 @@ const HomeTab: React.FC = () => {
                 fontSize: "1.5rem",
               }}
             >
-              <a
-                href="https://www.oracle.com/cloud/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <GrOracle />
-              </a>
-              <a
-                href="https://aws.amazon.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <FaAws />
-              </a>
-              <a
-                href="https://www.docker.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <FaDocker />
-              </a>
-              <a
-                href="https://git-scm.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <FaGitAlt />
-              </a>
-              <a
-                href="https://www.jenkins.io/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                <FaJenkins />
-              </a>
+              {SKILL_DETAILS_MAP["Cloud & DevOps"].map((skill, index) => (
+                <a
+                  key={index}
+                  href={skill.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                  title={skill.label}
+                >
+                  <skill.icon />
+                </a>
+              ))}
             </p>
           </div>
         </div>
