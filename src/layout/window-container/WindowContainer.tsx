@@ -72,7 +72,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
           -sizeRef.current.height + 10,
           wh - 10
         );
-        move && move(nx, ny);
+        return move && move(nx, ny);
       } else if (resizing.current) {
         const { dir, mx, my, sx, sy, sw, sh } = resizing.current;
         let nw = sw,
@@ -97,7 +97,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
         const wh = window.innerHeight;
         nx = clamp(nx, -nw + 10, ww - 10);
         ny = clamp(ny, -nh + 10, wh - 10);
-        resize && resize(nw, nh, nx, ny);
+        return resize && resize(nw, nh, nx, ny);
       }
     },
     [maximized, move, resize]
@@ -160,7 +160,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
       <TitleBar
         onMouseDown={e => {
           startDrag(e);
-          bringToFront && bringToFront();
+          return bringToFront && bringToFront();
         }}
       >
         <WindowTitle>{title}</WindowTitle>

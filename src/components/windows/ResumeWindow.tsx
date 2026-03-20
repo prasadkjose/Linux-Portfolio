@@ -53,7 +53,9 @@ const DownloadLink = styled.a`
   font-size: 12px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: background 0.15s ease, border-color 0.15s ease,
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
     transform 0.1s ease;
   &:hover {
     background: rgba(255, 255, 255, 0.1);

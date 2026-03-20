@@ -47,7 +47,9 @@ function App() {
     window.addEventListener(
       "keydown",
       e => {
-        ["ArrowUp", "ArrowDown"].indexOf(e.code) > -1 && e.preventDefault();
+        return (
+          ["ArrowUp", "ArrowDown"].indexOf(e.code) > -1 && e.preventDefault()
+        );
       },
       false
     );
@@ -61,9 +63,9 @@ function App() {
     const metaMsTileColor = document.querySelector(
       "meta[name='msapplication-TileColor']"
     );
-    metaThemeColor && metaThemeColor.setAttribute("content", themeColor);
-    metaMsTileColor && metaMsTileColor.setAttribute("content", themeColor);
-    maskIcon && maskIcon.setAttribute("color", themeColor);
+    metaThemeColor?.setAttribute("content", themeColor);
+    metaMsTileColor?.setAttribute("content", themeColor);
+    maskIcon?.setAttribute("color", themeColor);
   }, [theme]);
 
   const themeSwitcher = (switchTheme: DefaultTheme) => {
@@ -78,7 +80,7 @@ function App() {
         <Overlay />
       ) : (
         <ThemeProvider theme={theme}>
-          <GlobalStyle />
+          <GlobalStyle theme={theme} />
           <h1 className="sr-only" aria-label="Prasad Koshy Jose">
             Prasad Koshy Jose
           </h1>

@@ -31,7 +31,10 @@ export const TabButton = styled.button<{ isActive: boolean }>`
   color: #d8dee9;
   padding: 8px 16px;
   font-size: 13px;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   font-weight: 500;
   cursor: pointer;
   border-radius: 6px 6px 0 0;
@@ -73,7 +76,12 @@ export const TabContent = styled.div`
   padding: 36px;
   background: rgba(24, 24, 24, 0.85);
   color: #eceff4;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    sans-serif;
   overflow: auto;
   animation: fadeIn 0.3s ease-out;
 

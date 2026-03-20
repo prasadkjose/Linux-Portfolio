@@ -9,7 +9,7 @@ import {
   ProjectDesc,
   ProjectTitle,
 } from "../../../../styles/Projects.styled";
-import { termContext } from "../Terminal";
+import { termContext } from "../TerminalContext";
 import Usage from "../../../Usage";
 
 const Projects: React.FC = () => {
@@ -22,7 +22,7 @@ const Projects: React.FC = () => {
   useEffect(() => {
     if (checkRedirect(rerender, currentCommand, "projects")) {
       projects.forEach(({ id, url }) => {
-        id === parseInt(arg[1]) && window.open(url, "_blank");
+        return id === parseInt(arg[1]) && window.open(url, "_blank");
       });
     }
   }, [arg, rerender, currentCommand]);

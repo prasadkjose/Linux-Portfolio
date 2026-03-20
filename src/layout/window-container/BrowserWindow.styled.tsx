@@ -134,7 +134,12 @@ export const Content = styled.div<{ maximized?: boolean }>`
     maximized ? "calc(100vh - 32px - 100px)" : "calc(100% - 32px - 100px)"};
   padding: 22px 24px;
   color: #eceff4;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    sans-serif;
   overflow: auto;
 `;
 
