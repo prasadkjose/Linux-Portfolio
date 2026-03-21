@@ -47,7 +47,7 @@ const BrowserWindow: React.FC<BrowserWindowProps> = ({
         <LocationBar>https://prasadkjose.com</LocationBar>
       </Toolbar>
 
-      <Content maximized={maximized}>{children}</Content>
+      <Content $maximized={maximized}>{children}</Content>
     </WindowContainer>
   );
 };

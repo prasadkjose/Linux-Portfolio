@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { termContext } from "../Terminal";
+import { termContext } from "../TerminalContext";
 
 const Resume: React.FC = () => {
   const { history, rerender, setRerender } = useContext(termContext);

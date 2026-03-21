@@ -5,7 +5,8 @@ import {
   HelpWrapper,
   KeyContainer,
 } from "../../../../styles/Help.styled";
-import { commands, termContext } from "../Terminal";
+import { commands } from "../commands.config";
+import { termContext } from "../TerminalContext";
 import { generateTabs } from "../../../../utils/funcs";
 import { useContext } from "react";
 

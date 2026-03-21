@@ -4,7 +4,7 @@ import Terminal from "./Terminal";
 import { WindowState } from "../../../types/window";
 import WindowContainer from "../../../layout/window-container/WindowContainer";
 
-const MenuBar = styled.div<{ maximized?: boolean }>`
+const MenuBar = styled.div`
   ${({ theme }) =>
     theme.backgroundImage &&
     `
@@ -23,14 +23,14 @@ const MenuItem = styled.span`
   `}
 `;
 
-const TerminalContent = styled.div<{ maximized?: boolean }>`
+const TerminalContent = styled.div<{ $maximized?: boolean }>`
   ${({ theme }) =>
     theme.backgroundImage &&
     `
     font-size: 0.8rem; background: transparent; display: flex; flex-direction: column; align-items: stretch; overflow: hidden;
   `}
-  height: ${({ maximized }) =>
-    maximized ? "calc(100vh - 32px - 28px)" : "calc(100% - 32px - 28px)"};
+  height: ${({ $maximized }) =>
+    $maximized ? "calc(100vh - 32px - 28px)" : "calc(100% - 32px - 28px)"};
   & > * {
     flex: 1 1 auto;
     min-height: 0;
@@ -40,7 +40,7 @@ const TerminalContent = styled.div<{ maximized?: boolean }>`
 const TerminalWindow: React.FC<WindowState> = props => {
   return (
     <WindowContainer {...props} title="Terminal">
-      <MenuBar maximized={props.maximized}>
+      <MenuBar>
         <MenuItem>File</MenuItem>
         <MenuItem>Edit</MenuItem>
         <MenuItem>View</MenuItem>
@@ -49,7 +49,7 @@ const TerminalWindow: React.FC<WindowState> = props => {
         <MenuItem>Help</MenuItem>
       </MenuBar>
 
-      <TerminalContent maximized={props.maximized}>
+      <TerminalContent $maximized={props.maximized}>
         <Terminal />
       </TerminalContent>
     </WindowContainer>

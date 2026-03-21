@@ -12,7 +12,7 @@ import {
   getCurrentCmdArry,
   isArgInvalid,
 } from "../../../../utils/funcs";
-import { termContext } from "../Terminal";
+import { termContext } from "../TerminalContext";
 import Usage from "../../../Usage";
 
 const Socials: React.FC = () => {
@@ -25,7 +25,7 @@ const Socials: React.FC = () => {
   useEffect(() => {
     if (checkRedirect(rerender, currentCommand, "socials")) {
       socials.forEach(({ id, url }) => {
-        id === parseInt(arg[1]) && window.open(url, "_blank");
+        return id === parseInt(arg[1]) && window.open(url, "_blank");
       });
     }
   }, [arg, rerender, currentCommand]);

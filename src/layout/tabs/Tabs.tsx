@@ -60,7 +60,7 @@ const Tabs: React.FC<TabsProps> = ({
         {tabs.map(tab => (
           <TabButton
             key={tab.id}
-            isActive={internalActiveTabId === tab.id}
+            $isActive={internalActiveTabId === tab.id}
             onClick={() => handleTabClick(tab.id)}
             role="tab"
             aria-selected={internalActiveTabId === tab.id}

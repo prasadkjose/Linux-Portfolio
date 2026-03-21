@@ -1,11 +1,8 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 echo "Running pre-commit checks..."
 
 # Run ESLint on staged files
 echo "Checking code quality with ESLint..."
-npm run lint
+pnpm run lint
 
 # Check if there are any linting errors
 if [ $? -ne 0 ]; then
@@ -15,7 +12,7 @@ fi
 
 # Run Prettier formatting on staged files
 echo "Formatting code with Prettier..."
-npm run format
+pnpm run format
 
 # Check if there are any formatting issues
 if [ $? -ne 0 ]; then

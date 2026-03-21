@@ -45,7 +45,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
   const dragStart = useRef({ mx: 0, my: 0, sx: 0, sy: 0 });
   const [, setIsTransforming] = useState(false);
   const resizing = useRef<null | {
-    dir: React.ComponentProps<typeof Handle>["pos"];
+    dir: React.ComponentProps<typeof Handle>["$pos"];
     mx: number;
     my: number;
     sx: number;
@@ -72,7 +72,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
           -sizeRef.current.height + 10,
           wh - 10
         );
-        move && move(nx, ny);
+        return move && move(nx, ny);
       } else if (resizing.current) {
         const { dir, mx, my, sx, sy, sw, sh } = resizing.current;
         let nw = sw,
@@ -97,7 +97,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
         const wh = window.innerHeight;
         nx = clamp(nx, -nw + 10, ww - 10);
         ny = clamp(ny, -nh + 10, wh - 10);
-        resize && resize(nw, nh, nx, ny);
+        return resize && resize(nw, nh, nx, ny);
       }
     },
     [maximized, move, resize]
@@ -127,7 +127,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
   };
 
   const startResize =
-    (dir: React.ComponentProps<typeof Handle>["pos"]) =>
+    (dir: React.ComponentProps<typeof Handle>["$pos"]) =>
     (e: React.MouseEvent) => {
       if (maximized) return;
       e.stopPropagation();
@@ -151,23 +151,23 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
       y={y}
       width={width}
       height={height}
-      maximized={maximized}
+      $maximized={maximized}
       hidden={!visible}
-      isTransforming={!dragging.current && !resizing.current}
+      $isTransforming={!dragging.current && !resizing.current}
       z={z}
       onClick={bringToFront}
     >
       <TitleBar
         onMouseDown={e => {
           startDrag(e);
-          bringToFront && bringToFront();
+          return bringToFront && bringToFront();
         }}
       >
         <WindowTitle>{title}</WindowTitle>
         <WindowControls aria-label="Window controls">
           {minimize && (
             <ControlButton
-              variant="min"
+              $variant="min"
               title="Minimize"
               aria-label="Minimize"
               onClick={minimize}
@@ -179,7 +179,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
           )}
           {toggleMaximize && (
             <ControlButton
-              variant="max"
+              $variant="max"
               title="Maximize"
               aria-label="Maximize"
               onClick={toggleMaximize}
@@ -198,7 +198,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
             </ControlButton>
           )}
           <ControlButton
-            variant="close"
+            $variant="close"
             title="Close"
             aria-label="Close"
             onClick={close}
@@ -217,14 +217,14 @@ const WindowContainer: React.FC<WindowContainerProps> = ({
 
       {!maximized && (
         <>
-          <Handle pos="n" onMouseDown={startResize("n")} />
-          <Handle pos="s" onMouseDown={startResize("s")} />
-          <Handle pos="e" onMouseDown={startResize("e")} />
-          <Handle pos="w" onMouseDown={startResize("w")} />
-          <Handle pos="ne" onMouseDown={startResize("ne")} />
-          <Handle pos="nw" onMouseDown={startResize("nw")} />
-          <Handle pos="se" onMouseDown={startResize("se")} />
-          <Handle pos="sw" onMouseDown={startResize("sw")} />
+          <Handle $pos="n" onMouseDown={startResize("n")} />
+          <Handle $pos="s" onMouseDown={startResize("s")} />
+          <Handle $pos="e" onMouseDown={startResize("e")} />
+          <Handle $pos="w" onMouseDown={startResize("w")} />
+          <Handle $pos="ne" onMouseDown={startResize("ne")} />
+          <Handle $pos="nw" onMouseDown={startResize("nw")} />
+          <Handle $pos="se" onMouseDown={startResize("se")} />
+          <Handle $pos="sw" onMouseDown={startResize("sw")} />
         </>
       )}
 

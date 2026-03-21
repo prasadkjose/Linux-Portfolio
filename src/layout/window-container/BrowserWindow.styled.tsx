@@ -5,9 +5,9 @@ export const Frame = styled.div<{
   y?: number;
   width?: number;
   height?: number;
-  maximized?: boolean;
+  $maximized?: boolean;
   hidden?: boolean;
-  isTransforming?: boolean;
+  $isTransforming?: boolean;
   z?: number;
   onClick: () => void;
 }>`
@@ -29,8 +29,8 @@ export const Frame = styled.div<{
     css`
       display: none;
     `}
-  ${({ maximized, theme }) =>
-    maximized &&
+  ${({ $maximized, theme }) =>
+    $maximized &&
     theme.backgroundImage &&
     css`
       inset: 0;
@@ -40,8 +40,8 @@ export const Frame = styled.div<{
       height: 100vh;
       border-radius: 0;
     `}
-  ${({ maximized, x, y, width, height }) =>
-    !maximized &&
+  ${({ $maximized, x, y, width, height }) =>
+    !$maximized &&
     css`
       left: ${x ?? 140}px;
       top: ${y ?? 60}px;
@@ -49,8 +49,8 @@ export const Frame = styled.div<{
       height: ${height ?? 560}px;
     `}
   z-index: ${({ z }) => z ?? 200}; /* above desktop icons but below modals */
-  transition: ${({ isTransforming }) =>
-    isTransforming
+  transition: ${({ $isTransforming }) =>
+    $isTransforming
       ? "left 180ms ease, top 180ms ease, width 180ms ease, height 180ms ease, border-radius 180ms ease"
       : "none"};
 `;
@@ -82,22 +82,22 @@ export const WindowControls = styled.div`
 `;
 
 export const ControlButton = styled.button<{
-  variant?: "min" | "max" | "close";
+  $variant?: "min" | "max" | "close";
 }>`
-  ${({ theme, variant }) =>
+  ${({ theme, $variant }) =>
     theme.backgroundImage &&
     `
     width: 46px; height: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center;
     transition: background 0.15s ease; border: none; background: transparent; color: #d9d9d9;
     &:hover { background: ${
-      variant === "close" ? "#E81123" : "rgba(0,0,0,0.08)"
+      $variant === "close" ? "#E81123" : "rgba(0,0,0,0.08)"
     }; }
     &:active { background: ${
-      variant === "close" ? "#F1707A" : "rgba(0,0,0,0.12)"
+      $variant === "close" ? "#F1707A" : "rgba(0,0,0,0.12)"
     }; }
     svg { width: 12px; height: 12px; fill: currentColor; }
     ${
-      variant === "close"
+      $variant === "close"
         ? `&:hover svg { color: #fff; } &:active svg { color: #fff; }`
         : ""
     }
@@ -129,22 +129,27 @@ export const LocationBar = styled.div`
   font-weight: 400;
 `;
 
-export const Content = styled.div<{ maximized?: boolean }>`
-  height: ${({ maximized }) =>
-    maximized ? "calc(100vh - 32px - 100px)" : "calc(100% - 32px - 100px)"};
+export const Content = styled.div<{ $maximized?: boolean }>`
+  height: ${({ $maximized }) =>
+    $maximized ? "calc(100vh - 32px - 100px)" : "calc(100% - 32px - 100px)"};
   padding: 22px 24px;
   color: #eceff4;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    sans-serif;
   overflow: auto;
 `;
 
 export const Handle = styled.div<{
-  pos: "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";
+  $pos: "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";
 }>`
   position: absolute;
   z-index: 5;
-  ${({ pos }) =>
-    pos === "n" &&
+  ${({ $pos }) =>
+    $pos === "n" &&
     css`
       top: -2px;
       left: 6px;
@@ -152,8 +157,8 @@ export const Handle = styled.div<{
       height: 6px;
       cursor: ns-resize;
     `}
-  ${({ pos }) =>
-    pos === "s" &&
+  ${({ $pos }) =>
+    $pos === "s" &&
     css`
       bottom: -2px;
       left: 6px;
@@ -161,8 +166,8 @@ export const Handle = styled.div<{
       height: 6px;
       cursor: ns-resize;
     `}
-  ${({ pos }) =>
-    pos === "e" &&
+  ${({ $pos }) =>
+    $pos === "e" &&
     css`
       top: 6px;
       right: -2px;
@@ -170,8 +175,8 @@ export const Handle = styled.div<{
       width: 6px;
       cursor: ew-resize;
     `}
-  ${({ pos }) =>
-    pos === "w" &&
+  ${({ $pos }) =>
+    $pos === "w" &&
     css`
       top: 6px;
       left: -2px;
@@ -179,8 +184,8 @@ export const Handle = styled.div<{
       width: 6px;
       cursor: ew-resize;
     `}
-  ${({ pos }) =>
-    pos === "ne" &&
+  ${({ $pos }) =>
+    $pos === "ne" &&
     css`
       top: -2px;
       right: -2px;
@@ -188,8 +193,8 @@ export const Handle = styled.div<{
       height: 10px;
       cursor: nesw-resize;
     `}
-  ${({ pos }) =>
-    pos === "nw" &&
+  ${({ $pos }) =>
+    $pos === "nw" &&
     css`
       top: -2px;
       left: -2px;
@@ -197,8 +202,8 @@ export const Handle = styled.div<{
       height: 10px;
       cursor: nwse-resize;
     `}
-  ${({ pos }) =>
-    pos === "se" &&
+  ${({ $pos }) =>
+    $pos === "se" &&
     css`
       bottom: -2px;
       right: -2px;
@@ -206,8 +211,8 @@ export const Handle = styled.div<{
       height: 10px;
       cursor: nwse-resize;
     `}
-  ${({ pos }) =>
-    pos === "sw" &&
+  ${({ $pos }) =>
+    $pos === "sw" &&
     css`
       bottom: -2px;
       left: -2px;

@@ -38,7 +38,9 @@ export const Wrapper = styled.div`
     border-radius: 8px;
     border: 3px solid transparent;
     background-clip: padding-box;
-    transition: background 0.2s ease, border-color 0.2s ease;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
   }
   &::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(

@@ -53,7 +53,9 @@ const DownloadLink = styled.a`
   font-size: 12px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: background 0.15s ease, border-color 0.15s ease,
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
     transform 0.1s ease;
   &:hover {
     background: rgba(255, 255, 255, 0.1);
@@ -63,9 +65,9 @@ const DownloadLink = styled.a`
   }
 `;
 
-const Content = styled.div<{ maximized?: boolean }>`
-  height: ${({ maximized }) =>
-    maximized ? "calc(100vh - 32px - 36px)" : "calc(100% - 32px - 36px)"};
+const Content = styled.div<{ $maximized?: boolean }>`
+  height: ${({ $maximized }) =>
+    $maximized ? "calc(100vh - 32px - 36px)" : "calc(100% - 32px - 36px)"};
   overflow: hidden;
 `;
 
@@ -126,7 +128,7 @@ const ResumeWindow: React.FC<WindowState> = props => {
         </Actions>
       </Toolbar>
 
-      <Content maximized={props.maximized}>
+      <Content $maximized={props.maximized}>
         <PDFContainer>
           <iframe
             src={`${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`}

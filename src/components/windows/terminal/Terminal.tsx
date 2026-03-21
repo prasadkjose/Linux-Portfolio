@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import _ from "lodash";
 import Output from "../../Output";
 import TermInfo from "./TermInfo";
@@ -19,49 +13,8 @@ import {
   Wrapper,
 } from "./Terminal.styled";
 import { argTab } from "../../../utils/funcs";
-
-type Command = {
-  cmd: string;
-  desc: string;
-  tab: number;
-}[];
-
-export const commands: Command = [
-  { cmd: "about", desc: "about Prasad Koshy Jose", tab: 8 },
-  { cmd: "clear", desc: "clear the terminal", tab: 8 },
-  { cmd: "echo", desc: "print out anything", tab: 9 },
-  { cmd: "education", desc: "my education background", tab: 4 },
-  { cmd: "email", desc: "send me an email", tab: 8 },
-  { cmd: "resume", desc: "go to my resume", tab: 7 },
-  { cmd: "help", desc: "check available commands", tab: 9 },
-  { cmd: "history", desc: "view command history", tab: 6 },
-  { cmd: "projects", desc: "view projects that I've coded", tab: 5 },
-  { cmd: "pwd", desc: "print current working directory", tab: 10 },
-  { cmd: "socials", desc: "check out my social accounts", tab: 6 },
-
-  { cmd: "welcome", desc: "display hero section", tab: 6 },
-  { cmd: "whoami", desc: "about current user", tab: 7 },
-];
-
-// Hidden easter-egg commands (not listed in help)
-export const hiddenCommands = ["sudo", "neofetch", "uname", "ls"];
-
-type Term = {
-  arg: string[];
-  history: string[];
-  rerender: boolean;
-  index: number;
-  clearHistory?: () => void;
-  executeCommand?: (cmd: string) => void;
-  setRerender?: (rerender: boolean) => void;
-};
-
-export const termContext = createContext<Term>({
-  arg: [],
-  history: [],
-  rerender: false,
-  index: 0,
-});
+import { commands, hiddenCommands } from "./commands.config";
+import { termContext } from "./TerminalContext";
 
 const Terminal = () => {
   const containerRef = useRef(null);
@@ -106,7 +59,7 @@ const Terminal = () => {
 
   // focus on input when terminal is clicked
   const handleDivClick = () => {
-    inputRef.current && inputRef.current.focus();
+    return inputRef.current && inputRef.current.focus();
   };
   useEffect(() => {
     document.addEventListener("click", handleDivClick);

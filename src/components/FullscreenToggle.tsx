@@ -20,7 +20,8 @@ const FullscreenButton = styled.button<{ hidden?: boolean }>`
   background: rgba(0, 0, 0, 0.38);
   color: #eceff4;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35),
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(255, 255, 255, 0.06) inset;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -28,8 +29,15 @@ const FullscreenButton = styled.button<{ hidden?: boolean }>`
   user-select: none;
   font-size: 12px;
   font-weight: 500;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  transition: transform 0.1s ease, background 0.15s ease,
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    sans-serif;
+  transition:
+    transform 0.1s ease,
+    background 0.15s ease,
     border-color 0.15s ease;
   ${({ hidden }) => hidden && "display:none;"}
   &:hover {

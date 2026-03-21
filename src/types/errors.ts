@@ -1,5 +1,8 @@
 export class FullscreenError extends Error {
-  constructor(message: string, public code?: string) {
+  constructor(
+    message: string,
+    public code?: string
+  ) {
     super(message);
     this.name = "FullscreenError";
   }
