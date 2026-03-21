@@ -29,7 +29,7 @@ const ShortcutWrap = styled.div`
   z-index: 5; /* below windows */
 `;
 
-const IconTile = styled.div<{ active?: boolean }>`
+const IconTile = styled.div<{ $active?: boolean }>`
   width: 56px;
   height: 56px;
   display: grid;
@@ -43,8 +43,8 @@ const IconTile = styled.div<{ active?: boolean }>`
     transform 0.12s ease,
     background 0.12s ease,
     box-shadow 0.12s ease;
-  box-shadow: ${({ active }) =>
-    active
+  box-shadow: ${({ $active }) =>
+    $active
       ? "0 0 0 2px rgba(0, 180, 255, 0.9), 0 6px 18px rgba(0, 0, 0, 0.3)"
       : "0 0 0 1px rgba(255, 255, 255, 0.08), 0 6px 18px rgba(0, 0, 0, 0.3)"};
 
@@ -88,7 +88,7 @@ const DesktopShortcut: React.FC<Props> = ({
       onKeyDown={handleKeyDown}
       style={style}
     >
-      <IconTile active={active}>{icon}</IconTile>
+      <IconTile $active={active}>{icon}</IconTile>
       <Label>{label}</Label>
     </ShortcutWrap>
   );

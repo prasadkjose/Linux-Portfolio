@@ -133,14 +133,14 @@ const Icons = {
   ),
 };
 
-const Grid = styled.div<{ hidden?: boolean; mobileExpanded?: boolean }>`
+const Grid = styled.div<{ hidden?: boolean; $mobileExpanded?: boolean }>`
   position: fixed;
   display: grid;
   z-index: 10; /* below windows */
   ${({ hidden }) => hidden && "display:none;"}
 
-  ${({ mobileExpanded }) =>
-    mobileExpanded
+  ${({ $mobileExpanded }) =>
+    $mobileExpanded
       ? `
     top: 12px; left: 12px; right: 12px; bottom: 12px;
     grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
@@ -169,7 +169,7 @@ const DesktopShortcuts: React.FC<Props> = ({
   mobileExpanded,
 }) => {
   return (
-    <Grid hidden={hidden} mobileExpanded={mobileExpanded}>
+    <Grid hidden={hidden} $mobileExpanded={mobileExpanded}>
       <DesktopShortcut
         label="Browser"
         onOpen={onOpenWelcome}

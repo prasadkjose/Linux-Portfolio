@@ -5,18 +5,18 @@ import type { ThemeSwitcherProps } from "../types/window";
 import { useTheme } from "../hooks/useTheme";
 
 interface ThemeButtonProps {
-  isActive: boolean;
-  themeColor: string;
+  $isActive: boolean;
+  $themeColor: string;
 }
 
-const Container = styled.div<{ isVisible: boolean }>`
+const Container = styled.div<{ $isVisible: boolean }>`
   position: fixed;
-  top: ${props => (props.isVisible ? "50%" : "60px")};
-  left: ${props => (props.isVisible ? "50%" : "")};
-  right: ${props => (props.isVisible ? null : "16px")};
-  transform: ${props => (props.isVisible ? "translate(-50%, -50%)" : "")};
+  top: ${props => (props.$isVisible ? "50%" : "60px")};
+  left: ${props => (props.$isVisible ? "50%" : "")};
+  right: ${props => (props.$isVisible ? null : "16px")};
+  transform: ${props => (props.$isVisible ? "translate(-50%, -50%)" : "")};
 
-  z-index: ${props => (props.isVisible ? 1000 : 100)};
+  z-index: ${props => (props.$isVisible ? 1000 : 100)};
   display: grid;
   grid-template-columns: 3fr 3fr 3fr;
   background: rgba(0, 0, 0, 0.96);
@@ -28,7 +28,7 @@ const Container = styled.div<{ isVisible: boolean }>`
 
   // isMobile
   ${props =>
-    !props.isVisible &&
+    !props.$isVisible &&
     `@media (max-width: 550px) {
     width: 100%;
     right: 0;
@@ -62,9 +62,9 @@ const ThemeButton = styled.button<ThemeButtonProps>`
   }
 
   ${props =>
-    props.isActive &&
+    props.$isActive &&
     css`
-      background: ${props.themeColor};
+      background: ${props.$themeColor};
       color: #000;
       box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
 
@@ -76,8 +76,8 @@ const ThemeButton = styled.button<ThemeButtonProps>`
         transform: translateX(-50%);
         width: 60%;
         height: 2px;
-        background: ${props.themeColor};
-        box-shadow: 0 0 10px ${props.themeColor};
+        background: ${props.$themeColor};
+        box-shadow: 0 0 10px ${props.$themeColor};
       }
     `}
 
@@ -88,7 +88,7 @@ const ThemeButton = styled.button<ThemeButtonProps>`
 
   /* Terminal-style cursor for active button */
   ${props =>
-    props.isActive &&
+    props.$isActive &&
     css`
       &::before {
         content: "|";
@@ -174,7 +174,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   currentTheme,
 }) => {
   const { themeLoaded } = useTheme();
-  const [isVisible, setIsVisible] = useState(!themeLoaded);
+  const [$isVisible, set$isVisible] = useState(!themeLoaded);
 
   const themesList = Object.keys(themes)
     .map((key: string) => {
@@ -189,17 +189,17 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   const handleThemeChange = (newTheme: DefaultTheme) => {
     if (newTheme.id !== currentTheme.id) {
       themeSwitcher(newTheme);
-      setIsVisible(themeLoaded);
+      set$isVisible(themeLoaded);
     }
   };
 
   return (
-    <Container isVisible={isVisible}>
+    <Container $isVisible={$isVisible}>
       {themesList.map(({ key, label, theme }) => (
         <ThemeButton
           key={key}
-          isActive={currentTheme.id === theme.id}
-          themeColor={theme.colors.primary}
+          $isActive={currentTheme.id === theme.id}
+          $themeColor={theme.colors.primary}
           onClick={() => handleThemeChange(theme)}
           aria-label={`Switch to ${label} theme`}
           title={`Switch to ${label} theme`}
@@ -207,7 +207,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
           {label}
         </ThemeButton>
       ))}
-      {isVisible && (
+      {$isVisible && (
         <TypingText>
           <span>Portfolio by Prasad</span>
         </TypingText>

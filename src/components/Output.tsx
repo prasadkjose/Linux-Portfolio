@@ -11,7 +11,7 @@ import History from "./windows/terminal/commands/History";
 import Projects from "./windows/terminal/commands/Projects";
 import Socials from "./windows/terminal/commands/Socials";
 import { OutputContainer, UsageDiv } from "../styles/Output.styled";
-import { termContext } from "./windows/terminal/Terminal";
+import { termContext } from "./windows/terminal/TerminalContext";
 import { useContext } from "react";
 
 type Props = {

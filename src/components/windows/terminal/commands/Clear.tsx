@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { UsageDiv } from "../../../../styles/Output.styled";
-import { termContext } from "../Terminal";
+import { termContext } from "../TerminalContext";
 
 const Clear: React.FC = () => {
   const { arg, clearHistory } = useContext(termContext);

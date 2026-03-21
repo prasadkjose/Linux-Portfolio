@@ -65,9 +65,9 @@ const DownloadLink = styled.a`
   }
 `;
 
-const Content = styled.div<{ maximized?: boolean }>`
-  height: ${({ maximized }) =>
-    maximized ? "calc(100vh - 32px - 36px)" : "calc(100% - 32px - 36px)"};
+const Content = styled.div<{ $maximized?: boolean }>`
+  height: ${({ $maximized }) =>
+    $maximized ? "calc(100vh - 32px - 36px)" : "calc(100% - 32px - 36px)"};
   overflow: hidden;
 `;
 
@@ -128,7 +128,7 @@ const ResumeWindow: React.FC<WindowState> = props => {
         </Actions>
       </Toolbar>
 
-      <Content maximized={props.maximized}>
+      <Content $maximized={props.maximized}>
         <PDFContainer>
           <iframe
             src={`${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`}

@@ -24,7 +24,7 @@ export const TabBar = styled.div`
   gap: 2px;
 `;
 
-export const TabButton = styled.button<{ isActive: boolean }>`
+export const TabButton = styled.button<{ $isActive: boolean }>`
   position: relative;
   background: transparent;
   border: none;
@@ -46,8 +46,8 @@ export const TabButton = styled.button<{ isActive: boolean }>`
     color: #eceff4;
   }
 
-  ${({ isActive }) =>
-    isActive &&
+  ${({ $isActive }) =>
+    $isActive &&
     css`
       background: rgba(0, 212, 255, 0.15);
       color: #00d4ff;
