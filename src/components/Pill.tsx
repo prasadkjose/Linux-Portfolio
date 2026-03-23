@@ -1,7 +1,7 @@
 import React from "react";
 
 type Props = {
-  href: string;
+  href?: string;
   style: React.CSSProperties;
   value: string;
 };

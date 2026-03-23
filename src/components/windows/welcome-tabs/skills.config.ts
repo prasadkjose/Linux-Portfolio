@@ -22,6 +22,12 @@ interface Skill {
 interface Skills {
   [type: string]: Skill[];
 }
+export const RESUME_OS_MAP: Record<string, string> = {
+  fedora: "/resumeCons.pdf",
+  ubuntu: "/resume.pdf",
+  kali: "/resumeSec.pdf",
+};
+
 export const SKILL_DETAILS_MAP: Skills = {
   Languages: [
     {

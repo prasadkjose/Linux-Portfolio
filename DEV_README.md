@@ -285,7 +285,7 @@ const handleKeyDown = (event: React.KeyboardEvent) => {
 ### Required Tools
 
 - Node.js (version specified in `.nvmrc`)
-- npm or yarn
+- pnpm(or npm)
 - Git
 - VSCodium/VSCode with recommended extensions
 
@@ -293,22 +293,20 @@ const handleKeyDown = (event: React.KeyboardEvent) => {
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Start development server
-npm run dev
+pnpm run dev
 
 # Build for production
-npm run build
+pnpm run build
 
 # Run tests
-npm test
+pnpm test
 
 # Run linting
-npm run lint
+pnpm run format
 
-# Run type checking
-npm run typecheck
 ```
 
 ## Troubleshooting

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Pill from "../../Pill";
 import { PreImg } from "../../../styles/Welcome.styled";
-import { SKILL_DETAILS_MAP } from "./skills.config";
+import { RESUME_OS_MAP, SKILL_DETAILS_MAP } from "./skills.config";
+import { themeContext } from "../../../hooks/useTheme";
 const HeroSection = styled.section`
   display: flex;
   gap: 20px;
@@ -50,6 +51,12 @@ const QuickLinks = styled.div`
 `;
 
 const HomeTab: React.FC = () => {
+  const themeContextValue = useContext(themeContext);
+  let pdfUrl;
+  if (themeContextValue) {
+    const theme = themeContextValue.currentTheme;
+    pdfUrl = RESUME_OS_MAP[theme.id];
+  }
   return (
     <div>
       {/* Hero Section */}
@@ -98,7 +105,7 @@ const HomeTab: React.FC = () => {
               }}
             />
             <Pill
-              href="/Prasad Resume - SDE.pdf"
+              href={pdfUrl}
               value="Resume"
               style={{
                 color: "#EBCB8B",
