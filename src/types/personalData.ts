@@ -29,9 +29,10 @@ export interface PersonalInfo {
   name: string;
   title: string;
   profileImage: string;
+  email: string;
   aboutDescription: string;
   aboutMe: string;
-  url: string;
+  website: string;
   uname: string;
   socials: Data[];
 }
@@ -63,4 +64,5 @@ export interface PersonalData {
   quickLinks: Data[];
   /** Skills overview section */
   skillsOverview: DataSection;
+  projects: DataSection;
 }

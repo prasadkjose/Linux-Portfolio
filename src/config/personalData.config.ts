@@ -20,7 +20,8 @@ export const PERSONAL_DATA: PersonalData = {
     name: "Prasad Koshy Jose",
     title: "Software Engineer | Security | AI | Open Source",
     profileImage: "/photo1.jpg",
-    url: "prasadkjose.com",
+    email: "prasadkjose@gmail.com",
+    website: "prasadkjose.com",
     uname: "prasadkjose",
     aboutMe:
       "I'm a Software Engineer based in Colorado. \n I like writing code that simplifies what comes next.",
@@ -35,16 +36,20 @@ export const PERSONAL_DATA: PersonalData = {
         methodology on schedule.`,
     socials: [
       {
-        value: "LinkedIn",
+        value: "GitHub",
         href: "https://github.com/prasadkjose",
       },
       {
-        value: "GitHub",
+        value: "LinkedIn",
         href: "https://www.linkedin.com/in/prasadkjose",
       },
       {
         value: "Blog",
         href: "https://dev.to/prasadkjose",
+      },
+      {
+        value: "Facebook",
+        href: "https://www.facebook.com/prasadkjose",
       },
     ],
   },
@@ -135,6 +140,29 @@ export const PERSONAL_DATA: PersonalData = {
         description: `Developed SMT fault monitoring tools using Python and Linux.
             Automated factory diagnostics and production issue detection.
             Collaborated with hardware teams on industrial reliability systems.`,
+      },
+    ],
+  },
+  projects: {
+    value: "Projects",
+    data: [
+      {
+        value: "Confidential Computing of Machine Learning using Intel SGX",
+        description:
+          "A TEE-based application to securely upload and train multiparty data-sets with confidential computing.",
+        href: "https://github.com/prasadkjose/confidential-ml-sgx",
+      },
+      {
+        value: "OrganizeIt",
+        description:
+          "A Python-based utility to help users automate the organization of their file system.",
+        href: "https://github.com/prasadkjose/OrganizeIt",
+      },
+      {
+        value: "Practice Coding",
+        description:
+          "A lightweight local setup for practicing coding problems in Python, TypeScript, and C++ without logging into LeetCode or any online judge.",
+        href: "https://github.com/prasadkjose/coding",
       },
     ],
   },

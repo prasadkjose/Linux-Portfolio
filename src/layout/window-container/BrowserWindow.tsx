@@ -3,6 +3,7 @@ import { WindowState } from "../../types/window";
 import WindowContainer from "./WindowContainer";
 
 import { Toolbar, LocationBar, Content } from "./BrowserWindow.styled";
+import { PERSONAL_DATA } from "../../config/personalData.config";
 
 interface BrowserWindowProps extends WindowState {
   children?: React.ReactNode;
@@ -44,7 +45,7 @@ const BrowserWindow: React.FC<BrowserWindowProps> = ({
       title="Browser"
     >
       <Toolbar>
-        <LocationBar>https://prasadkjose.com</LocationBar>
+        <LocationBar>{PERSONAL_DATA.personalInfo.website}</LocationBar>
       </Toolbar>
 
       <Content $maximized={maximized}>{children}</Content>
