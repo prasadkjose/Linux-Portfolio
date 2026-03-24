@@ -68,6 +68,7 @@ const ExperienceTab: React.FC = () => {
         >
           {achievements.data.map(data => (
             <div
+              key={data.value}
               style={{
                 background: "rgba(163, 190, 140, 0.1)",
                 padding: "12px",

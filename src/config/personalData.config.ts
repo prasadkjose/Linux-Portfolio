@@ -22,31 +22,31 @@ export const PERSONAL_DATA: PersonalData = {
         value: "Oracle Corp.",
         description: `Built enterprise features using JavaScript/TypeScript, REST APIs & OCI services.
             Implemented secure data models using Oracle BOSS metadata.
-            Integrated third-party services and cloud APIs in Visual Builder platform`,
+            Integrated third-party services and cloud APIs in Visual Builder platform.`,
       },
       {
         href: "https://www.linkedin.com/in/prasadkjose",
         icon: "/icons/emplifi_icon.jpg",
         value: "Emplifi Sro.",
-        description: `Built social media integrations using JavaScript, ElasticSearch, REST APIs
+        description: `Built social media integrations using JavaScript, ElasticSearch, REST APIs.
             Developed frontend features for multimedia support and platform engagement.
-            Collaborated across teams to deliver scalable customer-facing web features`,
+            Collaborated across teams to deliver scalable customer-facing web features.`,
       },
       {
         href: "https://www.linkedin.com/in/prasadkjose",
         icon: "/icons/olympe_icon.jpeg",
         value: "Olympe SA",
-        description: `Developed hybrid apps using JavaScript and blockchain frameworks
-            Built modular backend services and REST API integrations
-            Prototyped logistics solutions with distributed ledger technologies`,
+        description: `Developed hybrid apps using JavaScript and blockchain frameworks.
+            Built modular backend services and REST API integrations.
+            Prototyped logistics solutions with distributed ledger technologies.`,
       },
       {
         href: "https://www.linkedin.com/in/prasadkjose",
         icon: "/icons/nokia_icon.jpeg",
         value: "Nokia Networks and Solutions",
-        description: `Developed SMT fault monitoring tools using Python and Linux
-            Automated factory diagnostics and production issue detection
-            Collaborated with hardware teams on industrial reliability systems`,
+        description: `Developed SMT fault monitoring tools using Python and Linux.
+            Automated factory diagnostics and production issue detection.
+            Collaborated with hardware teams on industrial reliability systems.`,
       },
     ],
   },
