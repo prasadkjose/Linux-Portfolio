@@ -1,3 +1,5 @@
+import { PERSONAL_DATA } from "../../../config/personalData.config";
+
 type Command = {
   cmd: string;
   desc: string;
@@ -5,7 +7,7 @@ type Command = {
 }[];
 
 export const commands: Command = [
-  { cmd: "about", desc: "about Prasad Koshy Jose", tab: 8 },
+  { cmd: "about", desc: `about ${PERSONAL_DATA.personalInfo.name}`, tab: 8 },
   { cmd: "clear", desc: "clear the terminal", tab: 8 },
   { cmd: "echo", desc: "print out anything", tab: 9 },
   { cmd: "education", desc: "my education background", tab: 4 },

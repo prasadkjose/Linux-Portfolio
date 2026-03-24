@@ -20,6 +20,10 @@ export const PERSONAL_DATA: PersonalData = {
     name: "Prasad Koshy Jose",
     title: "Software Engineer | Security | AI | Open Source",
     profileImage: "/photo1.jpg",
+    url: "prasadkjose.com",
+    uname: "prasadkjose",
+    aboutMe:
+      "I'm a Software Engineer based in Colorado. \n I like writing code that simplifies what comes next.",
     aboutDescription: `Software Engineer offering five years of experience designing,
         implementing, and optimizing secure software and web applications in
         languages like JavaScript, Python, and C++. This is supported by a
@@ -29,6 +33,20 @@ export const PERSONAL_DATA: PersonalData = {
         startups and Fortune 500 companies, programming with latest
         technological stack and cloud services, delivering with agile
         methodology on schedule.`,
+    socials: [
+      {
+        value: "LinkedIn",
+        href: "https://github.com/prasadkjose",
+      },
+      {
+        value: "GitHub",
+        href: "https://www.linkedin.com/in/prasadkjose",
+      },
+      {
+        value: "Blog",
+        href: "https://dev.to/prasadkjose",
+      },
+    ],
   },
   quickLinks: [
     {

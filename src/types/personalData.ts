@@ -30,6 +30,10 @@ export interface PersonalInfo {
   title: string;
   profileImage: string;
   aboutDescription: string;
+  aboutMe: string;
+  url: string;
+  uname: string;
+  socials: Data[];
 }
 
 /**

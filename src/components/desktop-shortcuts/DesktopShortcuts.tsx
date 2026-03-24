@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import DesktopShortcut from "./DesktopShortcut";
+import { PERSONAL_DATA } from "../../config/personalData.config";
 
 type Props = {
   onOpenTerminal?: () => void;
@@ -13,7 +14,19 @@ type Props = {
   mobileExpanded?: boolean;
 };
 
-const Icons = {
+// Define the type for valid icon keys
+type IconKey =
+  | "Terminal"
+  | "LinkedIn"
+  | "GitHub"
+  | "Facebook"
+  | "Blog"
+  | "PDF"
+  | "Browser"
+  | "Fullscreen"
+  | "FullscreenExit";
+
+const Icons: Record<IconKey, React.ReactNode> = {
   Terminal: (
     <svg
       width="28"
@@ -182,21 +195,19 @@ const DesktopShortcuts: React.FC<Props> = ({
         icon={Icons.Terminal}
         active={activeTerminal}
       />
-      <DesktopShortcut
-        label="LinkedIn"
-        href="https://www.linkedin.com/in/prasadkjose"
-        icon={Icons.LinkedIn}
-      />
-      <DesktopShortcut
-        label="GitHub"
-        href="https://github.com/prasadkjose"
-        icon={Icons.GitHub}
-      />
-      <DesktopShortcut
-        label="Blog"
-        href="https://dev.to/prasadkjose"
-        icon={Icons.Blog}
-      />
+      {PERSONAL_DATA.personalInfo.socials.map((data, idx) => {
+        // Type-safe access to Icons object
+        const iconKey = data.value as IconKey;
+        const icon = Icons[iconKey];
+        return (
+          <DesktopShortcut
+            key={idx}
+            label={data.value}
+            href={data.href}
+            icon={icon}
+          />
+        );
+      })}
       <DesktopShortcut
         label="Resume"
         onOpen={onOpenResume}

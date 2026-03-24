@@ -13,6 +13,7 @@ import Socials from "./windows/terminal/commands/Socials";
 import { OutputContainer, UsageDiv } from "../styles/Output.styled";
 import { termContext } from "./windows/terminal/TerminalContext";
 import { useContext } from "react";
+import { PERSONAL_DATA } from "../config/personalData.config";
 
 type Props = {
   index: number;
@@ -79,7 +80,11 @@ const Output: React.FC<Props> = ({ index, cmd }) => {
           help: <Help />,
           history: <History />,
           projects: <Projects />,
-          pwd: <GeneralOutput>/home/prasadkjose</GeneralOutput>,
+          pwd: (
+            <GeneralOutput>
+              /home/{PERSONAL_DATA.personalInfo.uname}
+            </GeneralOutput>
+          ),
           socials: <Socials />,
           welcome: <Welcome />,
           whoami: <GeneralOutput>linux</GeneralOutput>,
