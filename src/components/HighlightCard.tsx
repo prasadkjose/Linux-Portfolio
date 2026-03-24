@@ -1,14 +1,7 @@
 import React from "react";
+import { Data } from "../types/personalData";
 
-type Props = {
-  href: string;
-  style: React.CSSProperties;
-  value: string;
-  icon: string;
-  description: string;
-};
-
-const HighlightCard: React.FC<Props> = ({
+const HighlightCard: React.FC<Data> = ({
   href,
   style,
   value,
