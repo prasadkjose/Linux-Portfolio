@@ -9,7 +9,77 @@ const LOGOS = {
   google: "/icons/google_logo.jpeg",
 };
 
+export const RESUME_OS_MAP: Record<string, string> = {
+  fedora: "/resumeCons.pdf",
+  ubuntu: "/resume.pdf",
+  kali: "/resumeSec.pdf",
+};
+
 export const PERSONAL_DATA: PersonalData = {
+  personalInfo: {
+    name: "Prasad Koshy Jose",
+    title: "Software Engineer | Security | AI | Open Source",
+    profileImage: "/photo1.jpg",
+    aboutDescription: `Software Engineer offering five years of experience designing,
+        implementing, and optimizing secure software and web applications in
+        languages like JavaScript, Python, and C++. This is supported by a
+        Master's degree in Computer Science from the University of Geneva,
+        Switzerland and a Bachelor's of Engineering degree in Computer
+        Science. Experience in working with globally distributed teams, across
+        startups and Fortune 500 companies, programming with latest
+        technological stack and cloud services, delivering with agile
+        methodology on schedule.`,
+  },
+  quickLinks: [
+    {
+      href: "https://github.com/prasadkjose",
+      value: "GitHub",
+      style: {
+        color: "#88C0D0",
+        background: "rgba(136, 192, 208, 0.15)",
+        border: "1px solid rgba(136,192,208,0.35)",
+      },
+    },
+    {
+      href: "https://www.linkedin.com/in/prasadkjose",
+      value: "LinkedIn",
+      style: {
+        color: "#A3BE8C",
+        background: "rgba(163, 190, 140, 0.15)",
+        border: "1px solid rgba(163,190,140,0.35)",
+      },
+    },
+    {
+      href: "https://facebook.com/prasadkjose",
+      value: "Facebook",
+      style: {
+        color: "#81A1C1",
+        background: "rgba(129, 161, 193, 0.15)",
+        border: "1px solid rgba(129,161,193,0.35)",
+      },
+    },
+    {
+      href: "https://dev.to/prasadkjose",
+      value: "Blog",
+      style: {
+        color: "#B48EAD",
+        background: "rgba(180, 142, 173, 0.15)",
+        border: "1px solid rgba(180,142,173,0.35)",
+      },
+    },
+    {
+      href: "", // Will be set dynamically based on theme
+      value: "Resume",
+      style: {
+        color: "#EBCB8B",
+        background: "rgba(235, 203, 139, 0.15)",
+        border: "1px solid rgba(235,203,139,0.35)",
+      },
+    },
+  ],
+  skillsOverview: {
+    value: "Technical Skills",
+  },
   experience: {
     value: "Professional Experience",
     description: `I've had the opportunity to work with amazing companies across different

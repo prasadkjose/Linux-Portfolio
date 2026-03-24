@@ -34,7 +34,7 @@ const ExperienceTab: React.FC = () => {
       <ExperienceDescription>{experience.description}</ExperienceDescription>
       <ExperienceSection>
         {/* Highlight cards */}
-        {experience.data.map(data => (
+        {experience.data?.map(data => (
           <HighlightCard
             key={data.value}
             style={{
@@ -66,7 +66,7 @@ const ExperienceTab: React.FC = () => {
             gap: "12px",
           }}
         >
-          {achievements.data.map(data => (
+          {achievements.data?.map(data => (
             <div
               key={data.value}
               style={{
