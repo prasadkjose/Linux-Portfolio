@@ -139,7 +139,7 @@ const TypingText = styled.div`
     margin: 0;
   }
 
-  /* Cursor that blinks at the end of the text */
+  /* Cursor that blinks during the typing animation */
   span::after {
     content: "|";
     position: absolute;
@@ -148,9 +148,8 @@ const TypingText = styled.div`
     width: 4px;
     height: 12px;
     background: white;
-    animation: blink 1s infinite;
-    opacity: 0;
-    animation-delay: 3.2s;
+    animation: blink 0.8s infinite;
+    opacity: 1;
   }
 
   @keyframes typing {
