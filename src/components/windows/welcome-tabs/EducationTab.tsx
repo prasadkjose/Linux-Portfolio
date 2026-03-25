@@ -25,7 +25,7 @@ const EducationTab: React.FC = () => {
     <Fragment>
       <SectionTitle>{education.value}</SectionTitle>
       <EducationSection>
-        {education.data.map(data => (
+        {education.data?.map(data => (
           <HighlightCard
             key={data.value}
             style={{
@@ -39,7 +39,7 @@ const EducationTab: React.FC = () => {
       </EducationSection>
       <SectionTitle>Certifications</SectionTitle>
       <EducationSection>
-        {certifications.data.map(data => (
+        {certifications.data?.map(data => (
           <HighlightCard
             key={data.value}
             style={{

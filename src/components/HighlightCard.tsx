@@ -8,6 +8,13 @@ const HighlightCard: React.FC<Data> = ({
   icon,
   description,
 }) => {
+  // Highlight card icons should be strings to local resource
+  if (typeof icon !== "string") {
+    throw TypeError(
+      "Highlight card icons should be strings to local resource or CDN"
+    );
+  }
+
   return (
     <div
       style={{
