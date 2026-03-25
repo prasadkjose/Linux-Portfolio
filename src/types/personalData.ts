@@ -27,6 +27,7 @@ export interface QuickLink {
  */
 export interface PersonalInfo {
   name: string;
+  shortName: string;
   title: string;
   profileImage: string;
   email: string;

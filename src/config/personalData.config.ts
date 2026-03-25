@@ -18,6 +18,7 @@ export const RESUME_OS_MAP: Record<string, string> = {
 export const PERSONAL_DATA: PersonalData = {
   personalInfo: {
     name: "Prasad Koshy Jose",
+    shortName: "Prasad",
     title: "Software Engineer | Security | AI | Open Source",
     profileImage: "/photo1.jpg",
     email: "prasadkjose@gmail.com",

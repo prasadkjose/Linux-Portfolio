@@ -214,7 +214,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       ))}
       {$isVisible && (
         <TypingText>
-          <span>Wecome to {PERSONAL_DATA.personalInfo.name}'s PC</span>
+          <span>Wecome to {PERSONAL_DATA.personalInfo.shortName}'s PC</span>
           <p>Choose an OS view</p>
         </TypingText>
       )}
