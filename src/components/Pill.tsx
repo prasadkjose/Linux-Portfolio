@@ -1,10 +1,5 @@
 import React from "react";
-
-type Props = {
-  href?: string;
-  style: React.CSSProperties;
-  value: string;
-};
+import { Data } from "../types/personalData";
 
 const DEFAULT_STYLE = {
   textDecoration: "none",
@@ -13,7 +8,7 @@ const DEFAULT_STYLE = {
   fontSize: "0.92rem",
 };
 
-const Pill: React.FC<Props> = ({ href, style, value }) => {
+const Pill: React.FC<Data> = ({ href, style, value }) => {
   return (
     <a
       href={href}

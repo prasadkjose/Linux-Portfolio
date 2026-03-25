@@ -2,6 +2,7 @@ import { useContext } from "react";
 import _ from "lodash";
 import { Wrapper } from "../../../../styles/Output.styled";
 import { termContext } from "../TerminalContext";
+import { PERSONAL_DATA } from "../../../../config/personalData.config";
 
 const Email: React.FC = () => {
   const { history, rerender } = useContext(termContext);
@@ -10,11 +11,11 @@ const Email: React.FC = () => {
   const currentCommand = _.split(history[0], " ");
 
   if (rerender && currentCommand[0] === "email" && currentCommand.length <= 1) {
-    window.open("mailto:" + "prasadkjose@gmail.com", "_self");
+    window.open("mailto:" + PERSONAL_DATA.personalInfo.email, "_self");
   }
 
   const handleEmailClick = () => {
-    window.open("mailto:" + "prasadkjose@gmail.com", "_self");
+    window.open("mailto:" + PERSONAL_DATA.personalInfo.email, "_self");
   };
 
   return (
@@ -27,7 +28,7 @@ const Email: React.FC = () => {
           color: "inherit",
         }}
       >
-        prasadkjose@gmail.com
+        {PERSONAL_DATA.personalInfo.email}
       </span>
     </Wrapper>
   );

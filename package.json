@@ -12,7 +12,8 @@
     "prepare": "husky install",
     "lint": "eslint .",
     "format:check": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "type-check": "npx tsc"
   },
   "dependencies": {
     "@microsoft/tsdoc": "^0.16.0",

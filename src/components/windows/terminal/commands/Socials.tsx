@@ -14,6 +14,7 @@ import {
 } from "../../../../utils/funcs";
 import { termContext } from "../TerminalContext";
 import Usage from "../../../Usage";
+import { PERSONAL_DATA } from "../../../../config/personalData.config";
 
 const Socials: React.FC = () => {
   const { arg, history, rerender } = useContext(termContext);
@@ -24,8 +25,8 @@ const Socials: React.FC = () => {
   /* ===== check current command makes redirect ===== */
   useEffect(() => {
     if (checkRedirect(rerender, currentCommand, "socials")) {
-      socials.forEach(({ id, url }) => {
-        return id === parseInt(arg[1]) && window.open(url, "_blank");
+      PERSONAL_DATA.personalInfo.socials.forEach(({ href = "" }, id) => {
+        return id === parseInt(arg[1]) && window.open(href, "_blank");
       });
     }
   }, [arg, rerender, currentCommand]);
@@ -46,48 +47,21 @@ const Socials: React.FC = () => {
   ) : (
     <HelpWrapper data-testid="socials">
       <ProjectsIntro>Here are my social links</ProjectsIntro>
-      {socials.map(({ id, title, url, tab }) => (
-        <CmdList key={title}>
+      {PERSONAL_DATA.personalInfo.socials.map(({ value, href = "" }, id) => (
+        <CmdList key={id}>
           <Cmd
-            onClick={() => handleSocialClick(url)}
+            onClick={() => handleSocialClick(href)}
             style={{ cursor: "pointer" }}
           >
-            {`${id}. ${title}`}
+            {`${id + 1}. ${value}`}
           </Cmd>
-          {generateTabs(tab)}
-          <CmdDesc>- {url}</CmdDesc>
+          {generateTabs(id + 1)}
+          <CmdDesc>- {href}</CmdDesc>
         </CmdList>
       ))}
       <Usage cmd="socials" marginY />
     </HelpWrapper>
   );
 };
-
-const socials = [
-  {
-    id: 1,
-    title: "GitHub",
-    url: "https://github.com/prasadkjose",
-    tab: 3,
-  },
-  {
-    id: 2,
-    title: "Facebook",
-    url: "https://www.facebook.com/prasadkjose",
-    tab: 1,
-  },
-  {
-    id: 3,
-    title: "Linkedin",
-    url: "https://linkedin.com/in/prasadkjose",
-    tab: 1,
-  },
-  {
-    id: 4,
-    title: "Blog",
-    url: "https://dev.to/prasadkjose",
-    tab: 5,
-  },
-];
 
 export default Socials;

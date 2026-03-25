@@ -2,7 +2,11 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import Pill from "../../Pill";
 import { PreImg } from "../../../styles/Welcome.styled";
-import { RESUME_OS_MAP, SKILL_DETAILS_MAP } from "./skills.config";
+import { SKILL_DETAILS_MAP } from "./skills.config";
+import {
+  PERSONAL_DATA,
+  RESUME_OS_MAP,
+} from "../../../config/personalData.config";
 import { themeContext } from "../../../hooks/useTheme";
 const HeroSection = styled.section`
   display: flex;
@@ -52,67 +56,39 @@ const QuickLinks = styled.div`
 
 const HomeTab: React.FC = () => {
   const themeContextValue = useContext(themeContext);
-  let pdfUrl;
+  let pdfUrl: string | undefined;
   if (themeContextValue) {
     const theme = themeContextValue.currentTheme;
     pdfUrl = RESUME_OS_MAP[theme.id];
   }
+
+  // Update resume link with dynamic URL
+  const quickLinks = PERSONAL_DATA.quickLinks.map(link =>
+    link.value === "Resume" ? { ...link, href: pdfUrl } : link
+  );
+
   return (
     <div>
       {/* Hero Section */}
       <HeroSection>
         <PreImg>
-          <ProfileImage src="/photo1.jpg" alt="Prasad Koshy Jose" />
+          <ProfileImage
+            src={PERSONAL_DATA.personalInfo.profileImage}
+            alt={PERSONAL_DATA.personalInfo.name}
+          />
         </PreImg>
         <HeroContent>
-          <NameHeading>Prasad Koshy Jose</NameHeading>
-          <TitleText>Software Engineer | Security | AI | Open Source</TitleText>
+          <NameHeading>{PERSONAL_DATA.personalInfo.name}</NameHeading>
+          <TitleText>{PERSONAL_DATA.personalInfo.title}</TitleText>
           <QuickLinks role="group" aria-label="Quick links">
-            <Pill
-              href="https://github.com/prasadkjose"
-              value="GitHub"
-              style={{
-                color: "#88C0D0",
-                background: "rgba(136, 192, 208, 0.15)",
-                border: "1px solid rgba(136,192,208,0.35)",
-              }}
-            />
-            <Pill
-              href="https://www.linkedin.com/in/prasadkjose"
-              value="LinkedIn"
-              style={{
-                color: "#A3BE8C",
-                background: "rgba(163, 190, 140, 0.15)",
-                border: "1px solid rgba(163,190,140,0.35)",
-              }}
-            />
-            <Pill
-              href="https://facebook.com/prasadkjose"
-              value="Facebook"
-              style={{
-                color: "#81A1C1",
-                background: "rgba(129, 161, 193, 0.15)",
-                border: "1px solid rgba(129,161,193,0.35)",
-              }}
-            />
-            <Pill
-              href="https://dev.to/prasadkjose"
-              value="Blog"
-              style={{
-                color: "#B48EAD",
-                background: "rgba(180, 142, 173, 0.15)",
-                border: "1px solid rgba(180,142,173,0.35)",
-              }}
-            />
-            <Pill
-              href={pdfUrl}
-              value="Resume"
-              style={{
-                color: "#EBCB8B",
-                background: "rgba(235, 203, 139, 0.15)",
-                border: "1px solid rgba(235,203,139,0.35)",
-              }}
-            />
+            {quickLinks.map((link, index) => (
+              <Pill
+                key={index}
+                href={link.href}
+                value={link.value}
+                style={link.style}
+              />
+            ))}
           </QuickLinks>
         </HeroContent>
       </HeroSection>
@@ -137,15 +113,7 @@ const HomeTab: React.FC = () => {
             fontSize: "1rem",
           }}
         >
-          Software Engineer offering five years of experience designing,
-          implementing, and optimizing secure software and web applications in
-          languages like JavaScript, Python, and C++. This is supported by a
-          Master’s degree in Computer Science from the University of Geneva,
-          Switzerland and a Bachelor's of Engineering degree in Computer
-          Science. Experience in working with globally distributed teams, across
-          startups and Fortune 500 companies, programming with latest
-          technological stack and cloud services, delivering with agile
-          methodology on schedule.
+          {PERSONAL_DATA.personalInfo.aboutDescription}
         </p>
       </section>
 
@@ -159,7 +127,7 @@ const HomeTab: React.FC = () => {
             fontWeight: 600,
           }}
         >
-          Technical Skills
+          {PERSONAL_DATA.skillsOverview.value}
         </h2>
         <div
           style={{

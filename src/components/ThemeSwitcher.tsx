@@ -3,6 +3,7 @@ import styled, { css, DefaultTheme } from "styled-components";
 import themes from "../styles/themes";
 import type { ThemeSwitcherProps } from "../types/window";
 import { useTheme } from "../hooks/useTheme";
+import { PERSONAL_DATA } from "../config/personalData.config";
 
 interface ThemeButtonProps {
   $isActive: boolean;
@@ -130,22 +131,25 @@ const TypingText = styled.div`
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;
-    animation: typing 3s steps(18, end);
+    animation: typing 2s steps(18, end);
     position: relative;
   }
 
-  /* Cursor that blinks at the end of the text */
+  p {
+    margin: 0;
+  }
+
+  /* Cursor that blinks during the typing animation */
   span::after {
-    content: "";
+    content: "|";
     position: absolute;
-    right: -2px;
+    right: -1px;
     bottom: 2px;
-    width: 2px;
+    width: 4px;
     height: 12px;
     background: white;
-    animation: blink 1s infinite;
-    opacity: 0;
-    animation-delay: 3.2s;
+    animation: blink 0.8s infinite;
+    opacity: 1;
   }
 
   @keyframes typing {
@@ -209,7 +213,8 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       ))}
       {$isVisible && (
         <TypingText>
-          <span>Portfolio by Prasad</span>
+          <span>Wecome to {PERSONAL_DATA.personalInfo.shortName}'s PC</span>
+          <p>Choose an OS view</p>
         </TypingText>
       )}
     </Container>

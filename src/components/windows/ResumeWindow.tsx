@@ -3,7 +3,7 @@ import styled from "styled-components";
 import WindowContainer from "../../layout/window-container/WindowContainer";
 import { WindowState } from "../../types/window";
 import { themeContext } from "../../hooks/useTheme";
-import { RESUME_OS_MAP } from "./welcome-tabs/skills.config";
+import { RESUME_OS_MAP } from "../../config/personalData.config";
 
 // Resume window with integrated PDF viewer
 const Toolbar = styled.div`

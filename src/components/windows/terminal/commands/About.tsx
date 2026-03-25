@@ -1,19 +1,14 @@
-import {
-  AboutWrapper,
-  HighlightAlt,
-  HighlightSpan,
-} from "../../../../styles/About.styled";
+import { PERSONAL_DATA } from "../../../../config/personalData.config";
+import { AboutWrapper, HighlightSpan } from "../../../../styles/About.styled";
 
 const About: React.FC = () => {
   return (
     <AboutWrapper data-testid="about">
       <p>
-        Hi, my name is <HighlightSpan>Prasad Koshy Jose</HighlightSpan>.
+        Hi, my name is{" "}
+        <HighlightSpan>{PERSONAL_DATA.personalInfo.name}</HighlightSpan>.
       </p>
-      <p>
-        I'm a <HighlightAlt>Software Engineer</HighlightAlt> based in Colorado.
-      </p>
-      <p>I like writing code that simplifies what comes next.</p>
+      {PERSONAL_DATA.personalInfo.aboutMe}
     </AboutWrapper>
   );
 };

@@ -12,6 +12,7 @@ import FullscreenToggle from "./components/FullscreenToggle";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import { FullscreenManager, WindowManager } from "./types/window";
 import { isMobileDevice } from "./utils/typeGuards";
+import { PERSONAL_DATA } from "./config/personalData.config";
 
 const Overlay = styled.div`
   width: 100vw;
@@ -81,8 +82,8 @@ function App() {
       ) : (
         <ThemeProvider theme={theme}>
           <GlobalStyle theme={theme} />
-          <h1 className="sr-only" aria-label="Prasad Koshy Jose">
-            Prasad Koshy Jose
+          <h1 className="sr-only" aria-label={PERSONAL_DATA.personalInfo.name}>
+            {PERSONAL_DATA.personalInfo.name}
           </h1>
           <themeContext.Provider value={{ themeSwitcher, currentTheme: theme }}>
             {/* Desktop Icons - below windows, hidden when any window is maximized */}
