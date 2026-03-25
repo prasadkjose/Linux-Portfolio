@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import DesktopShortcut from "./DesktopShortcut";
-import { PERSONAL_DATA } from "../../config/personalData.config";
 import { IconKey, Icons } from "./DesktopIcons";
+import { SHORTCUTS } from "./DesktopShortcuts.config";
 
 type Props = {
   onOpenTerminal?: () => void;
@@ -64,7 +64,7 @@ const DesktopShortcuts: React.FC<Props> = ({
         icon={Icons.Terminal}
         active={activeTerminal}
       />
-      {PERSONAL_DATA.personalInfo.socials.map((data, idx) => {
+      {SHORTCUTS.map((data, idx) => {
         // Type-safe access to Icons object
         const iconKey = data.value as IconKey;
         const icon = Icons[iconKey];
