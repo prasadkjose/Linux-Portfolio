@@ -131,7 +131,7 @@ const TypingText = styled.div`
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;
-    animation: typing 3s steps(18, end);
+    animation: typing 2s steps(18, end);
     position: relative;
   }
 
@@ -141,11 +141,11 @@ const TypingText = styled.div`
 
   /* Cursor that blinks at the end of the text */
   span::after {
-    content: "";
+    content: "|";
     position: absolute;
-    right: -2px;
+    right: -1px;
     bottom: 2px;
-    width: 2px;
+    width: 4px;
     height: 12px;
     background: white;
     animation: blink 1s infinite;
