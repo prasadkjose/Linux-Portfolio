@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 import themes from "../styles/themes";
 import { DefaultTheme } from "styled-components";
 import { ThemeSwitcherProps } from "../types/window";
-import logger from "../logger";
+import logger from "../utils/logger";
 
 interface UseThemeResult {
   theme: DefaultTheme;

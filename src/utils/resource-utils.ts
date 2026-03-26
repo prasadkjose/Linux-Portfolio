@@ -1,6 +1,6 @@
 import { preload } from "react-dom";
 import { IMAGES } from "../config/preloadResources.config";
-import logger from "../logger";
+import logger from "./logger";
 
 export function preloadResources() {
   const rootPath = "/preload/";

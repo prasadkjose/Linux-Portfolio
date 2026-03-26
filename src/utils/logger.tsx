@@ -3,7 +3,7 @@ const logger = {
     console.log(`[LOG] ${new Date().toISOString()}: ${message}`);
   },
   info: (message: string) => {
-    console.info(`[LOG] ${new Date().toISOString()}: ${message}`);
+    console.info(`[INFO] ${new Date().toISOString()}: ${message}`);
   },
 
   error: (message: string) => {
