@@ -19,5 +19,6 @@ declare module "styled-components" {
       };
     };
     backgroundImage?: string;
+    splashImage?: string;
   }
 }

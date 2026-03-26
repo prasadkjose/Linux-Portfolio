@@ -75,6 +75,7 @@ export type ThemeSwitcher = (theme: DefaultTheme) => void;
 export interface ThemeSwitcherProps {
   themeSwitcher: ThemeSwitcher;
   currentTheme: DefaultTheme;
+  themeLoaded: boolean;
 }
 
 /**

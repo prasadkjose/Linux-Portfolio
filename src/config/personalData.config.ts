@@ -154,6 +154,12 @@ export const PERSONAL_DATA: PersonalData = {
         href: "https://github.com/prasadkjose/confidential-ml-sgx",
       },
       {
+        value: "Linux-like Portfolio Website",
+        description:
+          "My developer portfolio website themed after Linux, built with React & TypeScript, simulating a Linux desktop environment to showcase projects, resume, and contact information.",
+        href: "https://github.com/prasadkjose/Linux-Portfolio",
+      },
+      {
         value: "OrganizeIt",
         description:
           "A Python-based utility to help users automate the organization of their file system.",

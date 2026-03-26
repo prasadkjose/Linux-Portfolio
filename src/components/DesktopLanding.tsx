@@ -1,0 +1,165 @@
+import { ThemeProvider } from "styled-components";
+import { PERSONAL_DATA } from "../config/personalData.config";
+import { themeContext } from "../hooks/useTheme";
+import GlobalStyle from "../styles/GlobalStyle";
+import theme from "../styles/themes";
+import DesktopShortcuts from "./desktop-shortcuts/DesktopShortcuts";
+import FullscreenToggle from "./FullscreenToggle";
+import ResumeWindow from "./windows/ResumeWindow";
+import TerminalWindow from "./windows/terminal/TerminalWindow";
+import Landing from "./windows/welcome-tabs/Landing";
+import { useState, useEffect } from "react";
+import { useFullscreenManager } from "../hooks/useFullscreenManger";
+import { useWindowManager } from "../hooks/useWindowManager";
+import {
+  ThemeSwitcherProps,
+  WindowManager,
+  FullscreenManager,
+} from "../types/window";
+import { isMobileDevice } from "../utils/typeGuards";
+
+const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
+  currentTheme,
+  themeSwitcher,
+  themeLoaded,
+}) => {
+  const { terminal, welcome, resume, initializeWindows }: WindowManager =
+    useWindowManager();
+  const { isFullscreen, toggleFullscreen }: FullscreenManager =
+    useFullscreenManager();
+
+  // Device detection
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  useEffect(() => {
+    const update = () => setIsMobile(isMobileDevice());
+    update();
+  }, []);
+
+  // Startup layout: mobile => browser only, maximized; desktop => browser only centered
+  useEffect(() => {
+    if (!themeLoaded) return;
+    initializeWindows();
+  }, [isMobile, themeLoaded]);
+
+  // Disable browser's default behavior
+  useEffect(() => {
+    window.addEventListener(
+      "keydown",
+      e => {
+        return (
+          ["ArrowUp", "ArrowDown"].indexOf(e.code) > -1 && e.preventDefault()
+        );
+      },
+      false
+    );
+  }, []);
+
+  // Update meta tag colors when switching themes
+  useEffect(() => {
+    const themeColor = currentTheme.colors?.body;
+    const metaThemeColor = document.querySelector("meta[name='theme-color']");
+    const maskIcon = document.querySelector("link[rel='mask-icon']");
+    const metaMsTileColor = document.querySelector(
+      "meta[name='msapplication-TileColor']"
+    );
+    metaThemeColor?.setAttribute("content", themeColor);
+    metaMsTileColor?.setAttribute("content", themeColor);
+    maskIcon?.setAttribute("color", themeColor);
+  }, [theme]);
+
+  return (
+    <ThemeProvider theme={currentTheme}>
+      <GlobalStyle theme={currentTheme} />
+      <h1 className="sr-only" aria-label={PERSONAL_DATA.personalInfo.name}>
+        {PERSONAL_DATA.personalInfo.name}
+      </h1>
+      <themeContext.Provider
+        value={{ themeSwitcher, currentTheme, themeLoaded }}
+      >
+        {/* Desktop Icons - below windows, hidden when any window is maximized */}
+        <DesktopShortcuts
+          onOpenTerminal={terminal.open}
+          onOpenWelcome={welcome.open}
+          onOpenResume={resume.open}
+          hidden={terminal.maximized || welcome.maximized || resume.maximized}
+          activeTerminal={!isMobile && terminal.mounted && terminal.visible}
+          activeBrowser={!isMobile && welcome.mounted && welcome.visible}
+          activeResume={!isMobile && resume.mounted && resume.visible}
+          mobileExpanded={isMobile && !terminal.mounted}
+        />
+
+        {/* Fullscreen toggle control: hide when any window maximized; allow windows to overlap due to low z-index */}
+        <FullscreenToggle
+          isFullscreen={isFullscreen}
+          onToggle={toggleFullscreen}
+          hidden={terminal.maximized || welcome.maximized || resume.maximized}
+        />
+
+        {/* Welcome Browser Window opens on start on desktop only */}
+        {welcome.mounted && (
+          <Landing
+            close={welcome.close}
+            // On mobile: only close button (omit minimize/maximize)
+            minimize={!isMobile ? welcome.minimize : undefined}
+            toggleMaximize={!isMobile ? welcome.toggleMaximize : undefined}
+            maximized={welcome.maximized}
+            visible={welcome.visible}
+            mounted={welcome.mounted}
+            x={welcome.x}
+            y={welcome.y}
+            z={welcome.z}
+            width={welcome.width}
+            height={welcome.height}
+            move={welcome.move}
+            resize={welcome.resize}
+            bringToFront={welcome.bringToFront}
+          />
+        )}
+
+        {/* Terminal Window */}
+        {terminal.mounted && (
+          <TerminalWindow
+            close={terminal.close}
+            // On mobile: only close button (omit minimize/maximize)
+            minimize={!isMobile ? terminal.minimize : undefined}
+            toggleMaximize={!isMobile ? terminal.toggleMaximize : undefined}
+            maximized={terminal.maximized}
+            visible={terminal.visible}
+            mounted={terminal.mounted}
+            x={terminal.x}
+            y={terminal.y}
+            z={terminal.z}
+            width={terminal.width}
+            height={terminal.height}
+            move={terminal.move}
+            resize={terminal.resize}
+            bringToFront={terminal.bringToFront}
+          />
+        )}
+
+        {/* Resume Window */}
+        {resume.mounted && (
+          <ResumeWindow
+            close={resume.close}
+            // On mobile: only close button (omit minimize/maximize)
+            minimize={!isMobile ? resume.minimize : undefined}
+            toggleMaximize={!isMobile ? resume.toggleMaximize : undefined}
+            maximized={resume.maximized}
+            visible={resume.visible}
+            mounted={terminal.mounted}
+            x={resume.x}
+            y={resume.y}
+            z={resume.z}
+            width={resume.width}
+            height={resume.height}
+            move={resume.move}
+            resize={resume.resize}
+            bringToFront={resume.bringToFront}
+          />
+        )}
+      </themeContext.Provider>
+    </ThemeProvider>
+  );
+};
+
+export default DesktopLanding;
