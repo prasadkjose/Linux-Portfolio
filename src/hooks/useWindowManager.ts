@@ -383,7 +383,6 @@ export const useWindowManager = (): WindowManager => {
     if (isMobile) {
       // Mobile: browser only, maximized
       forceMaximizedOnMobile(setWelcome);
-
       setTerminal(prev => ({
         ...prev,
         mounted: false,
