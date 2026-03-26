@@ -17,6 +17,7 @@ import {
   FullscreenManager,
 } from "../types/window";
 import { isMobileDevice } from "../utils/typeGuards";
+import { preload } from "react-dom";
 
 const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
   currentTheme,
@@ -43,6 +44,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
 
   // Disable browser's default behavior
   useEffect(() => {
+    preload("/photo1.jpg", { as: "image" });
     window.addEventListener(
       "keydown",
       e => {

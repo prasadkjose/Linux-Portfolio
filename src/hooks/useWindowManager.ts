@@ -1,5 +1,4 @@
 import { useState, useCallback } from "react";
-import { preload } from "react-dom";
 import { isMobileDevice } from "../utils/typeGuards";
 import { WindowManager, WindowState } from "../types/window";
 
@@ -381,8 +380,6 @@ export const useWindowManager = (): WindowManager => {
    * On desktop devices: Browser window is centered, terminal is hidden initially
    */
   const initializeWindows = useCallback(() => {
-    preload("/photo1.jpg", { as: "image" });
-
     if (isMobile) {
       // Mobile: browser only, maximized
       forceMaximizedOnMobile(setWelcome);
