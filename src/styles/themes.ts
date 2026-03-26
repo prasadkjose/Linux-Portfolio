@@ -36,6 +36,7 @@ const theme: Themes = {
         300: "#88C0D0",
       },
     },
+    splashImage: "ubuntu-splash.svg",
     backgroundImage:
       "https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,c_fill,w_1681/https%3A%2F%2Fubuntu.com%2Fwp-content%2Fuploads%2F834a%2FHigh-contrastResolute_Raccoon_Wallpaper_Color_1920x1080.png",
   },
@@ -54,6 +55,7 @@ const theme: Themes = {
         300: "#88C0D0",
       },
     },
+    splashImage: "fedora-splash.svg",
     backgroundImage: "https://wallpapercave.com/wp/BFBePbi.jpg",
   },
   kali: {
@@ -72,6 +74,7 @@ const theme: Themes = {
       },
     },
     backgroundImage: "https://www.kali.org/wallpapers/images/2026/kali-net.jpg",
+    splashImage: "kali-splash.svg",
   },
 };
 

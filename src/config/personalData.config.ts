@@ -20,7 +20,7 @@ export const PERSONAL_DATA: PersonalData = {
     name: "Prasad Koshy Jose",
     shortName: "Prasad",
     title: "Software Engineer | Security | AI | Open Source",
-    profileImage: "/photo1.jpg",
+    profileImage: "/preload/photo1.jpg",
     email: "prasadkjose@gmail.com",
     website: "prasadkjose.com",
     uname: "prasadkjose",
@@ -152,6 +152,12 @@ export const PERSONAL_DATA: PersonalData = {
         description:
           "A TEE-based application to securely upload and train multiparty data-sets with confidential computing.",
         href: "https://github.com/prasadkjose/confidential-ml-sgx",
+      },
+      {
+        value: "Linux-like Portfolio Website",
+        description:
+          "My developer portfolio website themed after Linux, built with React & TypeScript, simulating a Linux desktop environment to showcase projects, resume, and contact information.",
+        href: "https://github.com/prasadkjose/Linux-Portfolio",
       },
       {
         value: "OrganizeIt",
