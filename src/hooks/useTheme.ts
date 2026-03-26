@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 import themes from "../styles/themes";
 import { DefaultTheme } from "styled-components";
 import { ThemeSwitcherProps } from "../types/window";
+import logger from "../logger";
 
 interface UseThemeResult {
   theme: DefaultTheme;
@@ -15,8 +16,10 @@ export const useTheme = (): UseThemeResult => {
   const [themeLoaded, setThemeLoaded] = useState(false);
 
   const setMode = (newTheme: DefaultTheme) => {
+    logger.info(`Setting theme ${newTheme.name}.`);
     setTheme(newTheme);
     setThemeLoaded(true);
+    logger.info(`Theme sucessfully changed to ${newTheme.name}.`);
   };
 
   return { theme, themeLoaded, setMode };
