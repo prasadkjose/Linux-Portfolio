@@ -20,7 +20,7 @@ export const PERSONAL_DATA: PersonalData = {
     name: "Prasad Koshy Jose",
     shortName: "Prasad",
     title: "Software Engineer | Security | AI | Open Source",
-    profileImage: "/photo1.jpg",
+    profileImage: "/preload/photo1.jpg",
     email: "prasadkjose@gmail.com",
     website: "prasadkjose.com",
     uname: "prasadkjose",

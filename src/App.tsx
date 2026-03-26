@@ -5,6 +5,7 @@ import { useTheme } from "./hooks/useTheme";
 import SplashScreen from "./components/SplashScreen";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import { ThemeSwitcherProps } from "./types/window";
+import { preloadResources } from "./utils/resource-utils";
 
 const Overlay = styled.div`
   width: 100vw;
@@ -18,9 +19,10 @@ function App() {
   // themes
   const { theme, themeLoaded, setMode } = useTheme();
   const DesktopLanding = lazy(() => {
-    return new Promise(resolve => setTimeout(resolve, 2000)).then(
-      () => import("./components/DesktopLanding")
-    );
+    return new Promise(resolve => setTimeout(resolve, 2000)).then(() => {
+      preloadResources();
+      return import("./components/DesktopLanding");
+    });
   });
 
   const themeSwitcher = (switchTheme: DefaultTheme) => {
