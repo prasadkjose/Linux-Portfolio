@@ -18,10 +18,8 @@ export const getGitHubConfig = (): GitHubServiceConfig => {
   // Vite environment variables are accessed through import.meta.env
   const username =
     import.meta.env.VITE_GITHUB_USERNAME || PERSONAL_DATA.personalInfo.uname;
-  const token = import.meta.env.VITE_PUBLIC_GITHUB_TOKEN;
 
   return {
     username,
-    token: token || undefined,
   };
 };
