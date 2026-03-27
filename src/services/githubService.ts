@@ -1,4 +1,5 @@
 import axios from "axios";
+import logger from "../utils/logger";
 
 const GITHUB_GRAPHQL_API = "https://api.github.com/graphql";
 
@@ -124,7 +125,7 @@ class GitHubService {
         const status = error.response.status;
         const message = error.response.data?.message || "Unknown error";
 
-        console.error(`${context}: HTTP ${status} - ${message}`);
+        logger.error(`${context}: HTTP ${status} - ${message}`);
 
         // Handle specific error cases
         if (status === 401) {
@@ -140,7 +141,7 @@ class GitHubService {
         }
       } else if (error.request) {
         // Network error
-        console.error(`${context}: Network error - ${error.message}`);
+        logger.error(`${context}: Network error - ${error.message}`);
         throw new Error(
           `${context}: Network error. Please check your internet connection.`
         );
@@ -150,7 +151,7 @@ class GitHubService {
     // Other error
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
-    console.error(`${context}: ${errorMessage}`);
+    logger.error(`${context}: ${errorMessage}`);
     throw new Error(`${context}: ${errorMessage}`);
   }
 

@@ -1,10 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 import HighlightCard from "../../HighlightCard";
 import { PERSONAL_DATA } from "../../../config/personalData.config";
 import GitHubService, { Repository } from "../../../services/githubService";
 import { getGitHubConfig } from "../../../config/github.config";
 import { formatGithubProjectData } from "../../../utils/githubUtils";
+import { useQuery } from "@tanstack/react-query";
 
 const ProjectsSection = styled.section`
   display: grid;
@@ -24,32 +25,17 @@ const SectionTitle = styled.h2`
 
 const ProjectsTab: React.FC = () => {
   const { projects } = PERSONAL_DATA;
-  const [githubProjects, setGithubProjects] = useState<Repository[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchGithubProjects = async () => {
-      try {
-        setLoading(true);
-        const config = getGitHubConfig();
-        const githubService = new GitHubService(config);
-
-        const pinnedRepos = await githubService.getPinnedRepositories();
-        setGithubProjects(pinnedRepos);
-        setError(null);
-      } catch (err) {
-        console.error("Failed to fetch GitHub projects:", err);
-        setError(
-          "Failed to load GitHub projects. Please check your connection and GitHub token."
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchGithubProjects();
-  }, []);
+  const { data: githubProjects, isLoading } = useQuery({
+    queryKey: ["github-projects"],
+    queryFn: async () => {
+      const config = getGitHubConfig();
+      const githubService = new GitHubService(config);
+      return await githubService.getPinnedRepositories();
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+  });
 
   const formatProjectData = (repo: Repository) => formatGithubProjectData(repo);
 
@@ -58,30 +44,26 @@ const ProjectsTab: React.FC = () => {
       <SectionTitle>{projects.value}</SectionTitle>
 
       {/* Static projects from config */}
-      {projects.data && (
-        <ProjectsSection>
-          {projects.data.map(data => (
-            <HighlightCard
-              key={data.value}
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(136, 192, 208, 0.10) 0%, rgba(94, 129, 172, 0.10) 100%)",
-                border: "1px solid rgba(136, 192, 208, 0.25)",
-              }}
-              {...data}
-            />
-          ))}
-        </ProjectsSection>
-      )}
+      {!githubProjects ||
+        (githubProjects?.length === 0 && projects.data && (
+          <ProjectsSection>
+            {projects.data.map(data => (
+              <HighlightCard
+                key={data.value}
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(136, 192, 208, 0.10) 0%, rgba(94, 129, 172, 0.10) 100%)",
+                  border: "1px solid rgba(136, 192, 208, 0.25)",
+                }}
+                {...data}
+              />
+            ))}
+          </ProjectsSection>
+        ))}
 
       {/* Dynamic GitHub projects */}
-      {githubProjects.length > 0 && (
+      {githubProjects && githubProjects.length > 0 && (
         <Fragment>
-          <SectionTitle
-            style={{ marginTop: "32px", fontSize: "1.25rem", color: "#A3BE8C" }}
-          >
-            Featured GitHub Projects
-          </SectionTitle>
           <ProjectsSection>
             {githubProjects.map(repo => (
               <HighlightCard key={repo.name} {...formatProjectData(repo)} />
@@ -91,7 +73,7 @@ const ProjectsTab: React.FC = () => {
       )}
 
       {/* Loading state */}
-      {loading && (
+      {isLoading && (
         <div
           style={{
             textAlign: "center",
@@ -101,22 +83,6 @@ const ProjectsTab: React.FC = () => {
           }}
         >
           Loading GitHub projects...
-        </div>
-      )}
-
-      {/* Error state */}
-      {error && (
-        <div
-          style={{
-            color: "#BF616A",
-            padding: "10px",
-            backgroundColor: "rgba(191, 97, 106, 0.1)",
-            border: "1px solid rgba(191, 97, 106, 0.3)",
-            borderRadius: "4px",
-            margin: "10px 0",
-          }}
-        >
-          {error}
         </div>
       )}
     </Fragment>
