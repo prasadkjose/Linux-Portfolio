@@ -148,24 +148,28 @@ export const PERSONAL_DATA: PersonalData = {
     value: "Projects",
     data: [
       {
+        icon: "icons/github-icon.svg",
         value: "Confidential Computing of Machine Learning using Intel SGX",
         description:
           "A TEE-based application to securely upload and train multiparty data-sets with confidential computing.",
         href: "https://github.com/prasadkjose/confidential-ml-sgx",
       },
       {
+        icon: "icons/github-icon.svg",
         value: "Linux-like Portfolio Website",
         description:
           "My developer portfolio website themed after Linux, built with React & TypeScript, simulating a Linux desktop environment to showcase projects, resume, and contact information.",
         href: "https://github.com/prasadkjose/Linux-Portfolio",
       },
       {
+        icon: "icons/github-icon.svg",
         value: "OrganizeIt",
         description:
           "A Python-based utility to help users automate the organization of their file system.",
         href: "https://github.com/prasadkjose/OrganizeIt",
       },
       {
+        icon: "icons/github-icon.svg",
         value: "Practice Coding",
         description:
           "A lightweight local setup for practicing coding problems in Python, TypeScript, and C++ without logging into LeetCode or any online judge.",
