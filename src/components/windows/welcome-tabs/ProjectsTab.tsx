@@ -26,7 +26,11 @@ const SectionTitle = styled.h2`
 const ProjectsTab: React.FC = () => {
   const { projects } = PERSONAL_DATA;
 
-  const { data: githubProjects, isLoading } = useQuery({
+  const {
+    data: githubProjects,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["github-projects"],
     queryFn: async () => {
       const config = getGitHubConfig();
@@ -43,9 +47,9 @@ const ProjectsTab: React.FC = () => {
     <Fragment>
       <SectionTitle>{projects.value}</SectionTitle>
 
-      {/* Static projects from config */}
-      {!githubProjects ||
-        (githubProjects?.length === 0 && projects.data && (
+      {/* Static projects from config - shown when API fails or no GitHub projects */}
+      {(!githubProjects || isError || githubProjects?.length === 0) &&
+        projects.data && (
           <ProjectsSection>
             {projects.data.map(data => (
               <HighlightCard
@@ -59,7 +63,7 @@ const ProjectsTab: React.FC = () => {
               />
             ))}
           </ProjectsSection>
-        ))}
+        )}
 
       {/* Dynamic GitHub projects */}
       {githubProjects && githubProjects.length > 0 && (
