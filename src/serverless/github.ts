@@ -5,7 +5,7 @@ export async function handler(event: {
 
   try {
     // Use environment variable from Netlify function environment
-    const token = import.meta.env.VITE_GITHUB_TOKEN;
+    const token = process.env.VITE_GITHUB_TOKEN;
 
     if (!token) {
       return {
