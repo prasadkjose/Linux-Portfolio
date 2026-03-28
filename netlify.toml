@@ -1,2 +1,8 @@
 [build]
   functions = "/src/serverless/"
+
+# Environment Variables
+# IMPORTANT: VITE_GITHUB_TOKEN must be configured in Netlify dashboard
+# for the GitHub API functionality to work properly.
+# Go to Site Settings > Environment Variables in Netlify dashboard
+# and add: VITE_GITHUB_TOKEN = your_github_personal_access_token
