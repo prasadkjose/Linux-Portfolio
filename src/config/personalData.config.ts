@@ -104,6 +104,39 @@ export const PERSONAL_DATA: PersonalData = {
   skillsOverview: {
     value: "Technical Skills",
   },
+  recommendations: {
+    value: "Recommendations",
+    data: [
+      {
+        href: "https://www.linkedin.com/in/prasadkjose/details/recommendations/?detailScreenTabIndex=0",
+        icon: "/icons/roger.jpeg",
+        value:
+          "Roger Guasch Ibarra - Senior Member of Technical Staff at Oracle",
+        description: `I had the pleasure of working with Prasad during his tenure at Oracle. From day one, his attitude towards work truly impressed me. His technical skills were above other engineers of their level, and he was able to contribute to key areas of the project from the first day. His ability to learn new concepts and get familiar on areas that weren't trivial simply left me in awe. I'm certain that any company would benefit from his technical expertise and his dedication to excellence.`,
+      },
+      {
+        href: "https://www.linkedin.com/in/prasadkjose/details/recommendations/?detailScreenTabIndex=0",
+        icon: "/icons/john.jpeg",
+        value: "John Cobb - Senior Engineering Manager at Oracle",
+        description: `Prasad has been a great asset to the engineering team working on the Business Objects area of Oracle Visual Builder.  His knowledge of HTML, CSS and JavaScript has enabled him to make significant enhancements to the existing functionality, as well as work on new features.  He's also been able to contribute to the client UI frameworks that power our declarative editors.
+                      Prasad is a pleasure to work with, and always goes the extra mile to ensure his work is not only functionally complete, but also extremely well tested.  He works well with others in the Business Objects team, as well as the wider Visual Builder development team and beyond.  I have no hestitation in recommending him!`,
+      },
+      {
+        href: "https://www.linkedin.com/in/prasadkjose/details/recommendations/?detailScreenTabIndex=0",
+        icon: "/icons/gil.jpeg",
+        value: "Gil Goldman - VP Product - AI and Data @ SGX Group",
+        description: `Prasad is a solid engineer and an excellent learner. During his time with the team, he built the mental toolbox required to become an outstanding engineer in practically no time at all.
+                      He quickly and courageously stepped up to lead complex feature development and met almost every single learning goal he had, outperforming the entire team on that front.
+                      Prasad is an invaluable member of any team and would undoubtedly make any team he is a part of shine.`,
+      },
+      {
+        href: "https://www.linkedin.com/in/prasadkjose/details/recommendations/?detailScreenTabIndex=0",
+        icon: "/icons/greg.jpeg",
+        value: "Grégory Moinat - Senior Product Manager chez Nexthink",
+        description: `Prasad is a motivated and smart Software Developer. When he was an intern at Olympe, he demonstrated solid programming skills and delivered quality pieces of software that are still used in our platform. He built a very good relationship with the team and always showed a positive attitude. He is a fast learner and is able to work autonomously. I would definitely recommend him.`,
+      },
+    ],
+  },
   experience: {
     value: "Professional Experience",
     description: `I've had the opportunity to work with amazing companies across different

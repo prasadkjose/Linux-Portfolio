@@ -5,7 +5,11 @@ import {
   TabCloseButton,
   TabContainer,
   TabContent,
+  MobileMenuButton,
+  MobileMenuIcon,
+  MobileMenu,
 } from "./Tabs.styled";
+import { isMobileDevice } from "../../utils/typeGuards";
 
 // Tab data interface
 export interface TabData {
@@ -34,6 +38,13 @@ const Tabs: React.FC<TabsProps> = ({
   const [internalActiveTabId, setInternalActiveTabId] = useState<string>(
     activeTabId || tabs[0]?.id || ""
   );
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  // Device detection
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  useEffect(() => {
+    const update = () => setIsMobile(isMobileDevice());
+    update();
+  }, []);
 
   // Update internal state when prop changes
   useEffect(() => {
@@ -45,6 +56,7 @@ const Tabs: React.FC<TabsProps> = ({
   const handleTabClick = (tabId: string) => {
     setInternalActiveTabId(tabId);
     onTabChange?.(tabId);
+    setIsMobileMenuOpen(false);
   };
 
   const handleTabClose = (tabId: string, e: React.MouseEvent) => {
@@ -54,38 +66,66 @@ const Tabs: React.FC<TabsProps> = ({
 
   const currentTab = tabs.find(tab => tab.id === internalActiveTabId);
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const tabsComponent = tabs.map(tab => (
+    <TabButton
+      key={tab.id}
+      $isActive={internalActiveTabId === tab.id}
+      onClick={() => handleTabClick(tab.id)}
+      role="tab"
+      aria-selected={internalActiveTabId === tab.id}
+      aria-controls={`tab-panel-${tab.id}`}
+      id={`tab-${tab.id}`}
+    >
+      {tab.label}
+      {allowClose && tabs.length > 1 && (
+        <TabCloseButton
+          onClick={e => handleTabClose(tab.id, e)}
+          aria-label={`Close ${tab.label} tab`}
+          title="Close tab"
+        >
+          <svg viewBox="0 0 10 10" aria-hidden="true">
+            <path
+              d="M2 2 L8 8 M8 2 L2 8"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+        </TabCloseButton>
+      )}
+    </TabButton>
+  ));
+
   return (
     <TabContainer>
       <TabBar role="tablist" aria-label="Navigation tabs">
-        {tabs.map(tab => (
-          <TabButton
-            key={tab.id}
-            $isActive={internalActiveTabId === tab.id}
-            onClick={() => handleTabClick(tab.id)}
-            role="tab"
-            aria-selected={internalActiveTabId === tab.id}
-            aria-controls={`tab-panel-${tab.id}`}
-            id={`tab-${tab.id}`}
-          >
-            {tab.label}
-            {allowClose && tabs.length > 1 && (
-              <TabCloseButton
-                onClick={e => handleTabClose(tab.id, e)}
-                aria-label={`Close ${tab.label} tab`}
-                title="Close tab"
-              >
-                <svg viewBox="0 0 10 10" aria-hidden="true">
-                  <path
-                    d="M2 2 L8 8 M8 2 L2 8"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
+        {isMobile ? (
+          <>
+            <MobileMenuButton
+              onClick={toggleMobileMenu}
+              aria-expanded={isMobileMenuOpen}
+            >
+              <span>{currentTab?.label || tabs[0]?.label}</span>
+              <MobileMenuIcon $isOpen={isMobileMenuOpen}>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M6 9l6 6 6-6" />
                 </svg>
-              </TabCloseButton>
-            )}
-          </TabButton>
-        ))}
+              </MobileMenuIcon>
+            </MobileMenuButton>
+            {isMobileMenuOpen && <MobileMenu>{tabsComponent}</MobileMenu>}
+          </>
+        ) : (
+          tabsComponent
+        )}
       </TabBar>
 
       <TabContent

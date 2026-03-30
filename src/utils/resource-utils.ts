@@ -1,5 +1,5 @@
 import { preload } from "react-dom";
-import { IMAGES } from "../config/preloadResources.config";
+import { IMAGES, CDN_IMAGES } from "../config/preloadResources.config";
 import logger from "./logger";
 
 export function preloadResources() {
@@ -9,4 +9,9 @@ export function preloadResources() {
     preload(rootPath + src, { as: "image" });
   });
   logger.info("Preloaded Resource in preload/ dir.");
+
+  CDN_IMAGES.forEach(src => {
+    preload(src, { as: "image" });
+  });
+  logger.info("Preloaded Resources drom CDN.");
 }
