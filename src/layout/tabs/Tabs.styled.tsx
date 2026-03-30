@@ -22,6 +22,12 @@ export const TabBar = styled.div`
   height: 40px;
   align-items: center;
   gap: 2px;
+
+  @media (max-width: 550px) {
+    flex-direction: column;
+    padding: 0;
+    border-bottom: none;
+  }
 `;
 
 export const TabButton = styled.button<{ $isActive: boolean }>`
@@ -40,6 +46,7 @@ export const TabButton = styled.button<{ $isActive: boolean }>`
   border-radius: 6px 6px 0 0;
   transition: all 0.2s ease;
   margin: 0;
+  width: 100%;
 
   &:hover {
     background: rgba(255, 255, 255, 0.05);
@@ -69,6 +76,31 @@ export const TabButton = styled.button<{ $isActive: boolean }>`
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.3);
   }
+
+  @media (max-width: 550px) {
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 16px;
+    text-align: left;
+    width: 100%;
+    background: black;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    ${({ $isActive }) =>
+      $isActive &&
+      css`
+        border-bottom: none;
+        background: rgba(0, 213, 255, 1);
+        color: #ffffffff;
+
+        &::after {
+          display: none;
+        }
+      `}
+  }
 `;
 
 export const TabContent = styled.div`
@@ -95,6 +127,10 @@ export const TabContent = styled.div`
       transform: translateY(0);
     }
   }
+
+  @media (max-width: 550px) {
+    padding: 20px 16px;
+  }
 `;
 
 export const TabCloseButton = styled.button`
@@ -120,5 +156,67 @@ export const TabCloseButton = styled.button`
     width: 10px;
     height: 10px;
     fill: currentColor;
+  }
+`;
+
+export const MobileMenuButton = styled.button`
+  display: flex;
+  background: rgba(32, 32, 32, 0.95);
+  border: none;
+  color: #eceff4;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+
+  @media (max-width: 550px) {
+    display: flex;
+  }
+
+  &:hover {
+    background: rgba(40, 40, 40, 0.95);
+  }
+`;
+
+export const MobileMenuIcon = styled.span<{ $isOpen: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  transform: ${props => (props.$isOpen ? "rotate(180deg)" : "rotate(0)")};
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke: #00d4ff;
+  }
+`;
+
+export const MobileMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: rgba(24, 24, 24, 0.98);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  max-height: 300px;
+  overflow-y: auto;
+
+  @media (max-width: 550px) {
+    display: contents;
+    animation: slideDown 0.3s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;

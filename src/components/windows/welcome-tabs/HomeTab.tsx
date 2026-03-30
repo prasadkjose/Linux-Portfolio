@@ -44,7 +44,6 @@ const TitleText = styled.p`
   margin: 6px 0 0 0;
   font-size: 1.05rem;
   color: #d8dee9;
-  opacity: 0.95;
 `;
 
 const QuickLinks = styled.div`
