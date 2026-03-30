@@ -104,6 +104,39 @@ export const PERSONAL_DATA: PersonalData = {
   skillsOverview: {
     value: "Technical Skills",
   },
+  recommendations: {
+    value: "Recommendations",
+    data: [
+      {
+        href: "https://www.linkedin.com/in/prasadkjose/details/recommendations/?detailScreenTabIndex=0",
+        icon: "https://media.licdn.com/dms/image/v2/C4E03AQFLsDMozJFsoA/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1643577556115?e=1776297600&v=beta&t=_rKMRk4p4TGPt4y1nUPhYCFLBkKF-T6C28r16cUo4s4",
+        value:
+          "Roger Guasch Ibarra - Senior Member of Technical Staff at Oracle",
+        description: `I had the pleasure of working with Prasad during his tenure at Oracle. From day one, his attitude towards work truly impressed me. His technical skills were above other engineers of their level, and he was able to contribute to key areas of the project from the first day. His ability to learn new concepts and get familiar on areas that weren't trivial simply left me in awe. I'm certain that any company would benefit from his technical expertise and his dedication to excellence.`,
+      },
+      {
+        href: "https://www.linkedin.com/in/prasadkjose/details/recommendations/?detailScreenTabIndex=0",
+        icon: "https://media.licdn.com/dms/image/v2/D4E03AQEw_93-rrDDyA/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1675445819187?e=1776297600&v=beta&t=Gv7p5AjCSSOX1LLZrgNl1PTum9T9GhDu6TKLxKGNo-8",
+        value: "John Cobb - Senior Engineering Manager at Oracle",
+        description: `Prasad has been a great asset to the engineering team working on the Business Objects area of Oracle Visual Builder.  His knowledge of HTML, CSS and JavaScript has enabled him to make significant enhancements to the existing functionality, as well as work on new features.  He's also been able to contribute to the client UI frameworks that power our declarative editors.
+                      Prasad is a pleasure to work with, and always goes the extra mile to ensure his work is not only functionally complete, but also extremely well tested.  He works well with others in the Business Objects team, as well as the wider Visual Builder development team and beyond.  I have no hestitation in recommending him!`,
+      },
+      {
+        href: "https://www.linkedin.com/in/prasadkjose/details/recommendations/?detailScreenTabIndex=0",
+        icon: "https://media.licdn.com/dms/image/v2/C4D03AQGWqjexFFmfzg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1611303394926?e=1776297600&v=beta&t=8_GhuACcCXEUjnjxz6zJxJOBL8wEjugqPJmHH8Mh1Dg",
+        value: "Gil Goldman - VP Product - AI and Data @ SGX Group",
+        description: `Prasad is a solid engineer and an excellent learner. During his time with the team, he built the mental toolbox required to become an outstanding engineer in practically no time at all.
+                      He quickly and courageously stepped up to lead complex feature development and met almost every single learning goal he had, outperforming the entire team on that front.
+                      Prasad is an invaluable member of any team and would undoubtedly make any team he is a part of shine.`,
+      },
+      {
+        href: "https://www.linkedin.com/in/prasadkjose/details/recommendations/?detailScreenTabIndex=0",
+        icon: "https://media.licdn.com/dms/image/v2/C4D03AQGuagBaIaIpxA/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1562747752711?e=1776297600&v=beta&t=B8EyngP6JxtlcatM-sQXC7rkh3-y3rYkLCqV6eZVEX8",
+        value: "Grégory Moinat - Senior Product Manager chez Nexthink",
+        description: `Prasad is a motivated and smart Software Developer. When he was an intern at Olympe, he demonstrated solid programming skills and delivered quality pieces of software that are still used in our platform. He built a very good relationship with the team and always showed a positive attitude. He is a fast learner and is able to work autonomously. I would definitely recommend him.`,
+      },
+    ],
+  },
   experience: {
     value: "Professional Experience",
     description: `I've had the opportunity to work with amazing companies across different

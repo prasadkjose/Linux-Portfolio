@@ -8,6 +8,7 @@ export interface Data {
   href?: string;
   /** Path to the icon image to display */
   icon?: string | IconType;
+  iconSize?: string;
   value: string;
   description?: string;
   style?: Record<string, string>;
@@ -65,5 +66,6 @@ export interface PersonalData {
   quickLinks: Data[];
   /** Skills overview section */
   skillsOverview: DataSection;
+  recommendations: DataSection;
   projects: DataSection;
 }

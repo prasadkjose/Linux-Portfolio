@@ -3,6 +3,7 @@ import HomeTab from "./HomeTab";
 import ExperienceTab from "./ExperienceTab";
 import EducationTab from "./EducationTab";
 import ProjectsTab from "./ProjectsTab";
+import RecommendationsTab from "./RecommendationsTab";
 
 export const TAB_CONFIGS: Record<string, TabData[]> = {
   welcome: [
@@ -25,6 +26,11 @@ export const TAB_CONFIGS: Record<string, TabData[]> = {
       id: "projects",
       label: "Projects",
       content: ProjectsTab,
+    },
+    {
+      id: "recomendations",
+      label: "Recomendations",
+      content: RecommendationsTab,
     },
   ],
 };

@@ -6,6 +6,7 @@ const HighlightCard: React.FC<Data> = ({
   style,
   value,
   icon,
+  iconSize,
   description,
 }) => {
   // Highlight card icons should be strings to local resource
@@ -43,7 +44,7 @@ const HighlightCard: React.FC<Data> = ({
           gap: "10px",
         }}
       >
-        {icon && <img src={icon} alt={value} height="24"></img>}
+        {icon && <img src={icon} alt={value} height={iconSize || "24"}></img>}
         <h3 style={{ margin: 0, color: "#88C0D0", fontSize: "1.05rem" }}>
           {value}
         </h3>
