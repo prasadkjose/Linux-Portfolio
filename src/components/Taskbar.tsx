@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { WindowState } from "../types/window";
 import { Icons } from "./desktop-shortcuts/DesktopIcons";
 import { formatTime, formatDate } from "../utils/clock";
+import CalendarPanel from "./CalendarPanel";
 
 const Bar = styled.div`
   position: fixed;
@@ -10,7 +11,7 @@ const Bar = styled.div`
   left: 0;
   right: 0;
   height: 48px;
-  background: rgba(12, 12, 12, 0.82);
+  background: rgba(12, 12, 12, 0.43);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -121,6 +122,16 @@ const Clock = styled.div`
   text-align: right;
   line-height: 1.3;
   user-select: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+  &:active {
+    background: rgba(255, 255, 255, 0.13);
+  }
 `;
 
 const Separator = styled.div`
@@ -149,6 +160,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
   resume,
 }) => {
   const [, showDesktop] = useState<boolean>(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const time = useClock();
   const handleTaskClick = (window: WindowState) => {
     if (!window.mounted) {
@@ -231,12 +243,24 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
       {/* Right: Clock & date */}
       <RightSection>
         <Separator />
-        <Clock aria-label={`Current time: ${formatTime(time)}`}>
+        <Clock
+          onClick={() => setCalendarOpen(prev => !prev)}
+          aria-label={`Current time: ${formatTime(time)}. Click to open calendar.`}
+          role="button"
+          tabIndex={0}
+          onKeyDown={e => {
+            if (e.key === "Enter" || e.key === " ")
+              setCalendarOpen(prev => !prev);
+          }}
+        >
           <div>{formatTime(time)}</div>
           <div style={{ fontSize: "11px", opacity: 0.7 }}>
             {formatDate(time)}
           </div>
         </Clock>
+        {calendarOpen && (
+          <CalendarPanel onClose={() => setCalendarOpen(false)} />
+        )}
       </RightSection>
     </Bar>
   );
