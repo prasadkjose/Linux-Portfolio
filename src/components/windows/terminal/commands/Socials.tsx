@@ -8,7 +8,7 @@ import {
 } from "../../../../styles/Help.styled";
 import { generateTabs, isArgInvalid } from "../../../../utils/funcs";
 import { termContext } from "../TerminalContext";
-import Usage from "../../../Usage";
+import Usage from "../Usage";
 import { PERSONAL_DATA } from "../../../../config/personalData.config";
 
 const Socials: React.FC = () => {
