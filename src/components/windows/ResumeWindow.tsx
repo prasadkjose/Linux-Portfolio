@@ -68,7 +68,9 @@ const DownloadLink = styled.a`
 
 const Content = styled.div<{ $maximized?: boolean }>`
   height: ${({ $maximized }) =>
-    $maximized ? "calc(100vh - 32px - 36px)" : "calc(100% - 32px - 36px)"};
+    $maximized
+      ? "calc(100vh - 32px - 36px - 50px)"
+      : "calc(100% - 32px - 36px)"};
   overflow: hidden;
 `;
 

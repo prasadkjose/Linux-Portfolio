@@ -30,7 +30,9 @@ const TerminalContent = styled.div<{ $maximized?: boolean }>`
     font-size: 0.8rem; background: transparent; display: flex; flex-direction: column; align-items: stretch; overflow: hidden;
   `}
   height: ${({ $maximized }) =>
-    $maximized ? "calc(100vh - 32px - 28px)" : "calc(100% - 32px - 28px)"};
+    $maximized
+      ? "calc(100vh - 32px - 28px - 50px)"
+      : "calc(100% - 32px - 28px)"};
   & > * {
     flex: 1 1 auto;
     min-height: 0;
