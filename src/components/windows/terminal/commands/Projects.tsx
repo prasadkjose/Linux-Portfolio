@@ -1,9 +1,5 @@
-import { useContext, useEffect } from "react";
-import {
-  checkRedirect,
-  getCurrentCmdArry,
-  isArgInvalid,
-} from "../../../../utils/funcs";
+import { useContext } from "react";
+import { isArgInvalid } from "../../../../utils/funcs";
 import {
   ProjectContainer,
   ProjectDesc,
@@ -14,30 +10,30 @@ import Usage from "../../../Usage";
 import { PERSONAL_DATA } from "../../../../config/personalData.config";
 
 const Projects: React.FC = () => {
-  const { arg, history, rerender } = useContext(termContext);
+  const { arg, setRerender, history, rerender } = useContext(termContext);
 
   /* ===== get current command ===== */
-  const currentCommand = getCurrentCmdArry(history);
-
-  /* ===== check current command is redirect ===== */
-  useEffect(() => {
-    if (checkRedirect(rerender, currentCommand, "projects")) {
-      PERSONAL_DATA.projects.data?.forEach(({ href }, id) => {
-        return id === parseInt(arg[1]) && window.open(href, "_blank");
-      });
-    }
-  }, [arg, rerender, currentCommand]);
+  const currentCommand = history.at(-1);
 
   /* ===== handle project click ===== */
-  const handleProjectClick = (id: number, url: string) => {
+  const handleProjectClick = (url?: string) => {
     window.open(url, "_blank");
+    setRerender?.(false);
+    return null;
   };
 
   /* ===== check arg is valid ===== */
   const checkArg = () =>
     isArgInvalid(arg, "go", ["1", "2", "3", "4"]) ? (
       <Usage cmd="projects" />
-    ) : null;
+    ) : (
+      rerender &&
+      setRerender &&
+      currentCommand === `projects ${arg.join(" ")}` &&
+      handleProjectClick(
+        PERSONAL_DATA.projects.data?.[parseInt(arg[1]) - 1].href
+      )
+    );
 
   return arg.length > 0 || arg.length > 2 ? (
     checkArg()
@@ -47,7 +43,7 @@ const Projects: React.FC = () => {
         ({ value, description, href = "" }, id) => (
           <ProjectContainer key={id}>
             <ProjectTitle
-              onClick={() => handleProjectClick(id, href)}
+              onClick={() => handleProjectClick(href)}
               style={{ cursor: "pointer" }}
             >
               {`${id + 1}. ${value}`}
@@ -56,7 +52,7 @@ const Projects: React.FC = () => {
           </ProjectContainer>
         )
       )}
-      <Usage cmd="projects" marginY />
+      <Usage cmd="projects" $marginY={true} />
     </div>
   );
 };

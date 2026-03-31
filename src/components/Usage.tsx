@@ -4,7 +4,7 @@ import { termContext } from "./windows/terminal/TerminalContext";
 
 type Props = {
   cmd: "projects" | "socials";
-  marginY?: boolean;
+  $marginY?: boolean;
 };
 
 const arg = {
@@ -12,7 +12,7 @@ const arg = {
   socials: { placeholder: "social-no", example: "1" },
 };
 
-const Usage: React.FC<Props> = ({ cmd, marginY = false }) => {
+const Usage: React.FC<Props> = ({ cmd, $marginY = false }) => {
   const { executeCommand } = useContext(termContext);
   const action = "go";
 
@@ -23,7 +23,7 @@ const Usage: React.FC<Props> = ({ cmd, marginY = false }) => {
   };
 
   return (
-    <UsageDiv data-testid={`${cmd}-invalid-arg`} marginY={marginY}>
+    <UsageDiv data-testid={`${cmd}-invalid-arg`} $marginY={$marginY}>
       Usage: {cmd} {action} &#60;{arg[cmd].placeholder}&#62; <br />
       eg:{" "}
       <span
