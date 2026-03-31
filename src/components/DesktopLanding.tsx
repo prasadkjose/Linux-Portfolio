@@ -5,6 +5,7 @@ import GlobalStyle from "../styles/GlobalStyle";
 import theme from "../styles/themes";
 import DesktopShortcuts from "./desktop-shortcuts/DesktopShortcuts";
 import FullscreenToggle from "./FullscreenToggle";
+import Taskbar from "./Taskbar";
 import ResumeWindow from "./windows/ResumeWindow";
 import TerminalWindow from "./windows/terminal/TerminalWindow";
 import Landing from "./windows/welcome-tabs/Landing";
@@ -94,6 +95,9 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
           onToggle={toggleFullscreen}
           hidden={terminal.maximized || welcome.maximized || resume.maximized}
         />
+
+        {/* Linux-style taskbar fixed at the bottom */}
+        <Taskbar {...{ terminal, welcome, resume }} />
 
         {/* Welcome Browser Window opens on start on desktop only */}
         {welcome.mounted && (

@@ -24,7 +24,7 @@ const Grid = styled.div<{ hidden?: boolean; $mobileExpanded?: boolean }>`
   ${({ $mobileExpanded }) =>
     $mobileExpanded
       ? `
-    top: 12px; left: 12px; right: 12px; bottom: 12px;
+    top: 12px; left: 12px; right: 12px; bottom: 60px;
     grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
     grid-auto-rows: max-content;
     gap: 20px;
@@ -33,7 +33,7 @@ const Grid = styled.div<{ hidden?: boolean; $mobileExpanded?: boolean }>`
     overflow: auto;
   `
       : `
-    top: 24px; left: 24px;
+    top: 24px; left: 24px; bottom: 60px;
     grid-template-columns: repeat(1, max-content);
     grid-auto-rows: max-content;
     gap: 18px;
