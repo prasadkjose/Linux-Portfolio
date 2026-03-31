@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ProjectsIntro } from "../../../../styles/Projects.styled";
 import {
   Cmd,
@@ -6,41 +6,36 @@ import {
   CmdList,
   HelpWrapper,
 } from "../../../../styles/Help.styled";
-import {
-  checkRedirect,
-  generateTabs,
-  getCurrentCmdArry,
-  isArgInvalid,
-} from "../../../../utils/funcs";
+import { generateTabs, isArgInvalid } from "../../../../utils/funcs";
 import { termContext } from "../TerminalContext";
 import Usage from "../../../Usage";
 import { PERSONAL_DATA } from "../../../../config/personalData.config";
 
 const Socials: React.FC = () => {
-  const { arg, history, rerender } = useContext(termContext);
+  const { arg, history, rerender, setRerender } = useContext(termContext);
 
   /* ===== get current command ===== */
-  const currentCommand = getCurrentCmdArry(history);
-
-  /* ===== check current command makes redirect ===== */
-  useEffect(() => {
-    if (checkRedirect(rerender, currentCommand, "socials")) {
-      PERSONAL_DATA.personalInfo.socials.forEach(({ href = "" }, id) => {
-        return id === parseInt(arg[1]) && window.open(href, "_blank");
-      });
-    }
-  }, [arg, rerender, currentCommand]);
+  const currentCommand = history.at(-1);
 
   /* ===== handle social link click ===== */
-  const handleSocialClick = (url: string) => {
+  const handleSocialClick = (url?: string) => {
     window.open(url, "_blank");
+    setRerender?.(false);
+    return null;
   };
 
   /* ===== check arg is valid ===== */
   const checkArg = () =>
     isArgInvalid(arg, "go", ["1", "2", "3", "4"]) ? (
       <Usage cmd="socials" />
-    ) : null;
+    ) : (
+      rerender &&
+      setRerender &&
+      currentCommand === `socials ${arg.join(" ")}` &&
+      handleSocialClick(
+        PERSONAL_DATA.personalInfo.socials[parseInt(arg[1]) - 1].href
+      )
+    );
 
   return arg.length > 0 || arg.length > 2 ? (
     checkArg()
@@ -59,7 +54,7 @@ const Socials: React.FC = () => {
           <CmdDesc>- {href}</CmdDesc>
         </CmdList>
       ))}
-      <Usage cmd="socials" marginY />
+      <Usage cmd="socials" $marginY />
     </HelpWrapper>
   );
 };

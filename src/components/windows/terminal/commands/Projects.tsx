@@ -30,7 +30,9 @@ const Projects: React.FC = () => {
       rerender &&
       setRerender &&
       currentCommand === `projects ${arg.join(" ")}` &&
-      handleProjectClick(PERSONAL_DATA.projects.data?.[parseInt(arg[1])].href)
+      handleProjectClick(
+        PERSONAL_DATA.projects.data?.[parseInt(arg[1]) - 1].href
+      )
     );
 
   return arg.length > 0 || arg.length > 2 ? (
