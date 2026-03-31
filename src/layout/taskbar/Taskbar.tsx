@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { WindowState } from "../types/window";
-import { Icons } from "./desktop-shortcuts/DesktopIcons";
-import { formatTime, formatDate } from "../utils/clock";
-import CalendarPanel from "./CalendarPanel";
+import { WindowState } from "../../types/window";
+import { Icons } from "../../components/desktop-shortcuts/DesktopIcons";
+import { formatTime, formatDate } from "../../utils/clock";
+import CalendarPanel from "../../components/CalendarPanel";
 
 const Bar = styled.div`
   position: fixed;

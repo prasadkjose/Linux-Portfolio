@@ -5,7 +5,7 @@ import GlobalStyle from "../styles/GlobalStyle";
 import theme from "../styles/themes";
 import DesktopShortcuts from "./desktop-shortcuts/DesktopShortcuts";
 import FullscreenToggle from "./FullscreenToggle";
-import Taskbar from "./Taskbar";
+import Taskbar from "../layout/taskbar/Taskbar";
 import ResumeWindow from "./windows/ResumeWindow";
 import TerminalWindow from "./windows/terminal/TerminalWindow";
 import Landing from "./windows/welcome-tabs/Landing";
