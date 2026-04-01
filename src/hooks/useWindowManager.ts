@@ -442,12 +442,11 @@ export const useWindowManager = (): WindowManager => {
       string,
       SerializableWindowState
     > | null>(STORAGE_KEY, null);
-    if (!savedState) {
+    if (!savedState || isMobile) {
       // Startup layout: mobile => browser only, maximized; desktop => browser only centered
       initializeWindows();
       return;
     }
-    if (isMobile) return;
 
     if (savedState.terminal) {
       setTerminal(prev => ({ ...prev, ...savedState.terminal }));
