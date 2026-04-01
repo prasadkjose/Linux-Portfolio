@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from "react";
-import { isMobileDevice } from "../utils/typeGuards";
+import { useState, useCallback, useEffect, useMemo } from "react";
+import { isMobileDevice, propertyPicker } from "../utils/typeGuards";
 import {
   WindowManager,
   WindowState,
@@ -18,6 +18,15 @@ const DEFAULT_WINDOW_SIZE = {
 
 const STORAGE_KEY = "window-state";
 const SAVE_DEBOUNCE_MS = 300;
+const SERIALIZABLE_PROPS: (keyof WindowState)[] = [
+  "mounted",
+  "visible",
+  "maximized",
+  "x",
+  "y",
+  "width",
+  "height",
+];
 
 /**
  * Calculate centered position for a window within the viewport
@@ -451,69 +460,26 @@ export const useWindowManager = (): WindowManager => {
     }
   }, [isMobile]);
 
+  // Stable serializable state reference - only updates when actual values change
+  const serializableState = useMemo(
+    () => ({
+      terminal: propertyPicker(terminal, SERIALIZABLE_PROPS),
+      welcome: propertyPicker(welcome, SERIALIZABLE_PROPS),
+      resume: propertyPicker(resume, SERIALIZABLE_PROPS),
+    }),
+    [terminal, welcome, resume]
+  );
+
   // Auto-save window state to localStorage with debouncing
   useEffect(() => {
     if (isMobile) return;
 
     const saveTimeout = setTimeout(() => {
-      const serializableState: Record<string, SerializableWindowState> = {
-        terminal: {
-          mounted: terminal.mounted,
-          visible: terminal.visible,
-          maximized: terminal.maximized,
-          x: terminal.x,
-          y: terminal.y,
-          width: terminal.width,
-          height: terminal.height,
-        },
-        welcome: {
-          mounted: welcome.mounted,
-          visible: welcome.visible,
-          maximized: welcome.maximized,
-          x: welcome.x,
-          y: welcome.y,
-          width: welcome.width,
-          height: welcome.height,
-        },
-        resume: {
-          mounted: resume.mounted,
-          visible: resume.visible,
-          maximized: resume.maximized,
-          x: resume.x,
-          y: resume.y,
-          width: resume.width,
-          height: resume.height,
-        },
-      };
-
       setToLS(STORAGE_KEY, serializableState);
     }, SAVE_DEBOUNCE_MS);
 
     return () => clearTimeout(saveTimeout);
-  }, [
-    isMobile,
-    terminal.mounted,
-    terminal.visible,
-    terminal.maximized,
-    terminal.x,
-    terminal.y,
-    terminal.width,
-    terminal.height,
-    welcome.mounted,
-    welcome.visible,
-    welcome.maximized,
-    welcome.x,
-    welcome.y,
-    welcome.width,
-    welcome.height,
-    resume.mounted,
-    resume.visible,
-    resume.maximized,
-    resume.x,
-    resume.y,
-    resume.width,
-    resume.height,
-  ]);
+  }, [isMobile, serializableState]);
 
   return {
     // Window states

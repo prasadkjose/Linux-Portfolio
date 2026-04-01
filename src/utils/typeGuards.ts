@@ -15,3 +15,20 @@ export const isFullscreenAPIAvailable = (): boolean => {
 export const isMobileDevice = (): boolean => {
   return window.matchMedia("(max-width: 768px)").matches;
 };
+
+/**
+ * Generic type-safe property picker utility, ideally to pick serializble properties
+ * Extracts specified keys from any object with full type safety
+ * @
+ */
+export const propertyPicker = <T, K extends keyof T>(
+  obj: T,
+  keys: readonly K[]
+): Pick<T, K> => {
+  return keys.reduce(
+    (acc, key) => {
+      return { ...acc, [key]: obj[key] };
+    },
+    {} as Pick<T, K>
+  );
+};
