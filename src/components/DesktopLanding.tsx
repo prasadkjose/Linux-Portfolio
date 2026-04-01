@@ -25,8 +25,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
   themeLoaded,
   resumePath,
 }) => {
-  const { terminal, welcome, resume, initializeWindows }: WindowManager =
-    useWindowManager();
+  const { terminal, welcome, resume }: WindowManager = useWindowManager();
   const { isFullscreen, toggleFullscreen }: FullscreenManager =
     useFullscreenManager();
 
@@ -36,12 +35,6 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
     const update = () => setIsMobile(isMobileDevice());
     update();
   }, []);
-
-  // Startup layout: mobile => browser only, maximized; desktop => browser only centered
-  useEffect(() => {
-    if (!themeLoaded) return;
-    initializeWindows();
-  }, [isMobile, themeLoaded]);
 
   // Disable browser's default behavior
   useEffect(() => {

@@ -100,15 +100,22 @@ export interface ThemeSwitcherProps {
  * @property {function} move - function to update the x and y coordinates of the window
  *
  */
-export interface WindowState {
+/**
+ * Serializable subset of WindowState for localStorage persistence
+ * Excludes function references and runtime only properties
+ */
+export interface SerializableWindowState {
   mounted: boolean;
   visible: boolean;
   maximized: boolean;
   x: number;
   y: number;
-  z: number;
   width?: number;
   height?: number;
+}
+
+export interface WindowState extends SerializableWindowState {
+  z: number;
 
   bringToFront: () => void;
   open?: () => void;
@@ -117,6 +124,19 @@ export interface WindowState {
   toggleMaximize?: () => void;
   resize: (width: number, height: number, x?: number, y?: number) => void;
   move: (x: number, y: number) => void;
+}
+
+/*
+ * Local storage state management for the state of each window
+ */
+export interface WindowStorageState {
+  mounted: boolean;
+  visible: boolean;
+  maximized: boolean;
+  x: number;
+  y: number;
+  width?: number;
+  height?: number;
 }
 
 /**

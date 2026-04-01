@@ -1,3 +1,5 @@
+import logger from "./logger";
+
 /**
  * Safe localStorage accessor that gracefully handles browser restrictions
  * @internal
@@ -21,7 +23,7 @@ export const setToLS = <T>(key: string, value: T): void => {
   try {
     safeLocalStorage?.setItem(key, JSON.stringify(value));
   } catch (e) {
-    console.warn(`[storage] Failed to set key "${key}":`, e);
+    logger.warn(`[storage] Failed to set key "${key}":${e}`);
   }
 };
 
@@ -39,7 +41,7 @@ export const getFromLS = <T>(key: string, fallback: T): T => {
     if (raw === null || raw === undefined) return fallback;
     return JSON.parse(raw) as T;
   } catch (e) {
-    console.warn(`[storage] Failed to get key "${key}":`, e);
+    logger.warn(`[storage] Failed to get key "${key}":${e}`);
     return fallback;
   }
 };
@@ -53,6 +55,6 @@ export const removeFromLS = (key: string): void => {
   try {
     safeLocalStorage?.removeItem(key);
   } catch (e) {
-    console.warn(`[storage] Failed to remove key "${key}":`, e);
+    logger.warn(`[storage] Failed to remove key "${key}"::${e}`);
   }
 };

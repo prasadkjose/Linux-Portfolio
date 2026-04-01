@@ -1,6 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { isMobileDevice } from "../utils/typeGuards";
-import { WindowManager, WindowState } from "../types/window";
+import {
+  WindowManager,
+  WindowState,
+  SerializableWindowState,
+} from "../types/window";
+import { setToLS, getFromLS } from "../utils/storage";
 
 /**
  * Default size configuration for the welcome browser window
@@ -10,6 +15,9 @@ const DEFAULT_WINDOW_SIZE = {
   width: window.innerWidth - 150,
   height: window.innerHeight - 150,
 };
+
+const STORAGE_KEY = "window-state";
+const SAVE_DEBOUNCE_MS = 300;
 
 /**
  * Calculate centered position for a window within the viewport
@@ -392,6 +400,7 @@ export const useWindowManager = (): WindowManager => {
         y: 0,
       }));
     } else {
+      // get
       // Desktop: browser centered
       centerWindowOnDesktop(setWelcome, DEFAULT_WINDOW_SIZE);
       bringBrowserToFront();
@@ -416,6 +425,94 @@ export const useWindowManager = (): WindowManager => {
     forceMaximizedOnMobile,
     centerWindowOnDesktop,
     bringBrowserToFront,
+  ]);
+
+  // Load persisted state on mount
+  useEffect(() => {
+    const savedState = getFromLS<Record<
+      string,
+      SerializableWindowState
+    > | null>(STORAGE_KEY, null);
+    if (!savedState) {
+      // Startup layout: mobile => browser only, maximized; desktop => browser only centered
+      initializeWindows();
+      return;
+    }
+    if (isMobile) return;
+
+    if (savedState.terminal) {
+      setTerminal(prev => ({ ...prev, ...savedState.terminal }));
+    }
+    if (savedState.welcome) {
+      setWelcome(prev => ({ ...prev, ...savedState.welcome }));
+    }
+    if (savedState.resume) {
+      setResume(prev => ({ ...prev, ...savedState.resume }));
+    }
+  }, [isMobile]);
+
+  // Auto-save window state to localStorage with debouncing
+  useEffect(() => {
+    if (isMobile) return;
+
+    const saveTimeout = setTimeout(() => {
+      const serializableState: Record<string, SerializableWindowState> = {
+        terminal: {
+          mounted: terminal.mounted,
+          visible: terminal.visible,
+          maximized: terminal.maximized,
+          x: terminal.x,
+          y: terminal.y,
+          width: terminal.width,
+          height: terminal.height,
+        },
+        welcome: {
+          mounted: welcome.mounted,
+          visible: welcome.visible,
+          maximized: welcome.maximized,
+          x: welcome.x,
+          y: welcome.y,
+          width: welcome.width,
+          height: welcome.height,
+        },
+        resume: {
+          mounted: resume.mounted,
+          visible: resume.visible,
+          maximized: resume.maximized,
+          x: resume.x,
+          y: resume.y,
+          width: resume.width,
+          height: resume.height,
+        },
+      };
+
+      setToLS(STORAGE_KEY, serializableState);
+    }, SAVE_DEBOUNCE_MS);
+
+    return () => clearTimeout(saveTimeout);
+  }, [
+    isMobile,
+    terminal.mounted,
+    terminal.visible,
+    terminal.maximized,
+    terminal.x,
+    terminal.y,
+    terminal.width,
+    terminal.height,
+    welcome.mounted,
+    welcome.visible,
+    welcome.maximized,
+    welcome.x,
+    welcome.y,
+    welcome.width,
+    welcome.height,
+    resume.mounted,
+    resume.visible,
+    resume.maximized,
+    resume.x,
+    resume.y,
+    resume.width,
+    resume.height,
   ]);
 
   return {
