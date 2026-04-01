@@ -4,19 +4,13 @@ import { themeContext } from "../hooks/useTheme";
 import GlobalStyle from "../styles/GlobalStyle";
 import theme from "../styles/themes";
 import DesktopShortcuts from "./desktop-shortcuts/DesktopShortcuts";
-import FullscreenToggle from "./FullscreenToggle";
 import Taskbar from "../layout/taskbar/Taskbar";
 import ResumeWindow from "./windows/ResumeWindow";
 import TerminalWindow from "./windows/terminal/TerminalWindow";
 import Landing from "./windows/welcome-tabs/Landing";
 import { useState, useEffect } from "react";
-import { useFullscreenManager } from "../hooks/useFullscreenManger";
 import { useWindowManager } from "../hooks/useWindowManager";
-import {
-  ThemeSwitcherProps,
-  WindowManager,
-  FullscreenManager,
-} from "../types/window";
+import { ThemeSwitcherProps, WindowManager } from "../types/window";
 import { isMobileDevice } from "../utils/typeGuards";
 
 const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
@@ -26,8 +20,6 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
   resumePath,
 }) => {
   const { terminal, welcome, resume }: WindowManager = useWindowManager();
-  const { isFullscreen, toggleFullscreen }: FullscreenManager =
-    useFullscreenManager();
 
   // Device detection
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -81,13 +73,6 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
           activeBrowser={!isMobile && welcome.mounted && welcome.visible}
           activeResume={!isMobile && resume.mounted && resume.visible}
           mobileExpanded={isMobile && !terminal.mounted}
-        />
-
-        {/* Fullscreen toggle control: hide when any window maximized; allow windows to overlap due to low z-index */}
-        <FullscreenToggle
-          isFullscreen={isFullscreen}
-          onToggle={toggleFullscreen}
-          hidden={terminal.maximized || welcome.maximized || resume.maximized}
         />
 
         {/* Linux-style taskbar fixed at the bottom */}
