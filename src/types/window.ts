@@ -76,6 +76,7 @@ export interface ThemeSwitcherProps {
   themeSwitcher: ThemeSwitcher;
   currentTheme: DefaultTheme;
   themeLoaded: boolean;
+  resumePath: string;
 }
 
 /**

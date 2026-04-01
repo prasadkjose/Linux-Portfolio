@@ -5,6 +5,7 @@ import GlobalStyle from "../styles/GlobalStyle";
 import theme from "../styles/themes";
 import DesktopShortcuts from "./desktop-shortcuts/DesktopShortcuts";
 import FullscreenToggle from "./FullscreenToggle";
+import Taskbar from "../layout/taskbar/Taskbar";
 import ResumeWindow from "./windows/ResumeWindow";
 import TerminalWindow from "./windows/terminal/TerminalWindow";
 import Landing from "./windows/welcome-tabs/Landing";
@@ -22,6 +23,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
   currentTheme,
   themeSwitcher,
   themeLoaded,
+  resumePath,
 }) => {
   const { terminal, welcome, resume, initializeWindows }: WindowManager =
     useWindowManager();
@@ -74,7 +76,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
         {PERSONAL_DATA.personalInfo.name}
       </h1>
       <themeContext.Provider
-        value={{ themeSwitcher, currentTheme, themeLoaded }}
+        value={{ themeSwitcher, currentTheme, themeLoaded, resumePath }}
       >
         {/* Desktop Icons - below windows, hidden when any window is maximized */}
         <DesktopShortcuts
@@ -94,6 +96,9 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
           onToggle={toggleFullscreen}
           hidden={terminal.maximized || welcome.maximized || resume.maximized}
         />
+
+        {/* Linux-style taskbar fixed at the bottom */}
+        <Taskbar {...{ terminal, welcome, resume }} />
 
         {/* Welcome Browser Window opens on start on desktop only */}
         {welcome.mounted && (

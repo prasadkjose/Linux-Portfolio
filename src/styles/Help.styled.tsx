@@ -10,7 +10,7 @@ export const CmdList = styled.div`
 `;
 
 export const Cmd = styled.span`
-  color: ${({ theme }) => theme.colors?.primary};
+  color: ${({ theme }) => theme.colors?.text[300]};
 
   &:hover {
     text-decoration: underline;

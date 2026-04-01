@@ -6,7 +6,7 @@ import {
   ProjectTitle,
 } from "../../../../styles/Projects.styled";
 import { termContext } from "../TerminalContext";
-import Usage from "../../../Usage";
+import Usage from "../Usage";
 import { PERSONAL_DATA } from "../../../../config/personalData.config";
 
 const Projects: React.FC = () => {

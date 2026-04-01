@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { termContext } from "../TerminalContext";
 import { themeContext } from "../../../../hooks/useTheme";
-import { RESUME_OS_MAP } from "../../../../config/personalData.config";
 
 const Resume: React.FC = () => {
   const { history, rerender, setRerender } = useContext(termContext);
@@ -11,11 +10,7 @@ const Resume: React.FC = () => {
   /* ===== check current command makes redirect ===== */
   if (rerender && setRerender && currentCommand === "resume") {
     const themeContextValue = useContext(themeContext);
-    let pdfUrl;
-    if (themeContextValue) {
-      const theme = themeContextValue.currentTheme;
-      pdfUrl = RESUME_OS_MAP[theme.id];
-    }
+    const pdfUrl = themeContextValue?.resumePath;
 
     window.open(pdfUrl, "_blank");
 

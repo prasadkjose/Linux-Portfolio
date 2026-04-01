@@ -3,7 +3,6 @@ import styled from "styled-components";
 import WindowContainer from "../../layout/window-container/WindowContainer";
 import { WindowState } from "../../types/window";
 import { themeContext } from "../../hooks/useTheme";
-import { RESUME_OS_MAP } from "../../config/personalData.config";
 
 // Resume window with integrated PDF viewer
 const Toolbar = styled.div`
@@ -68,7 +67,9 @@ const DownloadLink = styled.a`
 
 const Content = styled.div<{ $maximized?: boolean }>`
   height: ${({ $maximized }) =>
-    $maximized ? "calc(100vh - 32px - 36px)" : "calc(100% - 32px - 36px)"};
+    $maximized
+      ? "calc(100vh - 32px - 36px - 50px)"
+      : "calc(100% - 32px - 36px)"};
   overflow: hidden;
 `;
 
@@ -85,11 +86,7 @@ const PDFContainer = styled.div`
 
 const ResumeWindow: React.FC<WindowState> = props => {
   const themeContextValue = useContext(themeContext);
-  let pdfUrl;
-  if (themeContextValue) {
-    const theme = themeContextValue.currentTheme;
-    pdfUrl = RESUME_OS_MAP[theme.id];
-  }
+  const pdfUrl = themeContextValue?.resumePath;
 
   return (
     <WindowContainer {...props} title="Resume">
