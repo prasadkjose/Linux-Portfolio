@@ -3,10 +3,7 @@ import styled from "styled-components";
 import Pill from "../../Pill";
 import { PreImg } from "../../../styles/Welcome.styled";
 import { SKILL_DETAILS_MAP } from "./skills.config";
-import {
-  PERSONAL_DATA,
-  RESUME_OS_MAP,
-} from "../../../config/personalData.config";
+import { PERSONAL_DATA } from "../../../config/personalData.config";
 import { themeContext } from "../../../hooks/useTheme";
 const HeroSection = styled.section`
   display: flex;
@@ -55,11 +52,7 @@ const QuickLinks = styled.div`
 
 const HomeTab: React.FC = () => {
   const themeContextValue = useContext(themeContext);
-  let pdfUrl: string | undefined;
-  if (themeContextValue) {
-    const theme = themeContextValue.currentTheme;
-    pdfUrl = RESUME_OS_MAP[theme.id];
-  }
+  const pdfUrl = themeContextValue?.resumePath;
 
   // Update resume link with dynamic URL
   const quickLinks = PERSONAL_DATA.quickLinks.map(link =>

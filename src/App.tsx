@@ -17,7 +17,7 @@ const Overlay = styled.div`
 `;
 function App() {
   // themes
-  const { theme, themeLoaded, setMode } = useTheme();
+  const { theme, themeLoaded, setMode, resumePath } = useTheme();
   const DesktopLanding = lazy(() => {
     return new Promise(resolve => setTimeout(resolve, 2000)).then(() => {
       preloadResources();
@@ -32,6 +32,7 @@ function App() {
     themeSwitcher,
     currentTheme: theme,
     themeLoaded,
+    resumePath,
   };
 
   return (

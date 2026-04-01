@@ -23,6 +23,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
   currentTheme,
   themeSwitcher,
   themeLoaded,
+  resumePath,
 }) => {
   const { terminal, welcome, resume, initializeWindows }: WindowManager =
     useWindowManager();
@@ -75,7 +76,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
         {PERSONAL_DATA.personalInfo.name}
       </h1>
       <themeContext.Provider
-        value={{ themeSwitcher, currentTheme, themeLoaded }}
+        value={{ themeSwitcher, currentTheme, themeLoaded, resumePath }}
       >
         {/* Desktop Icons - below windows, hidden when any window is maximized */}
         <DesktopShortcuts
