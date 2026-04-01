@@ -7,7 +7,7 @@ import { PERSONAL_DATA } from "../config/personalData.config";
 
 interface ThemeButtonProps {
   $isActive: boolean;
-  $themeColor: string;
+  $theme: DefaultTheme;
 }
 
 const Container = styled.div<{ $isVisible: boolean }>`
@@ -65,8 +65,8 @@ const ThemeButton = styled.button<ThemeButtonProps>`
   ${props =>
     props.$isActive &&
     css`
-      background: ${props.$themeColor};
-      color: #000;
+      background: ${props.$theme.colors.body};
+      color: ${props.$theme.colors.text[100]};
       box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
 
       &::after {
@@ -77,8 +77,8 @@ const ThemeButton = styled.button<ThemeButtonProps>`
         transform: translateX(-50%);
         width: 60%;
         height: 2px;
-        background: ${props.$themeColor};
-        box-shadow: 0 0 10px ${props.$themeColor};
+        background: ${props.$theme.colors.text[300]};
+        box-shadow: 0 0 10px ${props.$theme.colors.body};
       }
     `}
 
@@ -203,7 +203,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
         <ThemeButton
           key={key}
           $isActive={currentTheme.id === theme.id}
-          $themeColor={theme.colors.primary}
+          $theme={theme}
           onClick={() => handleThemeChange(theme)}
           aria-label={`Switch to ${label} theme`}
           title={`Switch to ${label} theme`}
