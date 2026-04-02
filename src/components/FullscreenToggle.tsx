@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { isMobileDevice } from "../utils/typeGuards";
 import Tooltip from "./Tooltip";
@@ -69,15 +69,7 @@ const Icon = ({ exit }: { exit?: boolean }) =>
   );
 
 const FullscreenToggle: React.FC<Props> = ({ isFullscreen, onToggle }) => {
-  const [showTooltip, setShowTooltip] = useState(false);
-
-  useEffect(() => {
-    if (isMobileDevice() && !isFullscreen) {
-      // Show tooltip after 1 seconds on mobile
-      const timer = setTimeout(() => setShowTooltip(true), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [isFullscreen]);
+  const [showTooltip, setShowTooltip] = useState(true);
 
   const handleClick = () => {
     setShowTooltip(false);
@@ -90,7 +82,11 @@ const FullscreenToggle: React.FC<Props> = ({ isFullscreen, onToggle }) => {
       aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
     >
       {showTooltip && (
-        <Tooltip onClose={() => setShowTooltip(false)}>
+        <Tooltip
+          showAfter={1000}
+          showCondition={showTooltip && isMobileDevice()}
+          onClose={() => setShowTooltip(false)}
+        >
           💡 For best experience tap here to use fullscreen mode
         </Tooltip>
       )}

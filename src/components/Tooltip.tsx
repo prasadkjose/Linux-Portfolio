@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { CloseButton } from "../layout/window-container/BrowserWindow.styled";
 
@@ -55,16 +55,40 @@ const TooltipBubble = styled.div`
 
 interface TooltipProps {
   children: React.ReactNode;
-  onClose: () => void;
+  showAfter?: number;
+  showCondition?: boolean;
+  onClose?: () => void;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ children, onClose }) => {
+const Tooltip: React.FC<TooltipProps> = ({
+  children,
+  showAfter = 3000,
+  showCondition = true,
+  onClose,
+}) => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (showCondition) {
+      const timer = setTimeout(() => setVisible(true), showAfter);
+      return () => clearTimeout(timer);
+    } else {
+      setVisible(false);
+    }
+  }, [showCondition, showAfter]);
+
+  const handleClose = () => {
+    setVisible(false);
+    onClose?.();
+  };
+
+  if (!visible) return null;
   return (
     <TooltipBubble onClick={e => e.stopPropagation()}>
       <CloseButton
         onClick={e => {
           e.stopPropagation();
-          onClose();
+          handleClose();
         }}
         aria-label="Dismiss tooltip"
       >
