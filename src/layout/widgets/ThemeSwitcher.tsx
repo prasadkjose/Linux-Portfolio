@@ -4,6 +4,8 @@ import themes from "../../styles/themes";
 import type { ThemeSwitcherProps } from "../../types/window";
 import { useTheme } from "../../hooks/useTheme";
 import { PERSONAL_DATA } from "../../config/personalData.config";
+import Tooltip from "../../components/Tooltip";
+import { isMobileDevice } from "../../utils/typeGuards";
 
 interface ThemeButtonProps {
   $isActive: boolean;
@@ -33,11 +35,12 @@ const Container = styled.div<{ $isVisible: boolean }>`
     `@media (max-width: 550px) {
     width: 100%;
     right: 0;
-    top:95%
+    top: calc(100% - 86px);
   }`}
 `;
 
 const ThemeButton = styled.button<ThemeButtonProps>`
+  position: relative;
   padding: 10px 16px;
   border: none;
   background: transparent;
@@ -211,6 +214,15 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
           {label}
         </ThemeButton>
       ))}
+      {
+        <Tooltip
+          showAfter={5000}
+          showCondition={!$isVisible}
+          position={`${isMobileDevice() ? "top-right" : "bottom-right"}`}
+        >
+          ⚙️ Try out a different Linux here.
+        </Tooltip>
+      }
       {$isVisible && (
         <TypingText>
           <span>Wecome to {PERSONAL_DATA.personalInfo.shortName}'s PC</span>

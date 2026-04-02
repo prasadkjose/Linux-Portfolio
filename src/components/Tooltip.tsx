@@ -13,12 +13,8 @@ const fadeSlideUp = keyframes`
   }
 `;
 
-const TooltipBubble = styled.div`
+const TooltipBubble = styled.div<{ $position: string }>`
   position: absolute;
-  bottom: 60px;
-  display: flex;
-  flex-direction: row-reverse;
-  right: 0;
   width: 180px;
   padding: 10px;
   background: rgba(12, 12, 18, 0.95);
@@ -27,9 +23,9 @@ const TooltipBubble = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #eceff4;
   font-size: 11px;
+  text-transform: none;
   font-family:
     system-ui,
-    -apple-system,
     Segoe UI,
     Roboto,
     sans-serif;
@@ -38,19 +34,66 @@ const TooltipBubble = styled.div`
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   z-index: 10001;
   animation: ${fadeSlideUp} 0.25s ease-out;
-
+  display: flex;
+  flex-direction: row-reverse;
   &::after {
-    content: "";
-    position: absolute;
-    bottom: -6px;
-    right: 12px;
     width: 12px;
     height: 12px;
     background: rgba(12, 12, 18, 0.95);
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transform: rotate(45deg);
   }
+
+  ${({ $position }) => {
+    switch ($position) {
+      case "top-left":
+        return `
+          top: -60px;
+          left: 0;
+          &::after {
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            left: 12px;
+          }
+        `;
+      case "top-right":
+        return `
+          top: -60px;
+          right: 0;
+          &::after {
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            right: 12px;
+          }
+        `;
+      case "bottom-left":
+        return `
+          top: 60px;
+          left: 0;
+          &::after {
+            content: "";
+            position: absolute;
+            top: -6px;
+            left: 12px;
+          }
+        `;
+      case "bottom-right":
+      default:
+        return `
+          top: 60px;
+          right: 0;
+          &::after {
+            content: "";
+            position: absolute;
+            top: -6px;
+            right: 12px;
+          }
+        `;
+    }
+  }}
 `;
 
 interface TooltipProps {
@@ -58,6 +101,7 @@ interface TooltipProps {
   showAfter?: number;
   showCondition?: boolean;
   onClose?: () => void;
+  position?: "bottom-left" | "bottom-right" | "top-left" | "top-right";
 }
 
 const Tooltip: React.FC<TooltipProps> = ({
@@ -65,6 +109,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   showAfter = 3000,
   showCondition = true,
   onClose,
+  position = "bottom-right",
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -83,8 +128,9 @@ const Tooltip: React.FC<TooltipProps> = ({
   };
 
   if (!visible) return null;
+
   return (
-    <TooltipBubble onClick={e => e.stopPropagation()}>
+    <TooltipBubble $position={position} onClick={e => e.stopPropagation()}>
       <CloseButton
         onClick={e => {
           e.stopPropagation();
