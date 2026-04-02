@@ -20,7 +20,7 @@ function App() {
   const { theme, themeLoaded, setMode, resumePath } = useTheme();
   const DesktopLanding = lazy(() => {
     return new Promise(resolve => setTimeout(resolve, 2000)).then(() => {
-      preloadResources();
+      preloadResources(theme);
       return import("./components/DesktopLanding");
     });
   });

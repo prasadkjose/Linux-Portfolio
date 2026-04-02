@@ -8,23 +8,12 @@ type Props = {
 };
 
 const FullscreenButton = styled.button<{ hidden?: boolean }>`
-  position: fixed;
-  top: 16px;
-  right: 16px;
   z-index: 100; /* below app windows so they can cover it when overlapping */
-  display: inline-flex;
-  align-items: center;
   gap: 8px;
   padding: 8px 12px;
   border-radius: 10px;
-  background: rgba(0, 0, 0, 0.38);
+  background: transparent;
   color: #eceff4;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   cursor: pointer;
   user-select: none;
   font-size: 12px;
@@ -89,7 +78,6 @@ const FullscreenToggle: React.FC<Props> = ({
       aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
     >
       <Icon exit={isFullscreen} />
-      <span>{isFullscreen ? "Exit Fullscreen" : "Fullscreen"}</span>
     </FullscreenButton>
   );
 };

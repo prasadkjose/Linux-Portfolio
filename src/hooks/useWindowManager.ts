@@ -1,6 +1,11 @@
-import { useState, useCallback } from "react";
-import { isMobileDevice } from "../utils/typeGuards";
-import { WindowManager, WindowState } from "../types/window";
+import { useState, useCallback, useEffect, useMemo } from "react";
+import { isMobileDevice, propertyPicker } from "../utils/typeGuards";
+import {
+  WindowManager,
+  WindowState,
+  SerializableWindowState,
+} from "../types/window";
+import { setToLS, getFromLS } from "../utils/storage";
 
 /**
  * Default size configuration for the welcome browser window
@@ -10,6 +15,18 @@ const DEFAULT_WINDOW_SIZE = {
   width: window.innerWidth - 150,
   height: window.innerHeight - 150,
 };
+
+const STORAGE_KEY = "window-state";
+const SAVE_DEBOUNCE_MS = 300;
+const SERIALIZABLE_PROPS: (keyof WindowState)[] = [
+  "mounted",
+  "visible",
+  "maximized",
+  "x",
+  "y",
+  "width",
+  "height",
+];
 
 /**
  * Calculate centered position for a window within the viewport
@@ -392,6 +409,7 @@ export const useWindowManager = (): WindowManager => {
         y: 0,
       }));
     } else {
+      // get
       // Desktop: browser centered
       centerWindowOnDesktop(setWelcome, DEFAULT_WINDOW_SIZE);
       bringBrowserToFront();
@@ -417,6 +435,50 @@ export const useWindowManager = (): WindowManager => {
     centerWindowOnDesktop,
     bringBrowserToFront,
   ]);
+
+  // Load persisted state on mount
+  useEffect(() => {
+    const savedState = getFromLS<Record<
+      string,
+      SerializableWindowState
+    > | null>(STORAGE_KEY, null);
+    if (!savedState || isMobile) {
+      // Startup layout: mobile => browser only, maximized; desktop => browser only centered
+      initializeWindows();
+      return;
+    }
+
+    if (savedState.terminal) {
+      setTerminal(prev => ({ ...prev, ...savedState.terminal }));
+    }
+    if (savedState.welcome) {
+      setWelcome(prev => ({ ...prev, ...savedState.welcome }));
+    }
+    if (savedState.resume) {
+      setResume(prev => ({ ...prev, ...savedState.resume }));
+    }
+  }, [isMobile]);
+
+  // Stable serializable state reference - only updates when actual values change
+  const serializableState = useMemo(
+    () => ({
+      terminal: propertyPicker(terminal, SERIALIZABLE_PROPS),
+      welcome: propertyPicker(welcome, SERIALIZABLE_PROPS),
+      resume: propertyPicker(resume, SERIALIZABLE_PROPS),
+    }),
+    [terminal, welcome, resume]
+  );
+
+  // Auto-save window state to localStorage with debouncing
+  useEffect(() => {
+    if (isMobile) return;
+
+    const saveTimeout = setTimeout(() => {
+      setToLS(STORAGE_KEY, serializableState);
+    }, SAVE_DEBOUNCE_MS);
+
+    return () => clearTimeout(saveTimeout);
+  }, [isMobile, serializableState]);
 
   return {
     // Window states

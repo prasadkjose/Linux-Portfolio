@@ -45,7 +45,7 @@ const HighlightCard: React.FC<Data> = ({
         }}
       >
         {icon && <img src={icon} alt={value} height={iconSize || "24"}></img>}
-        <h3 style={{ margin: 0, color: "#88C0D0", fontSize: "1.05rem" }}>
+        <h3 style={{ margin: 0, color: "#99ddcc", fontSize: "1.05rem" }}>
           {value}
         </h3>
       </div>

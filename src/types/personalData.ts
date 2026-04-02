@@ -31,6 +31,8 @@ export interface PersonalInfo {
   shortName: string;
   title: string;
   profileImage: string;
+  fullNameLogo: string;
+  logo: string;
   email: string;
   aboutDescription: string;
   aboutMe: string;

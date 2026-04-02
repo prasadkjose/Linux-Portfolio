@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { WindowState } from "../../types/window";
+import { FullscreenManager, WindowState } from "../../types/window";
 import { Icons } from "../../components/desktop-shortcuts/DesktopIcons";
 import { formatTime, formatDate } from "../../utils/clock";
 import CalendarPanel from "../../components/CalendarPanel";
 import { isMobileDevice } from "../../utils/typeGuards";
+import FullscreenToggle from "../../components/FullscreenToggle";
+import { useFullscreenManager } from "../../hooks/useFullscreenManger";
 
 const Bar = styled.div`
   position: fixed;
@@ -163,6 +165,8 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
   const [, showDesktop] = useState<boolean>(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const time = useClock();
+  const { isFullscreen, toggleFullscreen }: FullscreenManager =
+    useFullscreenManager();
 
   const handleTaskClick = (window: WindowState) => {
     if (!window.mounted) {
@@ -265,6 +269,14 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
         {calendarOpen && (
           <CalendarPanel onClose={() => setCalendarOpen(false)} />
         )}
+        <Separator />
+
+        {/* Fullscreen toggle control: hide when any window maximized; allow windows to overlap due to low z-index */}
+        <FullscreenToggle
+          isFullscreen={isFullscreen}
+          onToggle={toggleFullscreen}
+          hidden={terminal.maximized || welcome.maximized || resume.maximized}
+        />
       </RightSection>
     </Bar>
   );

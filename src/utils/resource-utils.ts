@@ -1,17 +1,23 @@
 import { preload } from "react-dom";
 import { IMAGES, CDN_IMAGES } from "../config/preloadResources.config";
 import logger from "./logger";
+import { DefaultTheme } from "styled-components/dist/types";
 
-export function preloadResources() {
-  const rootPath = "/preload/";
+const ROOT = "/preload/";
 
+export function preloadResources(theme: DefaultTheme) {
   IMAGES.forEach(src => {
-    preload(rootPath + src, { as: "image" });
+    preload(ROOT + src, { as: "image" });
   });
   logger.info("Preloaded Resource in preload/ dir.");
 
   CDN_IMAGES.forEach(src => {
     preload(src, { as: "image" });
   });
-  logger.info("Preloaded Resources drom CDN.");
+  logger.info("Preloaded Resources from CDN.");
+
+  if (theme.backgroundImage) {
+    preload(theme.backgroundImage, { as: "image" });
+    logger.info("Preloaded theme specific Resources.");
+  }
 }

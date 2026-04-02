@@ -27,14 +27,8 @@ const HeroContent = styled.div`
   gap: 6px;
 `;
 
-const NameHeading = styled.h1`
-  margin: 0;
-  font-size: 2.2rem;
-  background: linear-gradient(135deg, #88c0d0 0%, #5e81ac 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+const NameLogoHeading = styled.img`
+  margin-right: auto;
 `;
 
 const TitleText = styled.p`
@@ -70,7 +64,11 @@ const HomeTab: React.FC = () => {
           />
         </PreImg>
         <HeroContent>
-          <NameHeading>{PERSONAL_DATA.personalInfo.name}</NameHeading>
+          <NameLogoHeading
+            src={PERSONAL_DATA.personalInfo.fullNameLogo}
+            alt={PERSONAL_DATA.personalInfo.name}
+            height="35"
+          ></NameLogoHeading>
           <TitleText>{PERSONAL_DATA.personalInfo.title}</TitleText>
           <QuickLinks role="group" aria-label="Quick links">
             {quickLinks.map((link, index) => (
@@ -91,7 +89,7 @@ const HomeTab: React.FC = () => {
           style={{
             margin: "0 0 12px 0",
             fontSize: "1.5rem",
-            color: "#88C0D0",
+            color: "#99ddcc",
             fontWeight: 600,
           }}
         >
@@ -115,7 +113,7 @@ const HomeTab: React.FC = () => {
           style={{
             margin: "0 0 12px 0",
             fontSize: "1.5rem",
-            color: "#88C0D0",
+            color: "#99ddcc",
             fontWeight: 600,
           }}
         >
@@ -142,7 +140,7 @@ const HomeTab: React.FC = () => {
               style={{
                 margin: "0 0 8px 0",
                 fontSize: "1rem",
-                color: "#88C0D0",
+                color: "#99ddcc",
               }}
             >
               Languages

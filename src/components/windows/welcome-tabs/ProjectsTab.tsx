@@ -15,9 +15,12 @@ const ProjectsSection = styled.section`
 `;
 
 const SectionTitle = styled.h2`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin: 0 0 16px 0;
   font-size: 1.5rem;
-  color: #88c0d0;
+  color: #99ddcc;
   font-weight: 600;
   border-bottom: 2px solid rgba(136, 192, 208, 0.3);
   padding-bottom: 8px;
@@ -45,7 +48,14 @@ const ProjectsTab: React.FC = () => {
 
   return (
     <Fragment>
-      <SectionTitle>{projects.value}</SectionTitle>
+      <SectionTitle>
+        {projects.value}
+        <img
+          src={PERSONAL_DATA.personalInfo.logo}
+          alt={PERSONAL_DATA.personalInfo.name}
+          height="35"
+        />
+      </SectionTitle>
 
       {/* Static projects from config - shown when API fails or no GitHub projects */}
       {(!githubProjects || isError || githubProjects?.length === 0) &&
@@ -81,7 +91,7 @@ const ProjectsTab: React.FC = () => {
         <div
           style={{
             textAlign: "center",
-            color: "#88C0D0",
+            color: "#99ddcc",
             fontStyle: "italic",
             padding: "20px",
           }}

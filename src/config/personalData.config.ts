@@ -21,6 +21,8 @@ export const PERSONAL_DATA: PersonalData = {
     shortName: "Prasad",
     title: "Software Engineer | Security | AI | Open Source",
     profileImage: "/preload/photo1.jpg",
+    fullNameLogo: "/preload/prasadkjose-full.svg",
+    logo: "/preload/favicon.svg",
     email: "prasadkjose@gmail.com",
     website: "prasadkjose.com",
     uname: "prasadkjose",
@@ -59,7 +61,7 @@ export const PERSONAL_DATA: PersonalData = {
       href: "https://github.com/prasadkjose",
       value: "GitHub",
       style: {
-        color: "#88C0D0",
+        color: "#99ddcc",
         background: "rgba(136, 192, 208, 0.15)",
         border: "1px solid rgba(136,192,208,0.35)",
       },
