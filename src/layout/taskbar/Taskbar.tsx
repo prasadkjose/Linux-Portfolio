@@ -261,10 +261,12 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
               setCalendarOpen(prev => !prev);
           }}
         >
-          <div>{formatTime(time)}</div>
-          <div style={{ fontSize: "11px", opacity: 0.7 }}>
-            {formatDate(time)}
-          </div>
+          <div>{formatTime(time, isMobileDevice())}</div>
+          {!isMobileDevice && (
+            <div style={{ fontSize: "11px", opacity: 0.7 }}>
+              {formatDate(time)}
+            </div>
+          )}
         </Clock>
         {calendarOpen && (
           <CalendarPanel onClose={() => setCalendarOpen(false)} />
@@ -275,7 +277,6 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
         <FullscreenToggle
           isFullscreen={isFullscreen}
           onToggle={toggleFullscreen}
-          hidden={terminal.maximized || welcome.maximized || resume.maximized}
         />
       </RightSection>
     </Bar>

@@ -7,7 +7,7 @@ type Props = {
   hidden?: boolean;
 };
 
-const FullscreenButton = styled.button<{ hidden?: boolean }>`
+const FullscreenButton = styled.button`
   z-index: 100; /* below app windows so they can cover it when overlapping */
   gap: 8px;
   padding: 8px 12px;
@@ -28,7 +28,6 @@ const FullscreenButton = styled.button<{ hidden?: boolean }>`
     transform 0.1s ease,
     background 0.15s ease,
     border-color 0.15s ease;
-  ${({ hidden }) => hidden && "display:none;"}
   &:hover {
     background: rgba(0, 0, 0, 0.46);
   }
@@ -66,14 +65,9 @@ const Icon = ({ exit }: { exit?: boolean }) =>
     </svg>
   );
 
-const FullscreenToggle: React.FC<Props> = ({
-  isFullscreen,
-  onToggle,
-  hidden,
-}) => {
+const FullscreenToggle: React.FC<Props> = ({ isFullscreen, onToggle }) => {
   return (
     <FullscreenButton
-      hidden={hidden}
       onClick={onToggle}
       aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
     >

@@ -1,8 +1,8 @@
-export const formatTime = (date: Date) => {
+export const formatTime = (date: Date, isMobile?: boolean) => {
   return date.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
-    hour12: true,
+    hour12: !isMobile,
   });
 };
 
