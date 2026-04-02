@@ -17,7 +17,7 @@ const theme: Themes = {
       text: {
         100: "#ECEFF4",
         200: "#D8DEE9",
-        300: "#88C0D0",
+        300: "#99ddcc",
       },
     },
   },
@@ -33,7 +33,7 @@ const theme: Themes = {
       text: {
         100: "#ECEFF4",
         200: "#D8DEE9",
-        300: "#88C0D0",
+        300: "#99ddcc",
       },
     },
     splashImage: "ubuntu-splash.svg",
@@ -52,7 +52,7 @@ const theme: Themes = {
       text: {
         100: "#ECEFF4",
         200: "#D8DEE9",
-        300: "#88C0D0",
+        300: "#99ddcc",
       },
     },
     splashImage: "fedora-splash.svg",
@@ -70,7 +70,7 @@ const theme: Themes = {
       text: {
         100: "#ECEFF4",
         200: "#D8DEE9",
-        300: "#88C0D0",
+        300: "#99ddcc",
       },
     },
     backgroundImage: "https://www.kali.org/wallpapers/images/2026/kali-net.jpg",

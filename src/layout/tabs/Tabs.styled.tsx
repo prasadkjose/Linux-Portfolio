@@ -136,7 +136,7 @@ export const TabContent = styled.div`
 export const TabCloseButton = styled.button`
   background: transparent;
   border: none;
-  color: #88c0d0;
+  color: #99ddcc;
   width: 18px;
   height: 18px;
   border-radius: 4px;
