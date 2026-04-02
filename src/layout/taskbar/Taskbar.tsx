@@ -69,7 +69,7 @@ const AppLauncher = styled.button`
   }
 `;
 
-const TaskItem = styled.button<{ $active?: boolean; $urgent?: boolean }>`
+const TaskItem = styled.button<{ $active?: boolean }>`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -103,8 +103,7 @@ const TaskItem = styled.button<{ $active?: boolean; $urgent?: boolean }>`
     width: ${({ $active }) => ($active ? "100%" : "3px")};
     height: 3px;
     border-radius: 2px;
-    background: ${({ theme, $urgent }) =>
-      $urgent ? theme.colors.secondary : theme.colors.primary};
+    background: ${({ theme }) => theme.colors.primary};
     transition: width 0.2s ease;
   }
   &:hover::after {
@@ -185,6 +184,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
 }) => {
   const [, showDesktop] = useState<boolean>(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const isMobile = isMobileDevice();
 
   const handleClockClick = React.useCallback(() => {
     setCalendarOpen(prev => !prev);
@@ -222,7 +222,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
   return (
     <Bar role="toolbar" aria-label="Application taskbar">
       {/* Left: App launcher */}
-      {!isMobileDevice() && (
+      {!isMobile && (
         <LeftSection>
           {/* TODO: App Launcher */}
           <AppLauncher
@@ -245,7 +245,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
             aria-label="Terminal window"
           >
             {Icons.Terminal}
-            <span>Terminal</span>
+            {!isMobile && <span>Terminal</span>}
           </TaskItem>
         )}
         {welcome.mounted && (
@@ -256,7 +256,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
             aria-label="Browser window"
           >
             {Icons.Browser}
-            <span>Browser</span>
+            {!isMobile && <span>Browser</span>}
           </TaskItem>
         )}
         {resume.mounted && (
@@ -267,7 +267,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
             aria-label="Resume window"
           >
             {Icons.PDF}
-            <span>Resume</span>
+            {!isMobile && <span>Resume</span>}
           </TaskItem>
         )}
       </CenterSection>
