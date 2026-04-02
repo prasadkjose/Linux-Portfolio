@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { isMobileDevice } from "../utils/typeGuards";
+import Tooltip from "./Tooltip";
 
 type Props = {
   isFullscreen: boolean;
@@ -8,6 +10,7 @@ type Props = {
 };
 
 const FullscreenButton = styled.button`
+  position: relative;
   z-index: 100; /* below app windows so they can cover it when overlapping */
   gap: 8px;
   padding: 8px 12px;
@@ -66,11 +69,31 @@ const Icon = ({ exit }: { exit?: boolean }) =>
   );
 
 const FullscreenToggle: React.FC<Props> = ({ isFullscreen, onToggle }) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  useEffect(() => {
+    if (isMobileDevice() && !isFullscreen) {
+      // Show tooltip after 1 seconds on mobile
+      const timer = setTimeout(() => setShowTooltip(true), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isFullscreen]);
+
+  const handleClick = () => {
+    setShowTooltip(false);
+    onToggle();
+  };
+
   return (
     <FullscreenButton
-      onClick={onToggle}
+      onClick={handleClick}
       aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
     >
+      {showTooltip && (
+        <Tooltip onClose={() => setShowTooltip(false)}>
+          💡 For best experience tap here to use fullscreen mode
+        </Tooltip>
+      )}
       <Icon exit={isFullscreen} />
     </FullscreenButton>
   );
