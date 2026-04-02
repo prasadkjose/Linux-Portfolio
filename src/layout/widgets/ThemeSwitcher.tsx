@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled, { css, DefaultTheme } from "styled-components";
-import themes from "../styles/themes";
-import type { ThemeSwitcherProps } from "../types/window";
-import { useTheme } from "../hooks/useTheme";
-import { PERSONAL_DATA } from "../config/personalData.config";
+import themes from "../../styles/themes";
+import type { ThemeSwitcherProps } from "../../types/window";
+import { useTheme } from "../../hooks/useTheme";
+import { PERSONAL_DATA } from "../../config/personalData.config";
 
 interface ThemeButtonProps {
   $isActive: boolean;

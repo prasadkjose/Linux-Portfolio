@@ -133,32 +133,6 @@ export const TabContent = styled.div`
   }
 `;
 
-export const TabCloseButton = styled.button`
-  background: transparent;
-  border: none;
-  color: #99ddcc;
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 8px;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: rgba(136, 192, 208, 0.2);
-    color: #eceff4;
-  }
-
-  svg {
-    width: 10px;
-    height: 10px;
-    fill: currentColor;
-  }
-`;
-
 export const MobileMenuButton = styled.button`
   display: flex;
   background: rgba(32, 32, 32, 0.95);

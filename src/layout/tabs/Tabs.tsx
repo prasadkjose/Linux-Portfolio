@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   TabBar,
   TabButton,
-  TabCloseButton,
   TabContainer,
   TabContent,
   MobileMenuButton,
@@ -10,6 +9,7 @@ import {
   MobileMenu,
 } from "./Tabs.styled";
 import { isMobileDevice } from "../../utils/typeGuards";
+import { CloseButton } from "../../layout/window-container/BrowserWindow.styled";
 
 // Tab data interface
 export interface TabData {
@@ -82,7 +82,7 @@ const Tabs: React.FC<TabsProps> = ({
     >
       {tab.label}
       {allowClose && tabs.length > 1 && (
-        <TabCloseButton
+        <CloseButton
           onClick={e => handleTabClose(tab.id, e)}
           aria-label={`Close ${tab.label} tab`}
           title="Close tab"
@@ -95,7 +95,7 @@ const Tabs: React.FC<TabsProps> = ({
               strokeLinecap="round"
             />
           </svg>
-        </TabCloseButton>
+        </CloseButton>
       )}
     </TabButton>
   ));
