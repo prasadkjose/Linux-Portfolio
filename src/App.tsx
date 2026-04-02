@@ -3,7 +3,7 @@ import { Suspense, lazy } from "react";
 
 import { useTheme } from "./hooks/useTheme";
 import SplashScreen from "./components/SplashScreen";
-import ThemeSwitcher from "./components/ThemeSwitcher";
+import ThemeSwitcher from "./layout/widgets/ThemeSwitcher";
 import { ThemeSwitcherProps } from "./types/window";
 import { preloadResources } from "./utils/resource-utils";
 
