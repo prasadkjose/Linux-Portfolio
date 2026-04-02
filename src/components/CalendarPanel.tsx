@@ -200,10 +200,11 @@ function getFirstDayOfMonth(year: number, month: number) {
 // ── Component ──────────────────────────────────────────────────────────
 
 interface CalendarPanelProps {
+  isOpen: boolean;
   onClose: () => void;
 }
 
-const CalendarPanel: React.FC<CalendarPanelProps> = ({ onClose }) => {
+const CalendarPanel: React.FC<CalendarPanelProps> = ({ isOpen, onClose }) => {
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
@@ -212,18 +213,20 @@ const CalendarPanel: React.FC<CalendarPanelProps> = ({ onClose }) => {
   // Close on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
+      // Check if click is on the clock element - ignore those clicks, let clock handle it
+      const clockElement = document.querySelector(
+        '[aria-label*="Current time"]'
+      );
+      if (clockElement && clockElement.contains(e.target as Node)) {
+        return;
+      }
+
       if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
         onClose();
       }
     };
-    // Slight delay so the opening click doesn't immediately close it
-    const timeout = setTimeout(() => {
-      document.addEventListener("mousedown", handleClickOutside);
-    }, 50);
-    return () => {
-      clearTimeout(timeout);
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+
+    document.addEventListener("mousedown", handleClickOutside);
   }, [onClose]);
 
   // Close on Escape
@@ -232,7 +235,6 @@ const CalendarPanel: React.FC<CalendarPanelProps> = ({ onClose }) => {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handleKey);
-    return () => document.removeEventListener("keydown", handleKey);
   }, [onClose]);
 
   const prevMonth = () => {
@@ -276,6 +278,8 @@ const CalendarPanel: React.FC<CalendarPanelProps> = ({ onClose }) => {
     day: "numeric",
     year: "numeric",
   });
+
+  if (!isOpen) return null;
 
   return (
     <Panel ref={panelRef} role="dialog" aria-label="Calendar">

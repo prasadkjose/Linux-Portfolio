@@ -146,13 +146,34 @@ const Separator = styled.div`
 
 // ── Hook ───────────────────────────────────────────────────────────────
 
-const useClock = () => {
+// ── Clock Component (isolated rerenders) ───────────────────────────────
+const ClockComponent = ({ onClick }: { onClick: () => void }) => {
   const [time, setTime] = React.useState(new Date());
+
   React.useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
-  return time;
+
+  return (
+    <Clock
+      onClick={onClick}
+      aria-label={`Current time: ${formatTime(time)}. Click to open calendar.`}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e: React.KeyboardEvent) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+    >
+      <div>{formatTime(time, isMobileDevice())}</div>
+      {!isMobileDevice() && (
+        <div style={{ fontSize: "11px", opacity: 0.7 }}>{formatDate(time)}</div>
+      )}
+    </Clock>
+  );
 };
 
 // ── Component ──────────────────────────────────────────────────────────
@@ -164,7 +185,10 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
 }) => {
   const [, showDesktop] = useState<boolean>(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const time = useClock();
+
+  const handleClockClick = React.useCallback(() => {
+    setCalendarOpen(prev => !prev);
+  }, []);
   const { isFullscreen, toggleFullscreen }: FullscreenManager =
     useFullscreenManager();
 
@@ -251,26 +275,11 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
       {/* Right: Clock & date */}
       <RightSection>
         <Separator />
-        <Clock
-          onClick={() => setCalendarOpen(prev => !prev)}
-          aria-label={`Current time: ${formatTime(time)}. Click to open calendar.`}
-          role="button"
-          tabIndex={0}
-          onKeyDown={e => {
-            if (e.key === "Enter" || e.key === " ")
-              setCalendarOpen(prev => !prev);
-          }}
-        >
-          <div>{formatTime(time, isMobileDevice())}</div>
-          {!isMobileDevice && (
-            <div style={{ fontSize: "11px", opacity: 0.7 }}>
-              {formatDate(time)}
-            </div>
-          )}
-        </Clock>
-        {calendarOpen && (
-          <CalendarPanel onClose={() => setCalendarOpen(false)} />
-        )}
+        <ClockComponent onClick={handleClockClick} />
+        <CalendarPanel
+          isOpen={calendarOpen}
+          onClose={() => setCalendarOpen(false)}
+        />
         <Separator />
 
         {/* Fullscreen toggle control: hide when any window maximized; allow windows to overlap due to low z-index */}
