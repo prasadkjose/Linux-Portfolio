@@ -7,6 +7,7 @@ import { SHORTCUTS } from "./DesktopShortcuts.config";
 type Props = {
   onOpenTerminal?: () => void;
   onOpenWelcome?: () => void;
+  onOpenWelcomeWithUrl?: (url: string) => void;
   onOpenResume?: () => void;
   hidden?: boolean;
   activeTerminal?: boolean;
@@ -43,6 +44,7 @@ const Grid = styled.div<{ hidden?: boolean; $mobileExpanded?: boolean }>`
 const DesktopShortcuts: React.FC<Props> = ({
   onOpenTerminal,
   onOpenWelcome,
+  onOpenWelcomeWithUrl,
   onOpenResume,
   hidden,
   activeTerminal,
@@ -73,6 +75,11 @@ const DesktopShortcuts: React.FC<Props> = ({
             key={idx}
             label={data.value}
             href={data.href}
+            onOpen={
+              onOpenWelcomeWithUrl && data.href
+                ? () => onOpenWelcomeWithUrl(data.href!)
+                : undefined
+            }
             icon={icon}
           />
         );

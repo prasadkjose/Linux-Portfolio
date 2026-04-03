@@ -116,9 +116,11 @@ export interface SerializableWindowState {
 
 export interface WindowState extends SerializableWindowState {
   z: number;
+  href?: string;
 
   bringToFront: () => void;
   open?: () => void;
+  openWithUrl?: (url: string) => void;
   close: () => void;
   minimize?: () => void;
   toggleMaximize?: () => void;

@@ -230,9 +230,19 @@ export const useWindowManager = (): WindowManager => {
 
   // Welcome operations
   const openWelcome = useCallback(() => {
+    setWelcome(prev => ({ ...prev, href: undefined }));
     openWindow(setWelcome, DEFAULT_WINDOW_SIZE);
     bringBrowserToFront();
   }, [openWindow, bringBrowserToFront]);
+
+  const openWelcomeWithUrl = useCallback(
+    (url: string) => {
+      setWelcome(prev => ({ ...prev, href: url }));
+      openWindow(setWelcome, DEFAULT_WINDOW_SIZE);
+      bringBrowserToFront();
+    },
+    [openWindow, bringBrowserToFront]
+  );
 
   const closeWelcome = useCallback(() => {
     setWelcome(prev => ({
@@ -364,6 +374,7 @@ export const useWindowManager = (): WindowManager => {
     height: DEFAULT_WINDOW_SIZE.height,
     bringToFront: bringBrowserToFront,
     open: openWelcome,
+    openWithUrl: openWelcomeWithUrl,
     close: closeWelcome,
     minimize: minimizeWelcome,
     toggleMaximize: toggleMaximizeWelcome,
