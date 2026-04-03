@@ -398,16 +398,7 @@ export const useWindowManager = (): WindowManager => {
    */
   const initializeWindows = useCallback(() => {
     if (isMobile) {
-      // Mobile: browser only, maximized
-      forceMaximizedOnMobile(setWelcome);
-      setTerminal(prev => ({
-        ...prev,
-        mounted: false,
-        visible: false,
-        maximized: false,
-        x: 0,
-        y: 0,
-      }));
+      return;
     } else {
       // get
       // Desktop: browser centered
@@ -443,7 +434,7 @@ export const useWindowManager = (): WindowManager => {
       SerializableWindowState
     > | null>(STORAGE_KEY, null);
     if (!savedState || isMobile) {
-      // Startup layout: mobile => browser only, maximized; desktop => browser only centered
+      // Startup layout: mobile => desktop view; desktop => browser only centered
       initializeWindows();
       return;
     }
