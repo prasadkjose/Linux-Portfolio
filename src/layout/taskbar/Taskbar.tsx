@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FullscreenManager, WindowState } from "../../types/window";
 import { Icons } from "../../components/desktop-shortcuts/DesktopIcons";
-import { formatTime, formatDate } from "../../utils/clock";
 import CalendarPanel from "../../components/CalendarPanel";
 import { isMobileDevice } from "../../utils/typeGuards";
 import FullscreenToggle from "../../components/FullscreenToggle";
 import NewFeaturesBanner from "./NewFeaturesBanner";
 import { useFullscreenManager } from "../../hooks/useFullscreenManger";
+import ClockComponent from "./ClockComponent";
 
 const Bar = styled.div`
   position: fixed;
@@ -112,31 +112,6 @@ const TaskItem = styled.button<{ $active?: boolean }>`
   }
 `;
 
-const Clock = styled.div`
-  color: #eceff4;
-  font-size: 13px;
-  font-family:
-    system-ui,
-    -apple-system,
-    Segoe UI,
-    Roboto,
-    sans-serif;
-  font-weight: 500;
-  text-align: right;
-  line-height: 1.3;
-  user-select: none;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-  transition: background 0.15s ease;
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-  }
-  &:active {
-    background: rgba(255, 255, 255, 0.13);
-  }
-`;
-
 const FeaturesButton = styled.button`
   display: flex;
   align-items: center;
@@ -194,36 +169,6 @@ const Separator = styled.div`
 `;
 
 // ── Hook ───────────────────────────────────────────────────────────────
-
-// ── Clock Component (isolated rerenders) ───────────────────────────────
-const ClockComponent = ({ onClick }: { onClick: () => void }) => {
-  const [time, setTime] = React.useState(new Date());
-
-  React.useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <Clock
-      onClick={onClick}
-      aria-label={`Current time: ${formatTime(time)}. Click to open calendar.`}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e: React.KeyboardEvent) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onClick();
-        }
-      }}
-    >
-      <div>{formatTime(time, isMobileDevice())}</div>
-      {!isMobileDevice() && (
-        <div style={{ fontSize: "11px", opacity: 0.7 }}>{formatDate(time)}</div>
-      )}
-    </Clock>
-  );
-};
 
 // ── Component ──────────────────────────────────────────────────────────
 
