@@ -16,13 +16,21 @@ export const newFeatures: NewFeature[] = [
   },
   {
     id: "2",
+    title: "Taskbar",
+    description:
+      "A full Linux styled taskbar showing app drawer, running apps, clock etc",
+    date: "April 2026",
+    icon: "new",
+  },
+  {
+    id: "3",
     title: "Performance Optimizations",
     description: "Reduced bundle size by 40% and improved load times",
     date: "March 2026",
     icon: "improvement",
   },
   {
-    id: "3",
+    id: "4",
     title: "Accessibility Fixes",
     description:
       "Full keyboard navigation support and improved screen reader compatibility",
