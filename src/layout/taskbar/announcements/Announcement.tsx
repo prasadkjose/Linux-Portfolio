@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
-import { NewFeature, newFeatures } from "../../../config/features.config";
-import { WidgetComponentProps } from "../../../config/taskbar.config";
+import { NewFeature, newFeatures } from "../config/features.config";
+import { WidgetComponentProps } from "../config/taskbar.config";
 import { useWidgetPanelCloseHandlers } from "../hooks/useWidgetPanelCloseHandlers";
 
 export const AnnouncementTaskbarBtn = ({

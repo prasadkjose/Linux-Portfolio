@@ -4,7 +4,7 @@ import { FullscreenManager, WindowState } from "../../types/window";
 import { Icons } from "../../components/desktop-shortcuts/DesktopIcons";
 import { isMobileDevice } from "../../utils/typeGuards";
 import FullscreenToggle from "../../components/FullscreenToggle";
-import { taskbarWidgets, WidgetState } from "../../config/taskbar.config";
+import { taskbarWidgets, WidgetState } from "./config/taskbar.config";
 import { useFullscreenManager } from "../../hooks/useFullscreenManger";
 
 const Bar = styled.div`

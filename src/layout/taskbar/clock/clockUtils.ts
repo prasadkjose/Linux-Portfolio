@@ -1,5 +1,5 @@
 import React from "react";
-import { TaskbarState } from "../../../config/taskbar.config";
+import { TaskbarState } from "../config/taskbar.config";
 
 export const createOnClickHandler = (params: TaskbarState) => {
   return React.useCallback(() => {

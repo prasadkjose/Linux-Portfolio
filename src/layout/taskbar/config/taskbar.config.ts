@@ -1,18 +1,18 @@
 import React from "react";
 // import Announcement, {AnnouncementTaskbarBtn} from '../layout/taskbar/announcements/Announcement';
-import ClockComponent from "../layout/taskbar/clock/ClockComponent";
-import CalendarPanel from "../layout/taskbar/clock/CalendarPanel";
+import ClockComponent from "../clock/ClockComponent";
+import CalendarPanel from "../clock/CalendarPanel";
 import {
   createOnClickHandler as createOnClockClickHandler,
   createOnCloseHandler as createOnClockCloseHandler,
-} from "../layout/taskbar/clock/clockUtils";
+} from "../clock/clockUtils";
 import {
   createOnClickHandler as createOnAnnouncementClockClickHandler,
   createOnCloseHandler as createOnAnnouncementClockCloseHandler,
-} from "../layout/taskbar/announcements/announcementUtils";
+} from "../announcements/announcementUtils";
 import Announcement, {
   AnnouncementTaskbarBtn,
-} from "../layout/taskbar/announcements/Announcement";
+} from "../announcements/Announcement";
 
 /*
 How to register and implement a taskbar widget. This file should be as general as possible

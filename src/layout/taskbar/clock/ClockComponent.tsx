@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { formatTime, formatDate } from "../../../utils/clock";
 import { isMobileDevice } from "../../../utils/typeGuards";
-import { WidgetComponentProps } from "../../../config/taskbar.config";
+import { WidgetComponentProps } from "../config/taskbar.config";
 
 const Clock = styled.div`
   color: #eceff4;

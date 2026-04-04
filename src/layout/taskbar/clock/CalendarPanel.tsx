@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled, { keyframes } from "styled-components";
-import { WidgetComponentProps } from "../../../config/taskbar.config";
+import { WidgetComponentProps } from "../config/taskbar.config";
 import { useWidgetPanelCloseHandlers } from "../hooks/useWidgetPanelCloseHandlers";
 
 // ── Animations ─────────────────────────────────────────────────────────
