@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { NewFeature, newFeatures } from "../../../config/features.config";
-export const FeaturesButton = styled.button`
+import { WidgetComponentProps } from "../../../config/taskbar.config";
+export const AnnouncementTaskbarBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -207,15 +208,7 @@ const Badge = styled.span<{ $type: string }>`
   }};
 `;
 
-interface NewFeaturesBannerProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const NewFeaturesBanner: React.FC<NewFeaturesBannerProps> = ({
-  isOpen,
-  onClose,
-}) => {
+const Announcement: React.FC<WidgetComponentProps> = ({ isOpen, onClose }) => {
   const panelRef = useRef<HTMLDivElement>(null);
 
   // Close on outside click
@@ -230,7 +223,7 @@ const NewFeaturesBanner: React.FC<NewFeaturesBannerProps> = ({
       }
 
       if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
-        onClose();
+        onClose?.();
       }
     };
 
@@ -240,12 +233,12 @@ const NewFeaturesBanner: React.FC<NewFeaturesBannerProps> = ({
   // Close on Escape
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") onClose?.();
     };
     document.addEventListener("keydown", handleKey);
   }, [onClose]);
   return (
-    <BannerContainer $isOpen={isOpen} onClick={e => e.stopPropagation()}>
+    <BannerContainer $isOpen={!!isOpen} onClick={e => e.stopPropagation()}>
       <BannerHeader>
         <h3>✨ What's New</h3>
         <span style={{ fontSize: "12px", color: "rgba(255, 255, 255, 0.5)" }}>
@@ -270,4 +263,4 @@ const NewFeaturesBanner: React.FC<NewFeaturesBannerProps> = ({
   );
 };
 
-export default NewFeaturesBanner;
+export default Announcement;

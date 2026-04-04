@@ -5,13 +5,13 @@ export const createOnClickHandler = (params: TaskbarState) => {
   return React.useCallback(() => {
     params.setWidgetState(prev => ({
       ...prev,
-      ...{ calendar: !prev.calendar },
+      ...{ announcement: !prev.announcement },
     }));
   }, [params.setWidgetState]);
 };
 
 export const createOnCloseHandler = (params: TaskbarState) => {
   return React.useCallback(() => {
-    params.setWidgetState(prev => ({ ...prev, ...{ calendar: false } }));
+    params.setWidgetState(prev => ({ ...prev, ...{ announcement: false } }));
   }, [params.setWidgetState]);
 };

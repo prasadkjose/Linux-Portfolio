@@ -4,7 +4,7 @@ import { FullscreenManager, WindowState } from "../../types/window";
 import { Icons } from "../../components/desktop-shortcuts/DesktopIcons";
 import { isMobileDevice } from "../../utils/typeGuards";
 import FullscreenToggle from "../../components/FullscreenToggle";
-import { taskbarWidgets } from "../../config/taskbar.config";
+import { taskbarWidgets, WidgetState } from "../../config/taskbar.config";
 import { useFullscreenManager } from "../../hooks/useFullscreenManger";
 
 const Bar = styled.div`
@@ -125,27 +125,12 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
   resume,
 }) => {
   const [, showDesktop] = useState<boolean>(false);
-  const [featuresOpen, setFeaturesOpen] = useState(false);
   const isMobile = isMobileDevice();
-  const [widgetState, setWidgetState] = useState({
+  const [widgetState, setWidgetState] = useState<WidgetState>({
     calendar: false,
+    announcement: false,
   });
 
-  // const handleFeaturesClick = React.useCallback(() => {
-  //   setFeaturesOpen(prev => !prev);
-  // }, []);
-
-  // Close panels when clicking outside
-  React.useEffect(() => {
-    const handleClickOutside = () => {
-      setFeaturesOpen(false);
-    };
-
-    if (featuresOpen) {
-      document.addEventListener("click", handleClickOutside);
-      return () => document.removeEventListener("click", handleClickOutside);
-    }
-  }, [featuresOpen]);
   const { isFullscreen, toggleFullscreen }: FullscreenManager =
     useFullscreenManager();
 

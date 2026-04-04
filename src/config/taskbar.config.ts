@@ -1,11 +1,18 @@
 import React from "react";
-// import NewFeaturesBanner, {FeaturesButton} from '../layout/taskbar/announcements/Announcement';
+// import Announcement, {AnnouncementTaskbarBtn} from '../layout/taskbar/announcements/Announcement';
 import ClockComponent from "../layout/taskbar/clock/ClockComponent";
 import CalendarPanel from "../components/CalendarPanel";
 import {
-  createOnClickHandler,
-  createonCloseHandler,
+  createOnClickHandler as createOnClockClickHandler,
+  createOnCloseHandler as createOnClockCloseHandler,
 } from "../layout/taskbar/clock/clockUtils";
+import {
+  createOnClickHandler as createOnAnnouncementClockClickHandler,
+  createOnCloseHandler as createOnAnnouncementClockCloseHandler,
+} from "../layout/taskbar/announcements/announcementUtils";
+import Announcement, {
+  AnnouncementTaskbarBtn,
+} from "../layout/taskbar/announcements/Announcement";
 
 /*
 How to register and implement a taskbar widget. This file should be as general as possible
@@ -14,8 +21,9 @@ How to register and implement a taskbar widget. This file should be as general a
 3. Register the toolbar widget and an optional details panel component here. 
 
 */
-interface WidgetState {
+export interface WidgetState {
   calendar: boolean;
+  announcement: boolean;
 }
 export interface TaskbarState {
   widgetState: WidgetState;
@@ -23,6 +31,8 @@ export interface TaskbarState {
 }
 
 export interface WidgetComponentProps {
+  "aria-label"?: string;
+  title?: string;
   onClick?: () => void;
   isOpen?: boolean;
   onClose?: () => void;
@@ -38,29 +48,31 @@ export interface TaskbarWidget {
 }
 
 export const taskbarWidgets: TaskbarWidget[] = [
-  // {
-  //   id: 'features-button',
-  //   component: FeaturesButton,
-  //   position: 'right',
-  //   order: 10,
-  //   enabled: true,
-  //   getProps: (state) => ({
-  //     onClick: state.handleFeaturesClick,
-  //     'aria-label': 'View new features',
-  //     title: "What's New"
-  //   })
-  // },
-  // {
-  //   id: 'new-features-banner',
-  //   component: NewFeaturesBanner,
-  //   position: 'right',
-  //   order: 11,
-  //   enabled: true,
-  //   getProps: (state) => ({
-  //     isOpen: state.featuresOpen,
-  //     onClose: () => state.setFeaturesOpen(false)
-  //   })
-  // },
+  {
+    id: "announcement-taskbar-button",
+    component: AnnouncementTaskbarBtn,
+    position: "right",
+    order: 10,
+    enabled: true,
+    getProps: state => ({
+      onClick: createOnAnnouncementClockClickHandler(state),
+      "aria-label": "View new features",
+      title: "What's New",
+    }),
+  },
+  {
+    id: "announcement-banner",
+    component: Announcement,
+    position: "right",
+    order: 11,
+    enabled: true,
+    getProps: state => ({
+      "aria-label": "Announcement Button",
+      title: "What's New",
+      isOpen: state.widgetState.announcement,
+      onClose: createOnAnnouncementClockCloseHandler(state),
+    }),
+  },
   {
     id: "clock",
     component: ClockComponent,
@@ -69,7 +81,9 @@ export const taskbarWidgets: TaskbarWidget[] = [
     enabled: true,
     getProps: state => {
       return {
-        onClick: createOnClickHandler(state),
+        "aria-label": "clock",
+        title: "Clock",
+        onClick: createOnClockClickHandler(state),
       };
     },
   },
@@ -80,8 +94,10 @@ export const taskbarWidgets: TaskbarWidget[] = [
     order: 21,
     enabled: true,
     getProps: state => ({
+      "aria-label": "Calendar Panel",
+      title: "Calendar Panel",
       isOpen: state.widgetState.calendar,
-      onClose: createonCloseHandler(state),
+      onClose: createOnClockCloseHandler(state),
     }),
   },
 ];
