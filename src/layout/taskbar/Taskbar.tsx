@@ -222,11 +222,16 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
       {/* Right: Widgets from config */}
       <RightSection>
         {rightWidgets.map(widget => {
-          const params = widget.getProps?.({
+          const params = widget.getProps({
             widgetState,
             setWidgetState,
           });
-          return <widget.component key={widget.id} {...params} />;
+          return (
+            <widget.component
+              key={widget.id}
+              {...{ ...params, id: widget.id }}
+            />
+          );
         })}
         <Separator />
 

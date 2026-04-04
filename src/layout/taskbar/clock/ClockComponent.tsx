@@ -29,7 +29,7 @@ const Clock = styled.div`
   }
 `;
 
-const ClockComponent: React.FC<WidgetComponentProps> = ({ onClick }) => {
+const ClockComponent: React.FC<WidgetComponentProps> = ({ onClick, id }) => {
   const [time, setTime] = React.useState(new Date());
 
   React.useEffect(() => {
@@ -39,6 +39,7 @@ const ClockComponent: React.FC<WidgetComponentProps> = ({ onClick }) => {
 
   return (
     <Clock
+      id={id}
       onClick={onClick}
       aria-label={`Current time: ${formatTime(time)}. Click to open calendar.`}
       role="button"

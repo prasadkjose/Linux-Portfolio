@@ -1,7 +1,7 @@
 import React from "react";
 // import Announcement, {AnnouncementTaskbarBtn} from '../layout/taskbar/announcements/Announcement';
 import ClockComponent from "../layout/taskbar/clock/ClockComponent";
-import CalendarPanel from "../components/CalendarPanel";
+import CalendarPanel from "../layout/taskbar/clock/CalendarPanel";
 import {
   createOnClickHandler as createOnClockClickHandler,
   createOnCloseHandler as createOnClockCloseHandler,
@@ -31,7 +31,8 @@ export interface TaskbarState {
 }
 
 export interface WidgetComponentProps {
-  "aria-label"?: string;
+  id: string;
+  $parentID?: string;
   title?: string;
   onClick?: () => void;
   isOpen?: boolean;
@@ -44,7 +45,8 @@ export interface TaskbarWidget {
   position: "left" | "center" | "right";
   order: number;
   enabled: boolean;
-  getProps?: (state: TaskbarState) => WidgetComponentProps;
+  // id is passed in from TaskbarWidget when the component is used in TaskBar.
+  getProps: (state: TaskbarState) => Omit<WidgetComponentProps, "id">;
 }
 
 export const taskbarWidgets: TaskbarWidget[] = [
@@ -56,7 +58,6 @@ export const taskbarWidgets: TaskbarWidget[] = [
     enabled: true,
     getProps: state => ({
       onClick: createOnAnnouncementClockClickHandler(state),
-      "aria-label": "View new features",
       title: "What's New",
     }),
   },
@@ -67,7 +68,7 @@ export const taskbarWidgets: TaskbarWidget[] = [
     order: 11,
     enabled: true,
     getProps: state => ({
-      "aria-label": "Announcement Button",
+      $parentID: "announcement-taskbar-button",
       title: "What's New",
       isOpen: state.widgetState.announcement,
       onClose: createOnAnnouncementClockCloseHandler(state),
@@ -81,7 +82,6 @@ export const taskbarWidgets: TaskbarWidget[] = [
     enabled: true,
     getProps: state => {
       return {
-        "aria-label": "clock",
         title: "Clock",
         onClick: createOnClockClickHandler(state),
       };
@@ -94,7 +94,7 @@ export const taskbarWidgets: TaskbarWidget[] = [
     order: 21,
     enabled: true,
     getProps: state => ({
-      "aria-label": "Calendar Panel",
+      $parentID: "clock",
       title: "Calendar Panel",
       isOpen: state.widgetState.calendar,
       onClose: createOnClockCloseHandler(state),

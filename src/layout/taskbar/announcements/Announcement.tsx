@@ -1,8 +1,22 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { NewFeature, newFeatures } from "../../../config/features.config";
 import { WidgetComponentProps } from "../../../config/taskbar.config";
-export const AnnouncementTaskbarBtn = styled.button`
+import { useWidgetPanelCloseHandlers } from "../hooks/useWidgetPanelCloseHandlers";
+
+export const AnnouncementTaskbarBtn = ({
+  onClick,
+  title,
+  id,
+}: WidgetComponentProps) => {
+  return (
+    <StyledButton id={id} onClick={onClick} title={title}>
+      ✨
+    </StyledButton>
+  );
+};
+
+const StyledButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -208,37 +222,27 @@ const Badge = styled.span<{ $type: string }>`
   }};
 `;
 
-const Announcement: React.FC<WidgetComponentProps> = ({ isOpen, onClose }) => {
+const Announcement: React.FC<WidgetComponentProps> = ({
+  isOpen,
+  onClose,
+  $parentID,
+}) => {
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // Close on outside click
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      // Check if click is on the clock element - ignore those clicks, let clock handle it
-      const newFeaturesElement = document.querySelector(
-        '[aria-label*="View new features"]'
-      );
-      if (newFeaturesElement && newFeaturesElement.contains(e.target as Node)) {
-        return;
-      }
+  // Use shared widget close handlers
+  useWidgetPanelCloseHandlers(
+    isOpen ?? false,
+    onClose ?? (() => {}),
+    panelRef,
+    `[id*=${$parentID}]`
+  );
 
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
-        onClose?.();
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-  }, [onClose]);
-
-  // Close on Escape
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose?.();
-    };
-    document.addEventListener("keydown", handleKey);
-  }, [onClose]);
   return (
-    <BannerContainer $isOpen={!!isOpen} onClick={e => e.stopPropagation()}>
+    <BannerContainer
+      ref={panelRef}
+      $isOpen={!!isOpen}
+      onClick={e => e.stopPropagation()}
+    >
       <BannerHeader>
         <h3>✨ What's New</h3>
         <span style={{ fontSize: "12px", color: "rgba(255, 255, 255, 0.5)" }}>
