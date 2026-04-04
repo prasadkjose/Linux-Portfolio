@@ -27,6 +27,7 @@ export const TabBar = styled.div`
     flex-direction: column;
     padding: 0;
     border-bottom: none;
+    gap: 0;
   }
 `;
 
@@ -175,22 +176,37 @@ export const MobileMenu = styled.div`
   flex-direction: column;
   background: rgba(24, 24, 24, 0.98);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  max-height: 300px;
   overflow-y: auto;
 
   @media (max-width: 550px) {
     display: contents;
-    animation: slideDown 0.3s ease-out;
+    > * {
+      transform-origin: top center;
+      animation: slideDown 0.28s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
   }
 
   @keyframes slideDown {
-    from {
+    0% {
       opacity: 0;
-      transform: translateY(-10px);
+      transform: translateY(-4px) scaleY(0.96);
     }
-    to {
+    100% {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scaleY(1);
     }
+  }
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
   }
 `;
