@@ -1,6 +1,54 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
-import { NewFeature, newFeatures } from "../../config/features.config";
+import { NewFeature, newFeatures } from "../../../config/features.config";
+export const FeaturesButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: #eceff4;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.15s ease;
+  position: relative;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 6px;
+    height: 6px;
+    background: #4caf50;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(76, 175, 80, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+  }
+`;
 
 const BannerContainer = styled.div<{ $isOpen: boolean }>`
   position: absolute;

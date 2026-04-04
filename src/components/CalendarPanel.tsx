@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
+import { WidgetComponentProps } from "../config/taskbar.config";
 
 // ── Animations ─────────────────────────────────────────────────────────
 
@@ -199,12 +200,7 @@ function getFirstDayOfMonth(year: number, month: number) {
 
 // ── Component ──────────────────────────────────────────────────────────
 
-interface CalendarPanelProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const CalendarPanel: React.FC<CalendarPanelProps> = ({ isOpen, onClose }) => {
+const CalendarPanel: React.FC<WidgetComponentProps> = ({ isOpen, onClose }) => {
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
@@ -222,7 +218,7 @@ const CalendarPanel: React.FC<CalendarPanelProps> = ({ isOpen, onClose }) => {
       }
 
       if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
-        onClose();
+        onClose?.();
       }
     };
 
@@ -232,7 +228,7 @@ const CalendarPanel: React.FC<CalendarPanelProps> = ({ isOpen, onClose }) => {
   // Close on Escape
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") onClose?.();
     };
     document.addEventListener("keydown", handleKey);
   }, [onClose]);

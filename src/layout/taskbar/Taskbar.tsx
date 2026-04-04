@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FullscreenManager, WindowState } from "../../types/window";
 import { Icons } from "../../components/desktop-shortcuts/DesktopIcons";
-import CalendarPanel from "../../components/CalendarPanel";
 import { isMobileDevice } from "../../utils/typeGuards";
 import FullscreenToggle from "../../components/FullscreenToggle";
-import NewFeaturesBanner from "./NewFeaturesBanner";
+import { taskbarWidgets } from "../../config/taskbar.config";
 import { useFullscreenManager } from "../../hooks/useFullscreenManger";
-import ClockComponent from "./ClockComponent";
 
 const Bar = styled.div`
   position: fixed;
@@ -112,63 +110,12 @@ const TaskItem = styled.button<{ $active?: boolean }>`
   }
 `;
 
-const FeaturesButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
-  background: transparent;
-  border: none;
-  color: #eceff4;
-  cursor: pointer;
-  font-size: 16px;
-  transition: all 0.15s ease;
-  position: relative;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-    transform: scale(1.05);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    width: 6px;
-    height: 6px;
-    background: #4caf50;
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0% {
-      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
-    }
-    70% {
-      box-shadow: 0 0 0 8px rgba(76, 175, 80, 0);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
-    }
-  }
-`;
-
 const Separator = styled.div`
   width: 1px;
   height: 24px;
   background: rgba(255, 255, 255, 0.12);
   margin: 0 4px;
 `;
-
-// ── Hook ───────────────────────────────────────────────────────────────
 
 // ── Component ──────────────────────────────────────────────────────────
 
@@ -178,32 +125,27 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
   resume,
 }) => {
   const [, showDesktop] = useState<boolean>(false);
-  const [calendarOpen, setCalendarOpen] = useState(false);
   const [featuresOpen, setFeaturesOpen] = useState(false);
   const isMobile = isMobileDevice();
+  const [widgetState, setWidgetState] = useState({
+    calendar: false,
+  });
 
-  const handleClockClick = React.useCallback(() => {
-    setCalendarOpen(prev => !prev);
-    setFeaturesOpen(false);
-  }, []);
-
-  const handleFeaturesClick = React.useCallback(() => {
-    setFeaturesOpen(prev => !prev);
-    setCalendarOpen(false);
-  }, []);
+  // const handleFeaturesClick = React.useCallback(() => {
+  //   setFeaturesOpen(prev => !prev);
+  // }, []);
 
   // Close panels when clicking outside
   React.useEffect(() => {
     const handleClickOutside = () => {
-      setCalendarOpen(false);
       setFeaturesOpen(false);
     };
 
-    if (calendarOpen || featuresOpen) {
+    if (featuresOpen) {
       document.addEventListener("click", handleClickOutside);
       return () => document.removeEventListener("click", handleClickOutside);
     }
-  }, [calendarOpen, featuresOpen]);
+  }, [featuresOpen]);
   const { isFullscreen, toggleFullscreen }: FullscreenManager =
     useFullscreenManager();
 
@@ -233,6 +175,11 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
       return false;
     });
   };
+
+  // Get right section widgets from config
+  const rightWidgets = taskbarWidgets
+    .filter(widget => widget.position === "right" && widget.enabled)
+    .sort((a, b) => a.order - b.order);
 
   return (
     <Bar role="toolbar" aria-label="Application taskbar">
@@ -287,29 +234,15 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
         )}
       </CenterSection>
 
-      {/* Right: Clock & date */}
+      {/* Right: Widgets from config */}
       <RightSection>
-        <Separator />
-        <FeaturesButton
-          onClick={e => {
-            e.stopPropagation();
-            handleFeaturesClick();
-          }}
-          aria-label="View new features"
-          title="What's New"
-        >
-          ✨
-        </FeaturesButton>
-        <NewFeaturesBanner
-          isOpen={featuresOpen}
-          onClose={() => setFeaturesOpen(false)}
-        />
-        <Separator />
-        <ClockComponent onClick={handleClockClick} />
-        <CalendarPanel
-          isOpen={calendarOpen}
-          onClose={() => setCalendarOpen(false)}
-        />
+        {rightWidgets.map(widget => {
+          const params = widget.getProps?.({
+            widgetState,
+            setWidgetState,
+          });
+          return <widget.component key={widget.id} {...params} />;
+        })}
         <Separator />
 
         {/* Fullscreen toggle control: hide when any window maximized; allow windows to overlap due to low z-index */}
