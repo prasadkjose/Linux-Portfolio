@@ -157,10 +157,7 @@ export const LocationBar = styled.div`
 
 export const Content = styled.div<{ $maximized?: boolean }>`
   height: ${({ $maximized }) =>
-    $maximized
-      ? "calc(100vh - 32px - 100px - 50px)"
-      : "calc(100% - 32px - 100px)"};
-  padding: 22px 24px;
+    $maximized ? "calc(100vh - 32px - 80px)" : "calc(100% - 32px)"};
   color: #eceff4;
   font-family:
     system-ui,
