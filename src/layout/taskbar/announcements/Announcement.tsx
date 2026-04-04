@@ -71,7 +71,7 @@ const BannerContainer = styled.div<{ $isOpen: boolean }>`
   right: 12px;
   width: 380px;
   max-height: 480px;
-  background: rgba(12, 12, 12, 0.85);
+  background: rgba(12, 12, 12, 1);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 12px;
