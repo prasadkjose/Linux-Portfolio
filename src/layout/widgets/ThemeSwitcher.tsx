@@ -216,9 +216,9 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       ))}
       {
         <Tooltip
-          showAfter={5000}
+          showAfter={60000}
           showCondition={!$isVisible}
-          position={`${isMobileDevice() ? "top-right" : "bottom-right"}`}
+          position={`${isMobileDevice() ? "top-left" : "bottom-right"}`}
         >
           ⚙️ Try out a different Linux here.
         </Tooltip>
