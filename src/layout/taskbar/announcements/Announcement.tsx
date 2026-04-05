@@ -1,9 +1,12 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { NewFeature, newFeatures } from "../config/features.config";
 import { WidgetComponentProps } from "../config/taskbar.config";
 import { useWidgetPanelCloseHandlers } from "../hooks/useWidgetPanelCloseHandlers";
-import GitHubService, { ClosedIssue } from "../../../services/githubService";
+import GitHubService from "../../../services/githubService";
+import { transformClosedIssuesToNewFeatures } from "../../../utils/githubUtils";
+import { useQuery } from "@tanstack/react-query";
+import { getGitHubConfig } from "../../../config/github.config";
 
 export const AnnouncementTaskbarBtn = ({
   onClick,
@@ -229,7 +232,6 @@ const Announcement: React.FC<WidgetComponentProps> = ({
   $parentID,
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);
-  const [closedIssues, setClosedIssues] = useState<ClosedIssue[]>([]);
 
   // Use shared widget close handlers
   useWidgetPanelCloseHandlers(
@@ -239,31 +241,25 @@ const Announcement: React.FC<WidgetComponentProps> = ({
     `[id*=${$parentID}]`
   );
 
-  useEffect(() => {
-    const fetchClosedIssues = async () => {
-      try {
-        const githubService = new GitHubService({ username: "prasadkjose" });
-        const issues = await githubService.getTopClosedIssues();
-        setClosedIssues(issues);
-      } catch (error) {
-        console.error("Failed to load closed issues", error);
-      }
-    };
+  const {
+    data: closedIssues,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["github-projects"],
+    queryFn: async () => {
+      const config = getGitHubConfig();
+      const githubService = new GitHubService(config);
+      return await githubService.getTopClosedIssues();
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+  });
 
-    fetchClosedIssues();
-  }, []);
-
-  // Combine static new features with closed issues
-  const displayFeatures = [
-    ...newFeatures,
-    ...closedIssues.map(issue => ({
-      id: `issue-${issue.number}`,
-      title: `#${issue.number} ${issue.title}`,
-      icon: "fix" as const,
-      description: `Closed issue with ${issue.comments.totalCount} comments`,
-      date: new Date(issue.closedAt).toLocaleDateString(),
-    })),
-  ];
+  const displayFeatures =
+    !closedIssues || isError
+      ? newFeatures
+      : transformClosedIssuesToNewFeatures(closedIssues);
 
   return (
     <BannerContainer
@@ -277,20 +273,35 @@ const Announcement: React.FC<WidgetComponentProps> = ({
           {displayFeatures.length} updates
         </span>
       </BannerHeader>
-      <FeatureList>
-        {displayFeatures.map((feature: NewFeature) => (
-          <FeatureItem key={feature.id}>
-            <FeatureTitle>
-              {feature.title}
-              {feature.icon && (
-                <Badge $type={feature.icon}>{feature.icon}</Badge>
-              )}
-            </FeatureTitle>
-            <FeatureDescription>{feature.description}</FeatureDescription>
-            <FeatureDate>{feature.date}</FeatureDate>
-          </FeatureItem>
-        ))}
-      </FeatureList>
+      {!isLoading && (
+        <FeatureList>
+          {displayFeatures.map((feature: NewFeature) => (
+            <FeatureItem key={feature.id}>
+              <FeatureTitle>
+                {feature.title}
+                {feature.icon && (
+                  <Badge $type={feature.icon}>{feature.icon}</Badge>
+                )}
+              </FeatureTitle>
+              <FeatureDescription>{feature.description}</FeatureDescription>
+              <FeatureDate>{feature.date}</FeatureDate>
+            </FeatureItem>
+          ))}
+        </FeatureList>
+      )}
+      {/* Loading state */}
+      {isLoading && (
+        <div
+          style={{
+            textAlign: "center",
+            color: "#99ddcc",
+            fontStyle: "italic",
+            padding: "20px",
+          }}
+        >
+          Loading GitHub projects...
+        </div>
+      )}
     </BannerContainer>
   );
 };

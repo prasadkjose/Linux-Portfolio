@@ -1,4 +1,5 @@
-import { Repository } from "../services/githubService";
+import { Repository, ClosedIssue } from "../services/githubService";
+import { NewFeature } from "../layout/taskbar/config/features.config";
 
 /**
  * Format GitHub repository data to match the HighlightCard component requirements
@@ -47,3 +48,31 @@ export const getFallbackGithubProjects = () => [
     },
   },
 ];
+
+/**
+ * Transform closed GitHub issue to NewFeature type for announcement panel
+ *
+ * @param issue - Closed issue object from GitHub API
+ * @returns Formatted NewFeature object compatible with announcement panel
+ */
+export const transformClosedIssueToNewFeature = (
+  issue: ClosedIssue
+): NewFeature => ({
+  id: `issue-${issue.number}`,
+  title: `#${issue.number} ${issue.title}`,
+  icon: "fix",
+  description: `Closed issue with ${issue.comments.totalCount} comments`,
+  date: new Date(issue.closedAt).toLocaleDateString(),
+});
+
+/**
+ * Transform array of closed issues to NewFeature array
+ *
+ * @param issues - Array of closed GitHub issues
+ * @returns Array of formatted NewFeature objects
+ */
+export const transformClosedIssuesToNewFeatures = (
+  issues: ClosedIssue[]
+): NewFeature[] => {
+  return issues.map(transformClosedIssueToNewFeature);
+};
