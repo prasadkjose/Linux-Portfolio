@@ -77,6 +77,50 @@ export async function handler(event: {
         statusCode: 200,
         body: JSON.stringify(pinnedRepos),
       };
+    } else if (path === "top-closed-issues") {
+      // Get top 5 closed issues from Linux-Portfolio repository
+      const issuesQuery = `
+        query {
+          repository(owner: "prasadkjose", name: "Linux-Portfolio") {
+            issues(first: 5, states: CLOSED, orderBy: {field: UPDATED_AT, direction: DESC}) {
+              nodes {
+                number
+                title
+                url
+                createdAt
+                closedAt
+                comments {
+                  totalCount
+                }
+              }
+            }
+          }
+        }
+      `;
+
+      const issuesRes = await fetch("https://api.github.com/graphql", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: issuesQuery,
+        }),
+      });
+
+      if (!issuesRes.ok) {
+        throw new Error(`GitHub GraphQL API error: ${issuesRes.status}`);
+      }
+
+      const issuesData = await issuesRes.json();
+
+      const closedIssues = issuesData.data.repository.issues.nodes;
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify(closedIssues),
+      };
     } else {
       return {
         statusCode: 400,

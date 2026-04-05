@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import { NewFeature, newFeatures } from "../config/features.config";
 import { WidgetComponentProps } from "../config/taskbar.config";
 import { useWidgetPanelCloseHandlers } from "../hooks/useWidgetPanelCloseHandlers";
+import GitHubService, { ClosedIssue } from "../../../services/githubService";
 
 export const AnnouncementTaskbarBtn = ({
   onClick,
@@ -228,6 +229,7 @@ const Announcement: React.FC<WidgetComponentProps> = ({
   $parentID,
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);
+  const [closedIssues, setClosedIssues] = useState<ClosedIssue[]>([]);
 
   // Use shared widget close handlers
   useWidgetPanelCloseHandlers(
@@ -236,6 +238,32 @@ const Announcement: React.FC<WidgetComponentProps> = ({
     panelRef,
     `[id*=${$parentID}]`
   );
+
+  useEffect(() => {
+    const fetchClosedIssues = async () => {
+      try {
+        const githubService = new GitHubService({ username: "prasadkjose" });
+        const issues = await githubService.getTopClosedIssues();
+        setClosedIssues(issues);
+      } catch (error) {
+        console.error("Failed to load closed issues", error);
+      }
+    };
+
+    fetchClosedIssues();
+  }, []);
+
+  // Combine static new features with closed issues
+  const displayFeatures = [
+    ...newFeatures,
+    ...closedIssues.map(issue => ({
+      id: `issue-${issue.number}`,
+      title: `#${issue.number} ${issue.title}`,
+      icon: "fix" as const,
+      description: `Closed issue with ${issue.comments.totalCount} comments`,
+      date: new Date(issue.closedAt).toLocaleDateString(),
+    })),
+  ];
 
   return (
     <BannerContainer
@@ -246,11 +274,11 @@ const Announcement: React.FC<WidgetComponentProps> = ({
       <BannerHeader>
         <h3>✨ What's New</h3>
         <span style={{ fontSize: "12px", color: "rgba(255, 255, 255, 0.5)" }}>
-          {newFeatures.length} updates
+          {displayFeatures.length} updates
         </span>
       </BannerHeader>
       <FeatureList>
-        {newFeatures.map((feature: NewFeature) => (
+        {displayFeatures.map((feature: NewFeature) => (
           <FeatureItem key={feature.id}>
             <FeatureTitle>
               {feature.title}
