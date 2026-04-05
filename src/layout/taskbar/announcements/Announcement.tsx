@@ -275,18 +275,38 @@ const Announcement: React.FC<WidgetComponentProps> = ({
       </BannerHeader>
       {!isLoading && (
         <FeatureList>
-          {displayFeatures.map((feature: NewFeature) => (
-            <FeatureItem key={feature.id}>
-              <FeatureTitle>
-                {feature.title}
-                {feature.icon && (
-                  <Badge $type={feature.icon}>{feature.icon}</Badge>
-                )}
-              </FeatureTitle>
-              <FeatureDescription>{feature.description}</FeatureDescription>
-              <FeatureDate>{feature.date}</FeatureDate>
-            </FeatureItem>
-          ))}
+          {displayFeatures.map((feature: NewFeature) =>
+            feature.href ? (
+              <a
+                href={feature.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "none", display: "block" }}
+              >
+                <FeatureItem key={feature.id}>
+                  <FeatureTitle>
+                    {feature.title}
+                    {feature.icon && (
+                      <Badge $type={feature.icon}>{feature.icon}</Badge>
+                    )}
+                  </FeatureTitle>
+                  <FeatureDescription>{feature.description}</FeatureDescription>
+                  <FeatureDate>{feature.date}</FeatureDate>
+                </FeatureItem>
+              </a>
+            ) : (
+              <FeatureItem key={feature.id}>
+                <FeatureTitle>
+                  {feature.title}
+                  {feature.icon && (
+                    <Badge $type={feature.icon}>{feature.icon}</Badge>
+                  )}
+                </FeatureTitle>
+                <FeatureDescription>{feature.description}</FeatureDescription>
+                <FeatureDate>{feature.date}</FeatureDate>
+              </FeatureItem>
+            )
+          )}
         </FeatureList>
       )}
       {/* Loading state */}

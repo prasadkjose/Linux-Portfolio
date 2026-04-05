@@ -4,6 +4,7 @@ export interface NewFeature {
   description: string;
   date: string;
   icon?: "star" | "new" | "improvement" | "fix";
+  href?: string;
 }
 
 export const newFeatures: NewFeature[] = [
