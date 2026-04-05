@@ -93,9 +93,9 @@ export async function handler(event: {
         }
       `;
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const data = (await executeGraphQLQuery(token, query, {
         username,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       })) as any;
       return createResponse(200, data.user.pinnedItems.nodes);
     }

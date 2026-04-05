@@ -165,6 +165,7 @@ const FeatureTitle = styled.div`
     Roboto,
     sans-serif;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 8px;
 `;
@@ -314,12 +315,9 @@ const Announcement: React.FC<WidgetComponentProps> = ({
         <div
           style={{
             textAlign: "center",
-            color: "#99ddcc",
-            fontStyle: "italic",
-            padding: "20px",
           }}
         >
-          Loading GitHub projects...
+          Loading...
         </div>
       )}
     </BannerContainer>
