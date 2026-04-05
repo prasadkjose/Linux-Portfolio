@@ -95,7 +95,7 @@ export const transformClosedIssueToNewFeature = (
 
   return {
     id: `issue-${issue.number}`,
-    title: `#${issue.number} ${cleanedTitle}`,
+    title: cleanedTitle,
     icon,
     description: `Closed issue with ${issue.comments.totalCount} comments`,
     date: new Date(issue.closedAt).toLocaleDateString(),
