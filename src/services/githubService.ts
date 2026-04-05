@@ -8,6 +8,17 @@ export interface Repository {
   forkCount: number;
 }
 
+export interface ClosedIssue {
+  number: number;
+  title: string;
+  url: string;
+  createdAt: string;
+  closedAt: string;
+  comments: {
+    totalCount: number;
+  };
+}
+
 export interface GitHubServiceConfig {
   username: string;
 }
@@ -67,6 +78,26 @@ class GitHubService {
       );
     } catch (error) {
       this.handleError(error, "Failed to fetch pinned repositories");
+      throw error;
+    }
+  }
+
+  /**
+   * Get top 5 recently closed issues from Linux-Portfolio repository
+   */
+  async getTopClosedIssues(): Promise<ClosedIssue[]> {
+    try {
+      const data = await this.call("github", {
+        path: "top-closed-issues",
+      });
+
+      if (!Array.isArray(data)) {
+        throw new Error("Invalid data format received from GitHub API");
+      }
+
+      return data as ClosedIssue[];
+    } catch (error) {
+      this.handleError(error, "Failed to fetch closed issues");
       throw error;
     }
   }

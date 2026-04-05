@@ -1,4 +1,5 @@
-import { Repository } from "../services/githubService";
+import { Repository, ClosedIssue } from "../services/githubService";
+import { NewFeature } from "../layout/taskbar/config/features.config";
 
 /**
  * Format GitHub repository data to match the HighlightCard component requirements
@@ -47,3 +48,69 @@ export const getFallbackGithubProjects = () => [
     },
   },
 ];
+
+/**
+ * Transform closed GitHub issue to NewFeature type for announcement panel
+ *
+ * @param issue - Closed issue object from GitHub API
+ * @returns Formatted NewFeature object compatible with announcement panel
+ */
+/**
+ * Map issue title prefix to appropriate icon type and clean title
+ * Uses string splice for efficient single-pass processing
+ */
+const parseIssueTitle = (
+  title: string
+): { cleanedTitle: string; icon: "fix" | "improvement" | "new" } => {
+  const prefixMap = [
+    { prefix: "Fix:", icon: "fix" as const },
+    { prefix: "Refactor:", icon: "improvement" as const },
+    { prefix: "Feature:", icon: "new" as const },
+  ];
+
+  for (const { prefix, icon } of prefixMap) {
+    if (title.startsWith(prefix)) {
+      return {
+        cleanedTitle: title.slice(prefix.length).trim(),
+        icon,
+      };
+    }
+  }
+
+  const colonIndex = title.indexOf(":");
+  if (colonIndex > 0 && colonIndex < 20) {
+    return {
+      cleanedTitle: title.slice(colonIndex + 1).trim(),
+      icon: "fix",
+    };
+  }
+
+  return { cleanedTitle: title, icon: "fix" };
+};
+
+export const transformClosedIssueToNewFeature = (
+  issue: ClosedIssue
+): NewFeature => {
+  const { cleanedTitle, icon } = parseIssueTitle(issue.title);
+
+  return {
+    id: `issue-${issue.number}`,
+    title: cleanedTitle,
+    icon,
+    description: `Closed issue with ${issue.comments.totalCount} comments`,
+    date: new Date(issue.closedAt).toLocaleDateString(),
+    href: issue.url,
+  };
+};
+
+/**
+ * Transform array of closed issues to NewFeature array
+ *
+ * @param issues - Array of closed GitHub issues
+ * @returns Array of formatted NewFeature objects
+ */
+export const transformClosedIssuesToNewFeatures = (
+  issues: ClosedIssue[]
+): NewFeature[] => {
+  return issues.map(transformClosedIssueToNewFeature);
+};

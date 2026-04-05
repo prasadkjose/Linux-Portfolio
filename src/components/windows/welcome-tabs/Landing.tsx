@@ -6,7 +6,7 @@ import BrowserWindow from "../../../layout/window-container/BrowserWindow";
 const Landing: React.FC<WindowState> = props => {
   return (
     <BrowserWindow {...props}>
-      <Tabs tabs={TAB_CONFIGS.welcome} activeTabId="home" />
+      {!props.href && <Tabs tabs={TAB_CONFIGS.welcome} activeTabId="home" />}
     </BrowserWindow>
   );
 };

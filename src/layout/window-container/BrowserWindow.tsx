@@ -7,6 +7,7 @@ import { PERSONAL_DATA } from "../../config/personalData.config";
 
 interface BrowserWindowProps extends WindowState {
   children?: React.ReactNode;
+  href?: string;
 }
 
 const BrowserWindow: React.FC<BrowserWindowProps> = ({
@@ -25,7 +26,13 @@ const BrowserWindow: React.FC<BrowserWindowProps> = ({
   z,
   children,
   mounted,
+  href,
 }) => {
+  const openExternal = () => {
+    if (href) {
+      window.open(href, "_blank");
+    }
+  };
   return (
     <WindowContainer
       mounted={mounted}
@@ -45,10 +52,52 @@ const BrowserWindow: React.FC<BrowserWindowProps> = ({
       title="Browser"
     >
       <Toolbar>
-        <LocationBar>{PERSONAL_DATA.personalInfo.website}</LocationBar>
+        <LocationBar>{href || PERSONAL_DATA.personalInfo.website}</LocationBar>
       </Toolbar>
 
-      <Content $maximized={maximized}>{children}</Content>
+      <Content $maximized={maximized}>
+        {href ? (
+          <div style={{ width: "100%", height: "100%", position: "relative" }}>
+            <iframe
+              src={href}
+              style={{
+                width: "100%",
+                height: "100%",
+                border: "none",
+                backgroundColor: "white",
+              }}
+              title={`Browser - ${href}`}
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+              referrerPolicy="no-referrer"
+            />
+            <div
+              style={{
+                position: "absolute",
+                bottom: 16,
+                right: 16,
+              }}
+            >
+              <button
+                onClick={openExternal}
+                style={{
+                  padding: "8px 16px",
+                  backgroundColor: "#2e3440",
+                  color: "#eceff4",
+                  border: "none",
+                  borderRadius: 6,
+                  cursor: "pointer",
+                  fontSize: 12,
+                  fontWeight: 500,
+                }}
+              >
+                Open in new tab ↗
+              </button>
+            </div>
+          </div>
+        ) : (
+          children
+        )}
+      </Content>
     </WindowContainer>
   );
 };

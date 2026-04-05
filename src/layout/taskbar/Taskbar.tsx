@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FullscreenManager, WindowState } from "../../types/window";
 import { Icons } from "../../components/desktop-shortcuts/DesktopIcons";
-import { formatTime, formatDate } from "../../utils/clock";
-import CalendarPanel from "../../components/CalendarPanel";
 import { isMobileDevice } from "../../utils/typeGuards";
 import FullscreenToggle from "../../components/FullscreenToggle";
+import { taskbarWidgets, WidgetState } from "./config/taskbar.config";
 import { useFullscreenManager } from "../../hooks/useFullscreenManger";
 
 const Bar = styled.div`
@@ -111,69 +110,12 @@ const TaskItem = styled.button<{ $active?: boolean }>`
   }
 `;
 
-const Clock = styled.div`
-  color: #eceff4;
-  font-size: 13px;
-  font-family:
-    system-ui,
-    -apple-system,
-    Segoe UI,
-    Roboto,
-    sans-serif;
-  font-weight: 500;
-  text-align: right;
-  line-height: 1.3;
-  user-select: none;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-  transition: background 0.15s ease;
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-  }
-  &:active {
-    background: rgba(255, 255, 255, 0.13);
-  }
-`;
-
 const Separator = styled.div`
   width: 1px;
   height: 24px;
   background: rgba(255, 255, 255, 0.12);
   margin: 0 4px;
 `;
-
-// ── Hook ───────────────────────────────────────────────────────────────
-
-// ── Clock Component (isolated rerenders) ───────────────────────────────
-const ClockComponent = ({ onClick }: { onClick: () => void }) => {
-  const [time, setTime] = React.useState(new Date());
-
-  React.useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <Clock
-      onClick={onClick}
-      aria-label={`Current time: ${formatTime(time)}. Click to open calendar.`}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e: React.KeyboardEvent) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onClick();
-        }
-      }}
-    >
-      <div>{formatTime(time, isMobileDevice())}</div>
-      {!isMobileDevice() && (
-        <div style={{ fontSize: "11px", opacity: 0.7 }}>{formatDate(time)}</div>
-      )}
-    </Clock>
-  );
-};
 
 // ── Component ──────────────────────────────────────────────────────────
 
@@ -183,12 +125,12 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
   resume,
 }) => {
   const [, showDesktop] = useState<boolean>(false);
-  const [calendarOpen, setCalendarOpen] = useState(false);
   const isMobile = isMobileDevice();
+  const [widgetState, setWidgetState] = useState<WidgetState>({
+    calendar: false,
+    announcement: false,
+  });
 
-  const handleClockClick = React.useCallback(() => {
-    setCalendarOpen(prev => !prev);
-  }, []);
   const { isFullscreen, toggleFullscreen }: FullscreenManager =
     useFullscreenManager();
 
@@ -218,6 +160,11 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
       return false;
     });
   };
+
+  // Get right section widgets from config
+  const rightWidgets = taskbarWidgets
+    .filter(widget => widget.position === "right" && widget.enabled)
+    .sort((a, b) => a.order - b.order);
 
   return (
     <Bar role="toolbar" aria-label="Application taskbar">
@@ -272,14 +219,20 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
         )}
       </CenterSection>
 
-      {/* Right: Clock & date */}
+      {/* Right: Widgets from config */}
       <RightSection>
-        <Separator />
-        <ClockComponent onClick={handleClockClick} />
-        <CalendarPanel
-          isOpen={calendarOpen}
-          onClose={() => setCalendarOpen(false)}
-        />
+        {rightWidgets.map(widget => {
+          const params = widget.getProps({
+            widgetState,
+            setWidgetState,
+          });
+          return (
+            <widget.component
+              key={widget.id}
+              {...{ ...params, id: widget.id }}
+            />
+          );
+        })}
         <Separator />
 
         {/* Fullscreen toggle control: hide when any window maximized; allow windows to overlap due to low z-index */}

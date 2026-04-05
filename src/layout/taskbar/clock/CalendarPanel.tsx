@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styled, { keyframes } from "styled-components";
+import { WidgetComponentProps } from "../config/taskbar.config";
+import { useWidgetPanelCloseHandlers } from "../hooks/useWidgetPanelCloseHandlers";
 
 // ── Animations ─────────────────────────────────────────────────────────
 
@@ -199,43 +201,23 @@ function getFirstDayOfMonth(year: number, month: number) {
 
 // ── Component ──────────────────────────────────────────────────────────
 
-interface CalendarPanelProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-const CalendarPanel: React.FC<CalendarPanelProps> = ({ isOpen, onClose }) => {
+const CalendarPanel: React.FC<WidgetComponentProps> = ({
+  isOpen,
+  onClose,
+  $parentID,
+}) => {
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // Close on outside click
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      // Check if click is on the clock element - ignore those clicks, let clock handle it
-      const clockElement = document.querySelector(
-        '[aria-label*="Current time"]'
-      );
-      if (clockElement && clockElement.contains(e.target as Node)) {
-        return;
-      }
-
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
-        onClose();
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-  }, [onClose]);
-
-  // Close on Escape
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", handleKey);
-  }, [onClose]);
+  // Use shared widget close handlers
+  useWidgetPanelCloseHandlers(
+    isOpen ?? false,
+    onClose ?? (() => {}),
+    panelRef,
+    `[id*=${$parentID}]`
+  );
 
   const prevMonth = () => {
     if (viewMonth === 0) {
