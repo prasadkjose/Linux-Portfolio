@@ -7,6 +7,7 @@ import { useTaskMenu } from "../../hooks/useContextMenu";
 import ContextMenu from "../context-menu/ContextMenu";
 import { WindowState } from "../../types/window";
 import { getWindowContextMenuItems } from "../context-menu/contextMenu.config";
+import { OpenIcon } from "../context-menu/contextMenu.icons";
 
 type Props = {
   onOpenTerminal?: () => void;
@@ -51,7 +52,6 @@ const Grid = styled.div<{ hidden?: boolean; $mobileExpanded?: boolean }>`
 const DesktopShortcuts: React.FC<Props> = ({
   onOpenTerminal,
   onOpenWelcome,
-  onOpenWelcomeWithUrl,
   onOpenResume,
   hidden,
   activeTerminal,
@@ -109,17 +109,38 @@ const DesktopShortcuts: React.FC<Props> = ({
         // Type-safe access to Icons object
         const iconKey = data.value as IconKey;
         const icon = Icons[iconKey];
+        const shortcutKey = `shortcut-${idx}`;
+        const openAction = data.href
+          ? () => window.open(data.href, "_blank")
+          : undefined;
+
         return (
           <DesktopShortcut
             key={idx}
             label={data.value}
             href={data.href}
-            onOpen={
-              onOpenWelcomeWithUrl && data.href
-                ? () => onOpenWelcomeWithUrl(data.href!)
-                : undefined
-            }
+            onOpen={openAction}
             icon={icon}
+            onContextMenu={e => handleContextMenu(e, shortcutKey)}
+            contextMenu={
+              contextMenu.visible && contextMenu.windowKey === shortcutKey ? (
+                <ContextMenu
+                  items={[
+                    {
+                      icon: OpenIcon,
+                      label: "Open",
+                      onClick: () => {
+                        openAction?.();
+                        closeContextMenu();
+                      },
+                      disabled: !openAction,
+                    },
+                  ]}
+                  onClose={closeContextMenu}
+                  position={"bottom-right"}
+                />
+              ) : undefined
+            }
           />
         );
       })}
