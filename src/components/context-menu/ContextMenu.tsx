@@ -113,7 +113,7 @@ const MenuItem = styled.button`
 
 export interface ContextMenuItem {
   label: string;
-  icon?: string;
+  icon?: React.ReactNode;
   onClick: () => void;
   disabled?: boolean;
 }
