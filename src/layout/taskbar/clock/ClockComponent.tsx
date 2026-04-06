@@ -33,7 +33,7 @@ const ClockComponent: React.FC<WidgetComponentProps> = ({ onClick, id }) => {
   const [time, setTime] = React.useState(new Date());
 
   React.useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
+    const timer = setInterval(() => setTime(new Date()), 60000);
     return () => clearInterval(timer);
   }, []);
 
