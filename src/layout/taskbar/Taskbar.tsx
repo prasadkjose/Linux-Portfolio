@@ -6,6 +6,8 @@ import { isMobileDevice } from "../../utils/typeGuards";
 import FullscreenToggle from "../../components/FullscreenToggle";
 import { taskbarWidgets, WidgetState } from "./config/taskbar.config";
 import { useFullscreenManager } from "../../hooks/useFullscreenManger";
+import { TaskContextMenu } from "./TaskContextMenu";
+import { useTaskMenu } from "../../hooks/useContextMenu";
 
 const Bar = styled.div`
   position: fixed;
@@ -131,10 +133,14 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
     announcement: false,
   });
 
+  const { contextMenu, setContextMenu, handleContextMenu, closeContextMenu } =
+    useTaskMenu();
+
   const { isFullscreen, toggleFullscreen }: FullscreenManager =
     useFullscreenManager();
 
   const handleTaskClick = (window: WindowState) => {
+    setContextMenu({ visible: false, windowKey: null });
     if (!window.mounted) {
       window.open?.();
     } else if (!window.visible) {
@@ -146,6 +152,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
       window.minimize?.();
     }
   };
+
   const handleShowDesktop = () => {
     showDesktop(prev => {
       if (!prev) {
@@ -188,33 +195,45 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
           <TaskItem
             $active={terminal.visible}
             onClick={() => handleTaskClick(terminal)}
+            onContextMenu={e => handleContextMenu(e, "terminal")}
             title="Terminal"
             aria-label="Terminal window"
           >
             {Icons.Terminal}
             {!isMobile && <span>Terminal</span>}
+            {contextMenu.visible && contextMenu.windowKey === "terminal" && (
+              <TaskContextMenu window={terminal} onClose={closeContextMenu} />
+            )}
           </TaskItem>
         )}
         {welcome.mounted && (
           <TaskItem
             $active={welcome.visible}
             onClick={() => handleTaskClick(welcome)}
+            onContextMenu={e => handleContextMenu(e, "welcome")}
             title="Browser"
             aria-label="Browser window"
           >
             {Icons.Browser}
             {!isMobile && <span>Browser</span>}
+            {contextMenu.visible && contextMenu.windowKey === "welcome" && (
+              <TaskContextMenu window={welcome} onClose={closeContextMenu} />
+            )}
           </TaskItem>
         )}
         {resume.mounted && (
           <TaskItem
             $active={resume.visible}
             onClick={() => handleTaskClick(resume)}
+            onContextMenu={e => handleContextMenu(e, "resume")}
             title="Resume"
             aria-label="Resume window"
           >
             {Icons.PDF}
             {!isMobile && <span>Resume</span>}
+            {contextMenu.visible && contextMenu.windowKey === "resume" && (
+              <TaskContextMenu window={resume} onClose={closeContextMenu} />
+            )}
           </TaskItem>
         )}
       </CenterSection>
