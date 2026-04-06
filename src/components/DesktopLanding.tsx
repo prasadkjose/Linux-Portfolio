@@ -74,6 +74,9 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
           activeBrowser={!isMobile && welcome.mounted && welcome.visible}
           activeResume={!isMobile && resume.mounted && resume.visible}
           mobileExpanded={isMobile}
+          terminal={terminal}
+          welcome={welcome}
+          resume={resume}
         />
 
         {/* Linux-style taskbar fixed at the bottom */}

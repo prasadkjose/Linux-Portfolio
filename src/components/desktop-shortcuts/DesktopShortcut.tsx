@@ -9,6 +9,8 @@ type Props = {
   icon?: React.ReactNode;
   style?: React.CSSProperties;
   active?: boolean;
+  onContextMenu?: (e: React.MouseEvent) => void;
+  contextMenu?: React.ReactNode;
 };
 
 const ShortcutWrap = styled.div`
@@ -67,6 +69,8 @@ const DesktopShortcut: React.FC<Props> = ({
   icon,
   style,
   active,
+  onContextMenu,
+  contextMenu,
 }) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -86,10 +90,12 @@ const DesktopShortcut: React.FC<Props> = ({
       aria-label={`Open ${label}`}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
+      onContextMenu={onContextMenu}
       style={style}
     >
       <IconTile $active={active}>{icon}</IconTile>
       <Label>{label}</Label>
+      {contextMenu}
     </ShortcutWrap>
   );
 };

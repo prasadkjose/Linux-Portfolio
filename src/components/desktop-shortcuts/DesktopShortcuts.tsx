@@ -3,6 +3,9 @@ import styled from "styled-components";
 import DesktopShortcut from "./DesktopShortcut";
 import { IconKey, Icons } from "./DesktopIcons";
 import { SHORTCUTS } from "./DesktopShortcuts.config";
+import { useTaskMenu } from "../../hooks/useContextMenu";
+import ContextMenu from "../ContextMenu";
+import { WindowState } from "../../types/window";
 
 type Props = {
   onOpenTerminal?: () => void;
@@ -14,6 +17,9 @@ type Props = {
   activeBrowser?: boolean;
   activeResume?: boolean;
   mobileExpanded?: boolean;
+  terminal?: WindowState;
+  welcome?: WindowState;
+  resume?: WindowState;
 };
 
 const Grid = styled.div<{ hidden?: boolean; $mobileExpanded?: boolean }>`
@@ -51,7 +57,11 @@ const DesktopShortcuts: React.FC<Props> = ({
   activeBrowser,
   activeResume,
   mobileExpanded,
+  terminal,
+  welcome,
+  resume,
 }) => {
+  const { contextMenu, handleContextMenu, closeContextMenu } = useTaskMenu();
   return (
     <Grid hidden={hidden} $mobileExpanded={mobileExpanded}>
       <DesktopShortcut
@@ -59,12 +69,40 @@ const DesktopShortcuts: React.FC<Props> = ({
         onOpen={onOpenWelcome}
         icon={Icons.Browser}
         active={activeBrowser}
+        onContextMenu={
+          welcome ? e => handleContextMenu(e, "welcome") : undefined
+        }
+        contextMenu={
+          contextMenu.visible &&
+          contextMenu.windowKey === "welcome" &&
+          welcome ? (
+            <ContextMenu
+              window={welcome}
+              onClose={closeContextMenu}
+              position={"bottom-right"}
+            />
+          ) : undefined
+        }
       />
       <DesktopShortcut
         label="Terminal"
         onOpen={onOpenTerminal}
         icon={Icons.Terminal}
         active={activeTerminal}
+        onContextMenu={
+          terminal ? e => handleContextMenu(e, "terminal") : undefined
+        }
+        contextMenu={
+          contextMenu.visible &&
+          contextMenu.windowKey === "terminal" &&
+          terminal ? (
+            <ContextMenu
+              window={terminal}
+              onClose={closeContextMenu}
+              position={"bottom-right"}
+            />
+          ) : undefined
+        }
       />
       {SHORTCUTS.map((data, idx) => {
         // Type-safe access to Icons object
@@ -89,6 +127,18 @@ const DesktopShortcuts: React.FC<Props> = ({
         onOpen={onOpenResume}
         icon={Icons.PDF}
         active={activeResume}
+        onContextMenu={resume ? e => handleContextMenu(e, "resume") : undefined}
+        contextMenu={
+          contextMenu.visible &&
+          contextMenu.windowKey === "resume" &&
+          resume ? (
+            <ContextMenu
+              window={resume}
+              onClose={closeContextMenu}
+              position={"bottom-right"}
+            />
+          ) : undefined
+        }
       />
     </Grid>
   );
