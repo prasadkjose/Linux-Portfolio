@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { CloseButton } from "../layout/window-container/BrowserWindow.styled";
+import { CloseButton } from "../window-container/BrowserWindow.styled";
+import { getFromSS, setToSS } from "../../utils/storage";
+import { TOOLTIPS_CONFIG } from "./tooltips.config";
 
 const fadeSlideUp = keyframes`
   from {
@@ -96,41 +98,61 @@ const TooltipBubble = styled.div<{ $position: string }>`
   }}
 `;
 
-interface TooltipProps {
-  children: React.ReactNode;
-  showAfter?: number;
+export interface TooltipProps {
+  id: string;
   showCondition?: boolean;
   onClose?: () => void;
-  position?: "bottom-left" | "bottom-right" | "top-left" | "top-right";
 }
 
+const TOOLTIPS_STORAGE_KEY = "tooltips:dismissed";
+
 const Tooltip: React.FC<TooltipProps> = ({
-  children,
-  showAfter = 3000,
+  id,
   showCondition = true,
   onClose,
-  position = "bottom-right",
 }) => {
+  const tooltipConfig = TOOLTIPS_CONFIG.filter(tooltip => tooltip.id === id)[0];
   const [visible, setVisible] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(() => {
+    const dismissedTooltips = getFromSS<Record<string, boolean>>(
+      TOOLTIPS_STORAGE_KEY,
+      {}
+    );
+    return dismissedTooltips[id] === true;
+  });
 
   useEffect(() => {
-    if (showCondition) {
-      const timer = setTimeout(() => setVisible(true), showAfter);
+    if (showCondition && !isDismissed) {
+      const timer = setTimeout(() => setVisible(true), tooltipConfig.showAfter);
       return () => clearTimeout(timer);
     } else {
       setVisible(false);
     }
-  }, [showCondition, showAfter]);
+  }, [showCondition, isDismissed]);
 
   const handleClose = () => {
     setVisible(false);
+    setIsDismissed(true);
+
+    const dismissedTooltips = getFromSS<Record<string, boolean>>(
+      TOOLTIPS_STORAGE_KEY,
+      {}
+    );
+    setToSS(TOOLTIPS_STORAGE_KEY, {
+      ...dismissedTooltips,
+      [id]: true,
+    });
+
     onClose?.();
   };
 
   if (!visible) return null;
 
   return (
-    <TooltipBubble $position={position} onClick={e => e.stopPropagation()}>
+    <TooltipBubble
+      $position={tooltipConfig.position}
+      onClick={e => e.stopPropagation()}
+    >
       <CloseButton
         onClick={e => {
           e.stopPropagation();
@@ -140,7 +162,7 @@ const Tooltip: React.FC<TooltipProps> = ({
       >
         ✕
       </CloseButton>
-      {children}
+      {tooltipConfig.content}
     </TooltipBubble>
   );
 };

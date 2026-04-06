@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { isMobileDevice } from "../utils/typeGuards";
-import Tooltip from "./Tooltip";
+import Tooltip from "../layout/tooltips/Tooltip";
 
 type Props = {
   isFullscreen: boolean;
@@ -81,16 +81,11 @@ const FullscreenToggle: React.FC<Props> = ({ isFullscreen, onToggle }) => {
       onClick={handleClick}
       aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
     >
-      {showTooltip && (
-        <Tooltip
-          showAfter={1000}
-          showCondition={showTooltip && isMobileDevice()}
-          onClose={() => setShowTooltip(false)}
-          position={"top-right"}
-        >
-          💡 For best experience tap here to use fullscreen mode
-        </Tooltip>
-      )}
+      <Tooltip
+        id="fullscreen-hint"
+        showCondition={showTooltip && isMobileDevice()}
+        onClose={() => setShowTooltip(false)}
+      />
       <Icon exit={isFullscreen} />
     </FullscreenButton>
   );
