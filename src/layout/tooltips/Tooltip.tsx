@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { CloseButton } from "../window-container/BrowserWindow.styled";
 import { getFromSS, setToSS } from "../../utils/storage";
+import { TOOLTIPS_CONFIG } from "./tooltips.config";
 
 const fadeSlideUp = keyframes`
   from {
@@ -97,25 +98,20 @@ const TooltipBubble = styled.div<{ $position: string }>`
   }}
 `;
 
-interface TooltipProps {
+export interface TooltipProps {
   id: string;
-  children: React.ReactNode;
-  showAfter?: number;
   showCondition?: boolean;
   onClose?: () => void;
-  position?: "bottom-left" | "bottom-right" | "top-left" | "top-right";
 }
 
 const TOOLTIPS_STORAGE_KEY = "tooltips:dismissed";
 
 const Tooltip: React.FC<TooltipProps> = ({
   id,
-  children,
-  showAfter = 3000,
   showCondition = true,
   onClose,
-  position = "bottom-right",
 }) => {
+  const tooltipConfig = TOOLTIPS_CONFIG.filter(tooltip => tooltip.id === id)[0];
   const [visible, setVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(() => {
     const dismissedTooltips = getFromSS<Record<string, boolean>>(
@@ -127,12 +123,12 @@ const Tooltip: React.FC<TooltipProps> = ({
 
   useEffect(() => {
     if (showCondition && !isDismissed) {
-      const timer = setTimeout(() => setVisible(true), showAfter);
+      const timer = setTimeout(() => setVisible(true), tooltipConfig.showAfter);
       return () => clearTimeout(timer);
     } else {
       setVisible(false);
     }
-  }, [showCondition, showAfter, isDismissed]);
+  }, [showCondition, isDismissed]);
 
   const handleClose = () => {
     setVisible(false);
@@ -153,7 +149,10 @@ const Tooltip: React.FC<TooltipProps> = ({
   if (!visible) return null;
 
   return (
-    <TooltipBubble $position={position} onClick={e => e.stopPropagation()}>
+    <TooltipBubble
+      $position={tooltipConfig.position}
+      onClick={e => e.stopPropagation()}
+    >
       <CloseButton
         onClick={e => {
           e.stopPropagation();
@@ -163,7 +162,7 @@ const Tooltip: React.FC<TooltipProps> = ({
       >
         ✕
       </CloseButton>
-      {children}
+      {tooltipConfig.content}
     </TooltipBubble>
   );
 };

@@ -5,7 +5,6 @@ import type { ThemeSwitcherProps } from "../../types/window";
 import { useTheme } from "../../hooks/useTheme";
 import { PERSONAL_DATA } from "../../config/personalData.config";
 import Tooltip from "../tooltips/Tooltip";
-import { isMobileDevice } from "../../utils/typeGuards";
 
 interface ThemeButtonProps {
   $isActive: boolean;
@@ -214,16 +213,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
           {label}
         </ThemeButton>
       ))}
-      {
-        <Tooltip
-          id="theme-switcher-hint"
-          showAfter={60000}
-          showCondition={!$isVisible}
-          position={`${isMobileDevice() ? "top-left" : "bottom-right"}`}
-        >
-          ⚙️ Try out a different Linux here.
-        </Tooltip>
-      }
+      {<Tooltip id="theme-switcher-hint" showCondition={!$isVisible} />}
       {$isVisible && (
         <TypingText>
           <span>Wecome to {PERSONAL_DATA.personalInfo.shortName}'s PC</span>

@@ -84,13 +84,9 @@ const FullscreenToggle: React.FC<Props> = ({ isFullscreen, onToggle }) => {
       {showTooltip && (
         <Tooltip
           id="fullscreen-hint"
-          showAfter={1000}
           showCondition={showTooltip && isMobileDevice()}
           onClose={() => setShowTooltip(false)}
-          position={"top-right"}
-        >
-          💡 For best experience tap here to use fullscreen mode
-        </Tooltip>
+        />
       )}
       <Icon exit={isFullscreen} />
     </FullscreenButton>
