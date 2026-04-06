@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { CloseButton } from "../layout/window-container/BrowserWindow.styled";
+import { CloseButton } from "../window-container/BrowserWindow.styled";
 
 const fadeSlideUp = keyframes`
   from {

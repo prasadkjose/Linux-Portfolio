@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { isMobileDevice } from "../utils/typeGuards";
-import Tooltip from "./Tooltip";
+import Tooltip from "../layout/tooltips/Tooltip";
 
 type Props = {
   isFullscreen: boolean;
