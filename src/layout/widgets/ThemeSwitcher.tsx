@@ -11,14 +11,14 @@ interface ThemeButtonProps {
   $theme: DefaultTheme;
 }
 
-const Container = styled.div<{ $isVisible: boolean }>`
+const Container = styled.div<{ $themeLoaded: boolean }>`
   position: fixed;
-  top: ${props => (props.$isVisible ? "50%" : "60px")};
-  left: ${props => (props.$isVisible ? "50%" : "")};
-  right: ${props => (props.$isVisible ? null : "16px")};
-  transform: ${props => (props.$isVisible ? "translate(-50%, -50%)" : "")};
+  top: ${props => (!props.$themeLoaded ? "50%" : "60px")};
+  left: ${props => (!props.$themeLoaded ? "50%" : "")};
+  right: ${props => (!props.$themeLoaded ? null : "16px")};
+  transform: ${props => (!props.$themeLoaded ? "translate(-50%, -50%)" : "")};
 
-  z-index: ${props => (props.$isVisible ? 1000 : 100)};
+  z-index: ${props => (!props.$themeLoaded ? 1000 : 100)};
   display: grid;
   grid-template-columns: 3fr 3fr 3fr;
   background: rgba(0, 0, 0, 0.96);
@@ -30,7 +30,7 @@ const Container = styled.div<{ $isVisible: boolean }>`
 
   // isMobile
   ${props =>
-    !props.$isVisible &&
+    props.$themeLoaded &&
     `@media (max-width: 550px) {
     width: 100%;
     right: 0;
@@ -180,7 +180,8 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   currentTheme,
 }) => {
   const { themeLoaded } = useTheme();
-  const [$isVisible, set$isVisible] = useState(!themeLoaded);
+  const [$themeLoaded, set$themeLoaded] = useState(themeLoaded);
+  const [showTooltip, setShowTooltip] = useState(true);
 
   const themesList = Object.keys(themes)
     .map((key: string) => {
@@ -193,14 +194,17 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
     .filter(({ key }) => key !== "empty");
 
   const handleThemeChange = (newTheme: DefaultTheme) => {
+    if ($themeLoaded) {
+      setShowTooltip(false);
+    }
     if (newTheme.id !== currentTheme.id) {
       themeSwitcher(newTheme);
-      set$isVisible(themeLoaded);
+      set$themeLoaded(!themeLoaded);
     }
   };
 
   return (
-    <Container $isVisible={$isVisible}>
+    <Container $themeLoaded={$themeLoaded}>
       {themesList.map(({ key, label, theme }) => (
         <ThemeButton
           key={key}
@@ -213,8 +217,14 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
           {label}
         </ThemeButton>
       ))}
-      {<Tooltip id="theme-switcher-hint" showCondition={!$isVisible} />}
-      {$isVisible && (
+      {
+        <Tooltip
+          id="theme-switcher-hint"
+          showCondition={showTooltip && $themeLoaded}
+          onClose={() => setShowTooltip(false)}
+        />
+      }
+      {!$themeLoaded && (
         <TypingText>
           <span>Wecome to {PERSONAL_DATA.personalInfo.shortName}'s PC</span>
           <p>Choose an OS view</p>

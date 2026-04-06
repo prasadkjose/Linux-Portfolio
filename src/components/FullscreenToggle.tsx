@@ -81,13 +81,11 @@ const FullscreenToggle: React.FC<Props> = ({ isFullscreen, onToggle }) => {
       onClick={handleClick}
       aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
     >
-      {showTooltip && (
-        <Tooltip
-          id="fullscreen-hint"
-          showCondition={showTooltip && isMobileDevice()}
-          onClose={() => setShowTooltip(false)}
-        />
-      )}
+      <Tooltip
+        id="fullscreen-hint"
+        showCondition={showTooltip && isMobileDevice()}
+        onClose={() => setShowTooltip(false)}
+      />
       <Icon exit={isFullscreen} />
     </FullscreenButton>
   );
