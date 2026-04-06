@@ -6,8 +6,9 @@ import { isMobileDevice } from "../../utils/typeGuards";
 import FullscreenToggle from "../../components/FullscreenToggle";
 import { taskbarWidgets, WidgetState } from "./config/taskbar.config";
 import { useFullscreenManager } from "../../hooks/useFullscreenManger";
-import ContextMenu from "../../components/ContextMenu";
+import ContextMenu from "../../components/context-menu/ContextMenu";
 import { useTaskMenu } from "../../hooks/useContextMenu";
+import { getWindowContextMenuItems } from "../../components/context-menu/contextMenu.config";
 
 const Bar = styled.div`
   position: fixed;
@@ -205,7 +206,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
             </TaskItem>
             {contextMenu.visible && contextMenu.windowKey === "terminal" && (
               <ContextMenu
-                window={terminal}
+                items={getWindowContextMenuItems(terminal).taskbar}
                 onClose={closeContextMenu}
                 position="top"
               />
@@ -224,7 +225,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
             {!isMobile && <span>Browser</span>}
             {contextMenu.visible && contextMenu.windowKey === "welcome" && (
               <ContextMenu
-                window={welcome}
+                items={getWindowContextMenuItems(welcome).taskbar}
                 onClose={closeContextMenu}
                 position="top"
               />
@@ -245,7 +246,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
             </TaskItem>
             {contextMenu.visible && contextMenu.windowKey === "resume" && (
               <ContextMenu
-                window={resume}
+                items={getWindowContextMenuItems(resume).taskbar}
                 onClose={closeContextMenu}
                 position="top"
               />

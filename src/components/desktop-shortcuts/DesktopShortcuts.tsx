@@ -4,8 +4,9 @@ import DesktopShortcut from "./DesktopShortcut";
 import { IconKey, Icons } from "./DesktopIcons";
 import { SHORTCUTS } from "./DesktopShortcuts.config";
 import { useTaskMenu } from "../../hooks/useContextMenu";
-import ContextMenu from "../ContextMenu";
+import ContextMenu from "../context-menu/ContextMenu";
 import { WindowState } from "../../types/window";
+import { getWindowContextMenuItems } from "../context-menu/contextMenu.config";
 
 type Props = {
   onOpenTerminal?: () => void;
@@ -77,7 +78,7 @@ const DesktopShortcuts: React.FC<Props> = ({
           contextMenu.windowKey === "welcome" &&
           welcome ? (
             <ContextMenu
-              window={welcome}
+              items={getWindowContextMenuItems(welcome)["desktop-shortcuts"]}
               onClose={closeContextMenu}
               position={"bottom-right"}
             />
@@ -97,7 +98,7 @@ const DesktopShortcuts: React.FC<Props> = ({
           contextMenu.windowKey === "terminal" &&
           terminal ? (
             <ContextMenu
-              window={terminal}
+              items={getWindowContextMenuItems(terminal)["desktop-shortcuts"]}
               onClose={closeContextMenu}
               position={"bottom-right"}
             />
@@ -133,7 +134,7 @@ const DesktopShortcuts: React.FC<Props> = ({
           contextMenu.windowKey === "resume" &&
           resume ? (
             <ContextMenu
-              window={resume}
+              items={getWindowContextMenuItems(resume)["desktop-shortcuts"]}
               onClose={closeContextMenu}
               position={"bottom-right"}
             />
