@@ -83,6 +83,7 @@ const FullscreenToggle: React.FC<Props> = ({ isFullscreen, onToggle }) => {
     >
       {showTooltip && (
         <Tooltip
+          id="fullscreen-hint"
           showAfter={1000}
           showCondition={showTooltip && isMobileDevice()}
           onClose={() => setShowTooltip(false)}

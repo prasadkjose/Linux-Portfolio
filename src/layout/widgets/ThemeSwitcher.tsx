@@ -216,6 +216,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       ))}
       {
         <Tooltip
+          id="theme-switcher-hint"
           showAfter={60000}
           showCondition={!$isVisible}
           position={`${isMobileDevice() ? "top-left" : "bottom-right"}`}

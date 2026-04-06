@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { CloseButton } from "../window-container/BrowserWindow.styled";
+import { getFromSS, setToSS } from "../../utils/storage";
 
 const fadeSlideUp = keyframes`
   from {
@@ -97,6 +98,7 @@ const TooltipBubble = styled.div<{ $position: string }>`
 `;
 
 interface TooltipProps {
+  id: string;
   children: React.ReactNode;
   showAfter?: number;
   showCondition?: boolean;
@@ -104,7 +106,10 @@ interface TooltipProps {
   position?: "bottom-left" | "bottom-right" | "top-left" | "top-right";
 }
 
+const TOOLTIPS_STORAGE_KEY = "tooltips:dismissed";
+
 const Tooltip: React.FC<TooltipProps> = ({
+  id,
   children,
   showAfter = 3000,
   showCondition = true,
@@ -112,18 +117,36 @@ const Tooltip: React.FC<TooltipProps> = ({
   position = "bottom-right",
 }) => {
   const [visible, setVisible] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(() => {
+    const dismissedTooltips = getFromSS<Record<string, boolean>>(
+      TOOLTIPS_STORAGE_KEY,
+      {}
+    );
+    return dismissedTooltips[id] === true;
+  });
 
   useEffect(() => {
-    if (showCondition) {
+    if (showCondition && !isDismissed) {
       const timer = setTimeout(() => setVisible(true), showAfter);
       return () => clearTimeout(timer);
     } else {
       setVisible(false);
     }
-  }, [showCondition, showAfter]);
+  }, [showCondition, showAfter, isDismissed]);
 
   const handleClose = () => {
     setVisible(false);
+    setIsDismissed(true);
+
+    const dismissedTooltips = getFromSS<Record<string, boolean>>(
+      TOOLTIPS_STORAGE_KEY,
+      {}
+    );
+    setToSS(TOOLTIPS_STORAGE_KEY, {
+      ...dismissedTooltips,
+      [id]: true,
+    });
+
     onClose?.();
   };
 
