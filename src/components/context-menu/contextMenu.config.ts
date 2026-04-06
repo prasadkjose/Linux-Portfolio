@@ -17,29 +17,36 @@ import {
 export const getWindowContextMenuItems = (
   window: WindowState
 ): { taskbar: ContextMenuItem[]; "desktop-shortcuts": ContextMenuItem[] } => {
-  const { maximized, toggleMaximize, minimize, close, open } = window;
+  const { visible, maximized, toggleMaximize, minimize, close, open } = window;
+
+  const taskbarItems: ContextMenuItem[] = [
+    {
+      icon: maximized ? RestoreIcon : MaximizeIcon,
+      label: maximized ? "Restore" : "Maximize",
+      onClick: () => toggleMaximize?.(),
+      disabled: !toggleMaximize,
+    },
+  ];
+
+  // Only show Minimize option when window is not already minimized (visible)
+  if (visible && minimize) {
+    taskbarItems.push({
+      icon: MinimizeIcon,
+      label: "Minimize",
+      onClick: () => minimize?.(),
+      disabled: !minimize,
+    });
+  }
+
+  taskbarItems.push({
+    icon: CloseIcon,
+    label: "Close",
+    onClick: () => close?.(),
+    disabled: !close,
+  });
 
   return {
-    taskbar: [
-      {
-        icon: maximized ? RestoreIcon : MaximizeIcon,
-        label: maximized ? "Restore" : "Maximize",
-        onClick: () => toggleMaximize?.(),
-        disabled: !toggleMaximize,
-      },
-      {
-        icon: MinimizeIcon,
-        label: "Minimize",
-        onClick: () => minimize?.(),
-        disabled: !minimize,
-      },
-      {
-        icon: CloseIcon,
-        label: "Close",
-        onClick: () => close?.(),
-        disabled: !close,
-      },
-    ],
+    taskbar: taskbarItems,
     "desktop-shortcuts": [
       {
         icon: OpenIcon,

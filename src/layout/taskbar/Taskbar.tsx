@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import { FullscreenManager, WindowState } from "../../types/window";
 import { Icons } from "../../components/desktop-shortcuts/DesktopIcons";
@@ -140,6 +140,40 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
   const { isFullscreen, toggleFullscreen }: FullscreenManager =
     useFullscreenManager();
 
+  // Memoized context menu items - only recalculate when window state actually changes
+  const terminalMenuItems = useMemo(
+    () => getWindowContextMenuItems(terminal).taskbar,
+    [
+      terminal.visible,
+      terminal.maximized,
+      terminal.toggleMaximize,
+      terminal.minimize,
+      terminal.close,
+    ]
+  );
+
+  const welcomeMenuItems = useMemo(
+    () => getWindowContextMenuItems(welcome).taskbar,
+    [
+      welcome.visible,
+      welcome.maximized,
+      welcome.toggleMaximize,
+      welcome.minimize,
+      welcome.close,
+    ]
+  );
+
+  const resumeMenuItems = useMemo(
+    () => getWindowContextMenuItems(resume).taskbar,
+    [
+      resume.visible,
+      resume.maximized,
+      resume.toggleMaximize,
+      resume.minimize,
+      resume.close,
+    ]
+  );
+
   const handleTaskClick = (window: WindowState) => {
     setContextMenu({ visible: false, windowKey: null });
     if (!window.mounted) {
@@ -206,7 +240,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
             </TaskItem>
             {contextMenu.visible && contextMenu.windowKey === "terminal" && (
               <ContextMenu
-                items={getWindowContextMenuItems(terminal).taskbar}
+                items={terminalMenuItems}
                 onClose={closeContextMenu}
                 position="top"
               />
@@ -225,7 +259,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
             {!isMobile && <span>Browser</span>}
             {contextMenu.visible && contextMenu.windowKey === "welcome" && (
               <ContextMenu
-                items={getWindowContextMenuItems(welcome).taskbar}
+                items={welcomeMenuItems}
                 onClose={closeContextMenu}
                 position="top"
               />
@@ -246,7 +280,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
             </TaskItem>
             {contextMenu.visible && contextMenu.windowKey === "resume" && (
               <ContextMenu
-                items={getWindowContextMenuItems(resume).taskbar}
+                items={resumeMenuItems}
                 onClose={closeContextMenu}
                 position="top"
               />
