@@ -106,7 +106,7 @@ export const TabButton = styled.button<{ $isActive: boolean }>`
 
 export const TabContent = styled.div`
   flex: 1;
-  padding: 36px;
+  padding: 16px;
   background: rgba(24, 24, 24, 0.85);
   color: #eceff4;
   font-family:

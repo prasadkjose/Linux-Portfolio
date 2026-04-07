@@ -19,9 +19,13 @@ const BrowserRouter: React.FC<WindowState> = props => {
       const homeConfig = BROWSER_ROUTER_CONFIG["/home"];
       const homeTab: TabData = {
         id: href,
-        label: href.charAt(1).toUpperCase() + href.slice(2) || href,
+        label: homeConfig.title,
         content: () => (
-          <Tabs {...props} tabs={homeConfig.tabs.welcome} activeTabId="home" />
+          <Tabs
+            {...props}
+            tabs={homeConfig.tabs.welcome}
+            activeTabId="about-me"
+          />
         ),
       };
       setTabs(prev => [...prev, homeTab]);
@@ -31,7 +35,7 @@ const BrowserRouter: React.FC<WindowState> = props => {
       // Create new tab from path
       const newTab: TabData = {
         id: href,
-        label: href,
+        label: BROWSER_ROUTER_CONFIG[href].title,
         content: () => <Component tabs={[]} {...props} />,
       };
 

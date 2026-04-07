@@ -9,10 +9,12 @@ import Tabs from "../tabs/Tabs";
 
 export const BROWSER_ROUTER_CONFIG = {
   "/home": {
+    title: "Home",
     component: Tabs,
     tabs: TAB_CONFIGS,
   },
   "/email": {
+    title: "Email",
     component: EmailWindow,
   },
 } as const;

@@ -147,7 +147,7 @@ const EmailWindow: React.FC<WindowState> = () => {
         </SuccessMessage>
       )}
 
-      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+      <StyledForm onSubmit={handleSubmit(onSubmit)} data-netlify="true">
         <FormGroup>
           <Label htmlFor="name">Name</Label>
           <Input
