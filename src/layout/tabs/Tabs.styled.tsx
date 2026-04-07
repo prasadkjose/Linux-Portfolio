@@ -31,7 +31,10 @@ export const TabBar = styled.div`
   }
 `;
 
-export const TabButton = styled.button<{ $isActive: boolean }>`
+export const TabButton = styled.button<{
+  $isActive: boolean;
+  $isBrowserTabs?: boolean;
+}>`
   position: relative;
   background: transparent;
   border: none;
@@ -47,7 +50,7 @@ export const TabButton = styled.button<{ $isActive: boolean }>`
   border-radius: 6px 6px 0 0;
   transition: all 0.2s ease;
   margin: 0;
-  width: 100%;
+  ${({ $isBrowserTabs }) => !$isBrowserTabs && `width: 100%;`}
 
   &:hover {
     background: rgba(255, 255, 255, 0.05);

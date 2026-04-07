@@ -45,6 +45,7 @@ const Tabs: React.FC<TabsProps> = ({
     const update = () => setIsMobile(isMobileDevice());
     update();
   }, []);
+  const isBrowserTabs = !!onCloseTab;
 
   // Update internal state when prop changes
   useEffect(() => {
@@ -74,6 +75,7 @@ const Tabs: React.FC<TabsProps> = ({
     <TabButton
       key={tab.id}
       $isActive={internalActiveTabId === tab.id}
+      $isBrowserTabs={isBrowserTabs}
       onClick={() => handleTabClick(tab.id)}
       role="tab"
       aria-selected={internalActiveTabId === tab.id}

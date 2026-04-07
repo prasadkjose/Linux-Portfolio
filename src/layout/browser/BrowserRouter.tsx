@@ -4,15 +4,16 @@ import BROWSER_ROUTER_CONFIG from "./browserRouter.config";
 import Tabs, { TabData } from "../tabs/Tabs";
 import { useEffect, useState } from "react";
 
-const DEFAULT_ROUTE: string = "/home";
+const DEFAULT_ROUTE = "/home" as const;
 
 const BrowserRouter: React.FC<WindowState> = props => {
-  const { href = DEFAULT_ROUTE } = props;
+  const { href: rawHref } = props;
+  const href = (rawHref ?? DEFAULT_ROUTE) as keyof typeof BROWSER_ROUTER_CONFIG;
+
   const [tabs, setTabs] = useState<TabData[]>([]);
   // If route exists in config
-  if (href && href in BROWSER_ROUTER_CONFIG) {
-    const routeConfig =
-      BROWSER_ROUTER_CONFIG[href as keyof typeof BROWSER_ROUTER_CONFIG];
+  if (href in BROWSER_ROUTER_CONFIG) {
+    const routeConfig = BROWSER_ROUTER_CONFIG[href];
     const Component = routeConfig.component;
     // Always initialize with home tab if empty
     if (tabs.length === 0) {
