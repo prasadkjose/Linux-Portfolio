@@ -3,7 +3,7 @@ import { WindowState } from "../../../types/window";
 import Tabs from "../../../layout/tabs/Tabs";
 import BrowserWindow from "../../../layout/window-container/BrowserWindow";
 
-const Landing: React.FC<WindowState> = props => {
+const BrowserRouter: React.FC<WindowState> = props => {
   return (
     <BrowserWindow {...props}>
       {!props.href && <Tabs tabs={TAB_CONFIGS.welcome} activeTabId="home" />}
@@ -11,4 +11,4 @@ const Landing: React.FC<WindowState> = props => {
   );
 };
 
-export default Landing;
+export default BrowserRouter;
