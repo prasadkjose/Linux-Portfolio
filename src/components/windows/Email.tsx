@@ -1,7 +1,6 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styled from "styled-components";
-import BrowserWindow from "../../layout/window-container/BrowserWindow";
 import { WindowState } from "../../types/window";
 
 type EmailFormInputs = {
@@ -116,7 +115,7 @@ const SuccessMessage = styled.div`
   text-align: center;
 `;
 
-const EmailWindow: React.FC<WindowState> = windowProps => {
+const EmailWindow: React.FC<WindowState> = () => {
   const {
     register,
     handleSubmit,
@@ -139,72 +138,70 @@ const EmailWindow: React.FC<WindowState> = windowProps => {
   };
 
   return (
-    <BrowserWindow {...windowProps}>
-      <FormContainer>
-        <FormTitle>Send an Email</FormTitle>
+    <FormContainer>
+      <FormTitle>Send an Email</FormTitle>
 
-        {isSubmitSuccessful && (
-          <SuccessMessage>
-            ✓ Thank you! Your message has been sent successfully.
-          </SuccessMessage>
-        )}
+      {isSubmitSuccessful && (
+        <SuccessMessage>
+          ✓ Thank you! Your message has been sent successfully.
+        </SuccessMessage>
+      )}
 
-        <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <FormGroup>
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              type="text"
-              placeholder="Your full name"
-              {...register("name", { required: "Name is required" })}
-            />
-            {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
-          </FormGroup>
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        <FormGroup>
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            type="text"
+            placeholder="Your full name"
+            {...register("name", { required: "Name is required" })}
+          />
+          {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
+        </FormGroup>
 
-          <FormGroup>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="your@email.com"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Please enter a valid email address",
-                },
-              })}
-            />
-            {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
-          </FormGroup>
+        <FormGroup>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="your@email.com"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Please enter a valid email address",
+              },
+            })}
+          />
+          {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
+        </FormGroup>
 
-          <FormGroup>
-            <Label htmlFor="subject">Subject</Label>
-            <Input
-              id="subject"
-              type="text"
-              placeholder="What's this about?"
-              {...register("subject", { required: "Subject is required" })}
-            />
-            {errors.subject && <ErrorText>{errors.subject.message}</ErrorText>}
-          </FormGroup>
+        <FormGroup>
+          <Label htmlFor="subject">Subject</Label>
+          <Input
+            id="subject"
+            type="text"
+            placeholder="What's this about?"
+            {...register("subject", { required: "Subject is required" })}
+          />
+          {errors.subject && <ErrorText>{errors.subject.message}</ErrorText>}
+        </FormGroup>
 
-          <FormGroup>
-            <Label htmlFor="message">Message</Label>
-            <Textarea
-              id="message"
-              placeholder="Write your message here..."
-              {...register("message", { required: "Message is required" })}
-            />
-            {errors.message && <ErrorText>{errors.message.message}</ErrorText>}
-          </FormGroup>
+        <FormGroup>
+          <Label htmlFor="message">Message</Label>
+          <Textarea
+            id="message"
+            placeholder="Write your message here..."
+            {...register("message", { required: "Message is required" })}
+          />
+          {errors.message && <ErrorText>{errors.message.message}</ErrorText>}
+        </FormGroup>
 
-          <SubmitButton type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Sending..." : "Send Message"}
-          </SubmitButton>
-        </StyledForm>
-      </FormContainer>
-    </BrowserWindow>
+        <SubmitButton type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Sending..." : "Send Message"}
+        </SubmitButton>
+      </StyledForm>
+    </FormContainer>
   );
 };
 

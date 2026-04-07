@@ -4,6 +4,7 @@ import WindowContainer from "./WindowContainer";
 
 import { Toolbar, LocationBar, Content } from "./BrowserWindow.styled";
 import { PERSONAL_DATA } from "../../config/personalData.config";
+import { isInternalUrl } from "../../utils/funcs";
 
 interface BrowserWindowProps extends WindowState {
   children?: React.ReactNode;
@@ -52,11 +53,11 @@ const BrowserWindow: React.FC<BrowserWindowProps> = ({
       title="Browser"
     >
       <Toolbar>
-        <LocationBar>{href || PERSONAL_DATA.personalInfo.website}</LocationBar>
+        <LocationBar>{PERSONAL_DATA.personalInfo.website + href}</LocationBar>
       </Toolbar>
 
       <Content $maximized={maximized}>
-        {href ? (
+        {href && !isInternalUrl(href) ? (
           <div style={{ width: "100%", height: "100%", position: "relative" }}>
             <iframe
               src={href}
