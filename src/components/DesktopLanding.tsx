@@ -67,7 +67,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
         <DesktopShortcuts
           onOpenTerminal={terminal.open}
           onOpenWelcome={welcome.open}
-          onOpenWelcomeWithUrl={welcome.openWithUrl}
+          onOpenBrowserWithUrl={welcome.openWithUrl}
           onOpenResume={resume.open}
           hidden={terminal.maximized || welcome.maximized || resume.maximized}
           activeTerminal={!isMobile && terminal.mounted && terminal.visible}

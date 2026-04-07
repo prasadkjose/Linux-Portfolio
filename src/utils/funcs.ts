@@ -104,3 +104,24 @@ export const argTab = (
     return hintsCmds;
   }
 };
+
+/**
+ * Check if a URL is an internal route
+ * Internal URLs start with "/" and are not external links
+ * Returns true for internal paths, false for external URLs
+ * @param {string} url - URL to check
+ * @returns {boolean} boolean indicating if URL is internal
+ */
+export const isInternalUrl = (url: string): boolean => {
+  if (!url || typeof url !== "string") return false;
+
+  // Trim whitespace and check if starts with /
+  const trimmedUrl = url.trim();
+
+  // Internal if starts with / and is not a protocol url
+  return (
+    trimmedUrl.startsWith("/") &&
+    !trimmedUrl.startsWith("//") &&
+    !/^https?:\/\//i.test(trimmedUrl)
+  );
+};
