@@ -11,6 +11,7 @@ const BrowserRouter: React.FC<WindowState> = props => {
   const href = (rawHref ?? DEFAULT_ROUTE) as keyof typeof BROWSER_ROUTER_CONFIG;
 
   const [tabs, setTabs] = useState<TabData[]>([]);
+  const [currentTab, setCurrentTab] = useState<string>(DEFAULT_ROUTE);
   // If route exists in config
   if (href in BROWSER_ROUTER_CONFIG) {
     const routeConfig = BROWSER_ROUTER_CONFIG[href];
@@ -32,6 +33,7 @@ const BrowserRouter: React.FC<WindowState> = props => {
 
       // Only add if tab doesn't already exist - use functional update to check previous state
       setTabs(prev => {
+        setCurrentTab(newTab.id);
         if (!prev.find(tab => tab.id === href)) {
           return [...prev, newTab];
         }
@@ -43,7 +45,7 @@ const BrowserRouter: React.FC<WindowState> = props => {
       <BrowserWindow {...{ ...props, href }}>
         <Tabs
           tabs={tabs}
-          activeTabId={href}
+          activeTabId={currentTab}
           onCloseTab={tabId => {
             setTabs(prev => {
               const newTabs = prev.filter(tab => tab.id !== tabId);
@@ -51,6 +53,7 @@ const BrowserRouter: React.FC<WindowState> = props => {
               if (newTabs.length === 0) {
                 props.close();
               }
+              setCurrentTab(newTabs[0].id);
               return newTabs;
             });
           }}
