@@ -11,7 +11,7 @@ export const BROWSER_ROUTER_CONFIG = {
   "/home": {
     title: "Home",
     component: Tabs,
-    tabs: TAB_CONFIGS,
+    tabs: TAB_CONFIGS.welcome,
   },
   "/email": {
     title: "Email",

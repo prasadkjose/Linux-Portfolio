@@ -24,7 +24,7 @@ const BrowserRouter: React.FC<WindowState> = props => {
           // Only pass tabs prop if the route config actually has tabs property
           let tabs: TabData[] = [];
           if ("tabs" in routeConfig) {
-            tabs = routeConfig.tabs.welcome;
+            tabs = routeConfig.tabs;
           }
           return <Component tabs={tabs} {...props} />;
         },

@@ -25,15 +25,12 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding-bottom: 30px;
   height: 100%;
-  padding: 32px 40px;
-  background-color: ${({ theme }) => theme.colors.body};
+  background: rgba(24, 24, 24, 0.85);
   overflow-y: auto;
+  scrollbar-width: thin; /* Firefox */
   animation: ${slideIn} 0.3s ease-out;
-
-  @media (max-width: 768px) {
-    padding: 20px 24px;
-  }
 `;
 
 const FormLayout = styled.div`
@@ -42,13 +39,8 @@ const FormLayout = styled.div`
   gap: 48px;
   width: 100%;
 
-  @media (max-width: 900px) {
+  @media (max-width: 550px) {
     grid-template-columns: 1fr;
-    gap: 32px;
-  }
-
-  @media (max-width: 576px) {
-    gap: 24px;
   }
 `;
 
@@ -95,9 +87,9 @@ const Label = styled.label`
 
 const baseInputStyles = (theme: import("styled-components").DefaultTheme) => `
   padding: 14px 16px;
-  border: 2px solid ${theme.colors.scrollHandle};
+  border: 2px solid #bf616a !important;
   border-radius: 10px;
-  background-color: ${theme.colors.body};
+  background: rgba(24, 24, 24, 0.85);
   color: ${theme.colors.text["100"]};
   font-size: 0.95rem;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);

@@ -149,7 +149,7 @@ export const Icons: Record<IconKey, React.ReactNode> = {
   ),
   Email: (
     <svg
-      fill="#000000"
+      fill="#292929ff"
       viewBox="0 0 24 24"
       id="email"
       data-name="Flat Color"
@@ -174,7 +174,7 @@ export const Icons: Record<IconKey, React.ReactNode> = {
         <path
           id="secondary"
           d="M21.25,4.45A2,2,0,0,0,20,4H4a2,2,0,0,0-1.25.45A1,1,0,0,0,2.76,6l8,6.29a2,2,0,0,0,2.48,0l8-6.29a1,1,0,0,0,0-1.56Z"
-          fill="#2ca9bc"
+          fill="#c6c6c6ff"
         ></path>
       </g>
     </svg>
