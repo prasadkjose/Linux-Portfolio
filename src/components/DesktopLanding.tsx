@@ -7,7 +7,7 @@ import DesktopShortcuts from "./desktop-shortcuts/DesktopShortcuts";
 import Taskbar from "../layout/taskbar/Taskbar";
 import ResumeWindow from "./windows/ResumeWindow";
 import TerminalWindow from "./windows/terminal/TerminalWindow";
-import BrowserRouter from "./windows/welcome-tabs/BrowserRouter";
+import BrowserRouter from "../layout/browser/BrowserRouter";
 import { useState, useEffect } from "react";
 import { useWindowManager } from "../hooks/useWindowManager";
 import { ThemeSwitcherProps, WindowManager } from "../types/window";
