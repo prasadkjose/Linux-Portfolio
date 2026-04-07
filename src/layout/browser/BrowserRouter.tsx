@@ -51,10 +51,16 @@ const BrowserRouter: React.FC<WindowState> = props => {
         <Tabs
           tabs={tabs}
           activeTabId={href}
-          allowClose={true}
-          onCloseTab={tabId =>
-            setTabs(prev => prev.filter(tab => tab.id !== tabId))
-          }
+          onCloseTab={tabId => {
+            setTabs(prev => {
+              const newTabs = prev.filter(tab => tab.id !== tabId);
+              // Close browser window when last tab is closed
+              if (newTabs.length === 0) {
+                props.close();
+              }
+              return newTabs;
+            });
+          }}
           {...props}
         />
       </BrowserWindow>

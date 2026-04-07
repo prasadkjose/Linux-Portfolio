@@ -36,6 +36,9 @@ export const TabButton = styled.button<{
   $isBrowserTabs?: boolean;
 }>`
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: none;
   color: #d8dee9;

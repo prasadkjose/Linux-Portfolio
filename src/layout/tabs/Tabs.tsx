@@ -23,7 +23,6 @@ interface TabsProps {
   tabs: TabData[];
   activeTabId?: string;
   onTabChange?: (tabId: string) => void;
-  allowClose?: boolean;
   onCloseTab?: (tabId: string) => void;
 }
 
@@ -32,7 +31,6 @@ const Tabs: React.FC<TabsProps> = ({
   tabs,
   activeTabId,
   onTabChange,
-  allowClose = false,
   onCloseTab,
 }) => {
   const [internalActiveTabId, setInternalActiveTabId] = useState<string>(
@@ -83,7 +81,7 @@ const Tabs: React.FC<TabsProps> = ({
       id={`tab-${tab.id}`}
     >
       {tab.label}
-      {allowClose && tabs.length > 1 && (
+      {onCloseTab && (
         <CloseButton
           onClick={e => handleTabClose(tab.id, e)}
           aria-label={`Close ${tab.label} tab`}
