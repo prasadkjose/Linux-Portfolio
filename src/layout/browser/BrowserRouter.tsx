@@ -15,35 +15,28 @@ const BrowserRouter: React.FC<WindowState> = props => {
   if (href in BROWSER_ROUTER_CONFIG) {
     const routeConfig = BROWSER_ROUTER_CONFIG[href];
     const Component = routeConfig.component;
-    // Always initialize with home tab if empty
-    if (tabs.length === 0) {
-      const homeConfig = BROWSER_ROUTER_CONFIG["/home"];
-      const homeTab: TabData = {
-        id: href,
-        label: homeConfig.title,
-        content: () => (
-          <Tabs
-            {...props}
-            tabs={homeConfig.tabs.welcome}
-            activeTabId="about-me"
-          />
-        ),
-      };
-      setTabs(prev => [...prev, homeTab]);
-    }
-
     useEffect(() => {
       // Create new tab from path
       const newTab: TabData = {
         id: href,
-        label: BROWSER_ROUTER_CONFIG[href].title,
-        content: () => <Component tabs={[]} {...props} />,
+        label: routeConfig.title,
+        content: () => {
+          // Only pass tabs prop if the route config actually has tabs property
+          let tabs: TabData[] = [];
+          if ("tabs" in routeConfig) {
+            tabs = routeConfig.tabs.welcome;
+          }
+          return <Component tabs={tabs} {...props} />;
+        },
       };
 
-      // Only add if tab doesn't already exist
-      if (!tabs.find(tab => tab.id === href)) {
-        setTabs(prev => [...prev, newTab]);
-      }
+      // Only add if tab doesn't already exist - use functional update to check previous state
+      setTabs(prev => {
+        if (!prev.find(tab => tab.id === href)) {
+          return [...prev, newTab];
+        }
+        return prev;
+      });
     }, [href]);
 
     return (
