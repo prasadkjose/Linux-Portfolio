@@ -131,6 +131,7 @@ export const TabContent = styled.div`
 
   @media (max-width: 550px) {
     padding: 20px 16px;
+    scrollbar-width: thin;
   }
 `;
 

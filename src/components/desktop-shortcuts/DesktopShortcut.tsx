@@ -9,9 +9,11 @@ type Props = {
   icon?: React.ReactNode;
   style?: React.CSSProperties;
   active?: boolean;
+  onContextMenu?: (e: React.MouseEvent) => void;
+  contextMenu?: React.ReactNode;
 };
 
-const ShortcutWrap = styled.div`
+const ShortcutWrap = styled.div<{ $hasActiveContextMenu?: boolean }>`
   position: relative;
   display: inline-flex;
   flex-direction: column;
@@ -26,7 +28,10 @@ const ShortcutWrap = styled.div`
     Segoe UI,
     Roboto,
     sans-serif;
-  z-index: 5; /* below windows */
+  z-index: ${({ $hasActiveContextMenu }) =>
+    $hasActiveContextMenu
+      ? 10000
+      : 5}; /* below windows, raise when context menu is open */
 `;
 
 const IconTile = styled.div<{ $active?: boolean }>`
@@ -67,6 +72,8 @@ const DesktopShortcut: React.FC<Props> = ({
   icon,
   style,
   active,
+  onContextMenu,
+  contextMenu,
 }) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -86,10 +93,13 @@ const DesktopShortcut: React.FC<Props> = ({
       aria-label={`Open ${label}`}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
+      onContextMenu={onContextMenu}
       style={style}
+      $hasActiveContextMenu={!!contextMenu}
     >
       <IconTile $active={active}>{icon}</IconTile>
       <Label>{label}</Label>
+      {contextMenu}
     </ShortcutWrap>
   );
 };

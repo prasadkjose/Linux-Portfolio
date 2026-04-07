@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import { FullscreenManager, WindowState } from "../../types/window";
 import { Icons } from "../../components/desktop-shortcuts/DesktopIcons";
@@ -6,6 +6,9 @@ import { isMobileDevice } from "../../utils/typeGuards";
 import FullscreenToggle from "../../components/FullscreenToggle";
 import { taskbarWidgets, WidgetState } from "./config/taskbar.config";
 import { useFullscreenManager } from "../../hooks/useFullscreenManger";
+import ContextMenu from "../../components/context-menu/ContextMenu";
+import { useTaskMenu } from "../../hooks/useContextMenu";
+import { getWindowContextMenuItems } from "../../components/context-menu/contextMenu.config";
 
 const Bar = styled.div`
   position: fixed;
@@ -131,10 +134,48 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
     announcement: false,
   });
 
+  const { contextMenu, setContextMenu, handleContextMenu, closeContextMenu } =
+    useTaskMenu();
+
   const { isFullscreen, toggleFullscreen }: FullscreenManager =
     useFullscreenManager();
 
+  // Memoized context menu items - only recalculate when window state actually changes
+  const terminalMenuItems = useMemo(
+    () => getWindowContextMenuItems(terminal).taskbar,
+    [
+      terminal.visible,
+      terminal.maximized,
+      terminal.toggleMaximize,
+      terminal.minimize,
+      terminal.close,
+    ]
+  );
+
+  const welcomeMenuItems = useMemo(
+    () => getWindowContextMenuItems(welcome).taskbar,
+    [
+      welcome.visible,
+      welcome.maximized,
+      welcome.toggleMaximize,
+      welcome.minimize,
+      welcome.close,
+    ]
+  );
+
+  const resumeMenuItems = useMemo(
+    () => getWindowContextMenuItems(resume).taskbar,
+    [
+      resume.visible,
+      resume.maximized,
+      resume.toggleMaximize,
+      resume.minimize,
+      resume.close,
+    ]
+  );
+
   const handleTaskClick = (window: WindowState) => {
+    setContextMenu({ visible: false, windowKey: null });
     if (!window.mounted) {
       window.open?.();
     } else if (!window.visible) {
@@ -146,6 +187,7 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
       window.minimize?.();
     }
   };
+
   const handleShowDesktop = () => {
     showDesktop(prev => {
       if (!prev) {
@@ -185,37 +227,65 @@ const Taskbar: React.FC<Record<string, WindowState>> = ({
       {/* Center: Open windows / tasks */}
       <CenterSection>
         {terminal.mounted && (
-          <TaskItem
-            $active={terminal.visible}
-            onClick={() => handleTaskClick(terminal)}
-            title="Terminal"
-            aria-label="Terminal window"
-          >
-            {Icons.Terminal}
-            {!isMobile && <span>Terminal</span>}
-          </TaskItem>
+          <>
+            <TaskItem
+              $active={terminal.visible}
+              onClick={() => handleTaskClick(terminal)}
+              onContextMenu={e => handleContextMenu(e, "terminal")}
+              title="Terminal"
+              aria-label="Terminal window"
+            >
+              {Icons.Terminal}
+              {!isMobile && <span>Terminal</span>}
+            </TaskItem>
+            {contextMenu.visible && contextMenu.windowKey === "terminal" && (
+              <ContextMenu
+                items={terminalMenuItems}
+                onClose={closeContextMenu}
+                position="top"
+              />
+            )}
+          </>
         )}
         {welcome.mounted && (
           <TaskItem
             $active={welcome.visible}
             onClick={() => handleTaskClick(welcome)}
+            onContextMenu={e => handleContextMenu(e, "welcome")}
             title="Browser"
             aria-label="Browser window"
           >
             {Icons.Browser}
             {!isMobile && <span>Browser</span>}
+            {contextMenu.visible && contextMenu.windowKey === "welcome" && (
+              <ContextMenu
+                items={welcomeMenuItems}
+                onClose={closeContextMenu}
+                position="top"
+              />
+            )}
           </TaskItem>
         )}
         {resume.mounted && (
-          <TaskItem
-            $active={resume.visible}
-            onClick={() => handleTaskClick(resume)}
-            title="Resume"
-            aria-label="Resume window"
-          >
-            {Icons.PDF}
-            {!isMobile && <span>Resume</span>}
-          </TaskItem>
+          <>
+            <TaskItem
+              $active={resume.visible}
+              onClick={() => handleTaskClick(resume)}
+              onContextMenu={e => handleContextMenu(e, "resume")}
+              title="Resume"
+              aria-label="Resume window"
+            >
+              {Icons.PDF}
+              {!isMobile && <span>Resume</span>}
+            </TaskItem>
+            {contextMenu.visible && contextMenu.windowKey === "resume" && (
+              <ContextMenu
+                items={resumeMenuItems}
+                onClose={closeContextMenu}
+                position="top"
+              />
+            )}
+          </>
         )}
       </CenterSection>
 

@@ -165,7 +165,6 @@ export const Content = styled.div<{ $maximized?: boolean }>`
     Segoe UI,
     Roboto,
     sans-serif;
-  overflow: auto;
 `;
 
 export const Handle = styled.div<{

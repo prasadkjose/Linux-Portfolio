@@ -42,7 +42,7 @@ function App() {
             waveAmplitude={0.2}
             particleSize={0.8}
             lerpSpeed={0.2}
-            color="#0c0c0cbe"
+            color="#D9DDDC"
             autoAnimate={false}
             particleVariance={0.2}
             rotationSpeed={0.8}
