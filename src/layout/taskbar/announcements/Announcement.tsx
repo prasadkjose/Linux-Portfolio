@@ -247,7 +247,7 @@ const Announcement: React.FC<WidgetComponentProps> = ({
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["github-projects"],
+    queryKey: ["github-new-features"],
     queryFn: async () => {
       const config = getGitHubConfig();
       const githubService = new GitHubService(config);
