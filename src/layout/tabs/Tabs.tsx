@@ -23,7 +23,6 @@ interface TabsProps {
   tabs: TabData[];
   activeTabId?: string;
   onTabChange?: (tabId: string) => void;
-  allowClose?: boolean;
   onCloseTab?: (tabId: string) => void;
 }
 
@@ -32,7 +31,6 @@ const Tabs: React.FC<TabsProps> = ({
   tabs,
   activeTabId,
   onTabChange,
-  allowClose = false,
   onCloseTab,
 }) => {
   const [internalActiveTabId, setInternalActiveTabId] = useState<string>(
@@ -45,6 +43,7 @@ const Tabs: React.FC<TabsProps> = ({
     const update = () => setIsMobile(isMobileDevice());
     update();
   }, []);
+  const isBrowserTabs = !!onCloseTab;
 
   // Update internal state when prop changes
   useEffect(() => {
@@ -74,6 +73,7 @@ const Tabs: React.FC<TabsProps> = ({
     <TabButton
       key={tab.id}
       $isActive={internalActiveTabId === tab.id}
+      $isBrowserTabs={isBrowserTabs}
       onClick={() => handleTabClick(tab.id)}
       role="tab"
       aria-selected={internalActiveTabId === tab.id}
@@ -81,7 +81,7 @@ const Tabs: React.FC<TabsProps> = ({
       id={`tab-${tab.id}`}
     >
       {tab.label}
-      {allowClose && tabs.length > 1 && (
+      {onCloseTab && (
         <CloseButton
           onClick={e => handleTabClose(tab.id, e)}
           aria-label={`Close ${tab.label} tab`}

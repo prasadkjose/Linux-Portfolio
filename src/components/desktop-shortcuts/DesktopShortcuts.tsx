@@ -8,11 +8,12 @@ import ContextMenu from "../context-menu/ContextMenu";
 import { WindowState } from "../../types/window";
 import { getWindowContextMenuItems } from "../context-menu/contextMenu.config";
 import { OpenIcon } from "../context-menu/contextMenu.icons";
+import { isInternalUrl } from "../../utils/funcs";
 
 type Props = {
   onOpenTerminal?: () => void;
   onOpenWelcome?: () => void;
-  onOpenWelcomeWithUrl?: (url: string) => void;
+  onOpenBrowserWithUrl?: (url: string) => void;
   onOpenResume?: () => void;
   hidden?: boolean;
   activeTerminal?: boolean;
@@ -43,8 +44,9 @@ const Grid = styled.div<{ hidden?: boolean; $mobileExpanded?: boolean }>`
   `
       : `
     top: 24px; left: 24px; bottom: 60px;
-    grid-template-columns: repeat(1, max-content);
-    grid-auto-rows: max-content;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(auto-fill, 88px);
+    grid-auto-columns: max-content;
     gap: 18px;
   `}
 `;
@@ -61,6 +63,7 @@ const DesktopShortcuts: React.FC<Props> = ({
   terminal,
   welcome,
   resume,
+  onOpenBrowserWithUrl,
 }) => {
   const { contextMenu, handleContextMenu, closeContextMenu } = useTaskMenu();
   return (
@@ -110,9 +113,10 @@ const DesktopShortcuts: React.FC<Props> = ({
         const iconKey = data.value as IconKey;
         const icon = Icons[iconKey];
         const shortcutKey = `shortcut-${idx}`;
-        const openAction = data.href
-          ? () => window.open(data.href, "_blank")
-          : undefined;
+        const openAction =
+          data.href && !isInternalUrl(data.href)
+            ? () => window.open(data.href, "_blank")
+            : () => onOpenBrowserWithUrl?.(data.href as string);
 
         return (
           <DesktopShortcut

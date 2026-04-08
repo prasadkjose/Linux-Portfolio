@@ -84,7 +84,7 @@ export const WindowControls = styled.div`
 export const CloseButton = styled.span`
   background: transparent;
   border: none;
-  color: #99ddcc;
+  color: #dededeff;
   width: 18px;
   height: 18px;
   border-radius: 4px;

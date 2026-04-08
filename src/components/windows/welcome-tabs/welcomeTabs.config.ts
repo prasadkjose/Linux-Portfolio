@@ -8,8 +8,8 @@ import RecommendationsTab from "./RecommendationsTab";
 export const TAB_CONFIGS: Record<string, TabData[]> = {
   welcome: [
     {
-      id: "home",
-      label: "Home",
+      id: "about-me",
+      label: "About Me",
       content: HomeTab,
     },
     {

@@ -7,7 +7,7 @@ import DesktopShortcuts from "./desktop-shortcuts/DesktopShortcuts";
 import Taskbar from "../layout/taskbar/Taskbar";
 import ResumeWindow from "./windows/ResumeWindow";
 import TerminalWindow from "./windows/terminal/TerminalWindow";
-import Landing from "./windows/welcome-tabs/Landing";
+import BrowserRouter from "../layout/browser/BrowserRouter";
 import { useState, useEffect } from "react";
 import { useWindowManager } from "../hooks/useWindowManager";
 import { ThemeSwitcherProps, WindowManager } from "../types/window";
@@ -67,7 +67,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
         <DesktopShortcuts
           onOpenTerminal={terminal.open}
           onOpenWelcome={welcome.open}
-          onOpenWelcomeWithUrl={welcome.openWithUrl}
+          onOpenBrowserWithUrl={welcome.openWithUrl}
           onOpenResume={resume.open}
           hidden={terminal.maximized || welcome.maximized || resume.maximized}
           activeTerminal={!isMobile && terminal.mounted && terminal.visible}
@@ -84,7 +84,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
 
         {/* Welcome Browser Window opens on start on desktop only */}
         {welcome.mounted && (
-          <Landing
+          <BrowserRouter
             close={welcome.close}
             // On mobile: only close button (omit minimize/maximize)
             minimize={!isMobile ? welcome.minimize : undefined}

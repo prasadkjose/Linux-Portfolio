@@ -25,4 +25,12 @@ export const WINDOW_CONFIGS: Record<string, WindowConfig> = {
     defaultWidth: 900,
     defaultHeight: 560,
   },
+  email: {
+    id: "email",
+    title: "Email",
+    minWidth: 450,
+    minHeight: 500,
+    defaultWidth: 700,
+    defaultHeight: 600,
+  },
 };

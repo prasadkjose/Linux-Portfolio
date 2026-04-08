@@ -14,7 +14,7 @@ export const TabBar = styled.div`
   display: flex;
   background: linear-gradient(
     to bottom,
-    rgba(32, 32, 32, 0.9),
+    ${({ theme }) => theme.colors.primary},
     rgba(24, 24, 24, 0.9)
   );
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -31,8 +31,14 @@ export const TabBar = styled.div`
   }
 `;
 
-export const TabButton = styled.button<{ $isActive: boolean }>`
+export const TabButton = styled.button<{
+  $isActive: boolean;
+  $isBrowserTabs?: boolean;
+}>`
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: none;
   color: #d8dee9;
@@ -47,20 +53,20 @@ export const TabButton = styled.button<{ $isActive: boolean }>`
   border-radius: 6px 6px 0 0;
   transition: all 0.2s ease;
   margin: 0;
-  width: 100%;
+  ${({ $isBrowserTabs }) => !$isBrowserTabs && `width: 100%;`}
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: ${({ theme }) => theme.colors.primary};
     color: #eceff4;
   }
 
   ${({ $isActive }) =>
     $isActive &&
     css`
-      background: rgba(0, 212, 255, 0.15);
-      color: #00d4ff;
-      border-bottom: 2px solid #00d4ff;
-      box-shadow: 0 2px 8px rgba(0, 212, 255, 0.2);
+      background: ${({ theme }) => theme.colors.body};
+      color: ${({ theme }) => theme.colors.text["100"]};
+      border-bottom: 2px solid ${({ theme }) => theme.colors.primary};
+      box-shadow: 0 2px 8px ${({ theme }) => theme.colors.body};
 
       &::after {
         content: "";
@@ -69,7 +75,7 @@ export const TabButton = styled.button<{ $isActive: boolean }>`
         left: 0;
         right: 0;
         height: 2px;
-        background: #00d4ff;
+        background: ${({ theme }) => theme.colors.text["200"]};
       }
     `}
 
@@ -106,7 +112,7 @@ export const TabButton = styled.button<{ $isActive: boolean }>`
 
 export const TabContent = styled.div`
   flex: 1;
-  padding: 36px;
+  padding: 16px;
   background: rgba(24, 24, 24, 0.85);
   color: #eceff4;
   font-family:
