@@ -30,6 +30,10 @@ const Email: React.FC = () => {
       >
         {PERSONAL_DATA.personalInfo.email}
       </span>
+      <Wrapper>
+        (or) <br />
+        Open the Email app on desktop to get it touch with me.{" "}
+      </Wrapper>
     </Wrapper>
   );
 };
