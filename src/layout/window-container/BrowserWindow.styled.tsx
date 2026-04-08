@@ -55,6 +55,10 @@ export const Frame = styled.div<{
       : "none"};
   user-select: text;
   pointer-events: auto;
+
+  & * {
+    pointer-events: auto;
+  }
 `;
 
 export const TitleBar = styled.div`
