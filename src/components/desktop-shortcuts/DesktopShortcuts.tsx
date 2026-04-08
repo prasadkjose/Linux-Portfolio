@@ -44,8 +44,9 @@ const Grid = styled.div<{ hidden?: boolean; $mobileExpanded?: boolean }>`
   `
       : `
     top: 24px; left: 24px; bottom: 60px;
-    grid-template-columns: repeat(1, max-content);
-    grid-auto-rows: max-content;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(auto-fill, 88px);
+    grid-auto-columns: max-content;
     gap: 18px;
   `}
 `;
