@@ -292,6 +292,7 @@ const EmailWindow: React.FC<WindowState> = () => {
           method="POST"
           data-netlify="true"
         >
+          <input type="hidden" name="form-name" value="contact" />
           <FormGroup>
             <Label htmlFor="name">Name</Label>
             <Input
