@@ -291,7 +291,6 @@ const EmailWindow: React.FC<WindowState> = () => {
           name="contact"
           data-netlify="true"
         >
-          <input type="hidden" name="form-name" value="contact" />
           <FormGroup>
             <Label htmlFor="name">Name</Label>
             <Input
