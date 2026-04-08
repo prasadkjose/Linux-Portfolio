@@ -151,6 +151,8 @@ export const Icons: Record<IconKey, React.ReactNode> = {
     <svg
       fill="#292929ff"
       viewBox="0 0 24 24"
+      width="32"
+      height="32"
       id="email"
       data-name="Flat Color"
       xmlns="http://www.w3.org/2000/svg"

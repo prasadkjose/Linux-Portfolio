@@ -2,6 +2,7 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styled, { keyframes } from "styled-components";
 import { WindowState } from "../../types/window";
+import { PERSONAL_DATA } from "../../config/personalData.config";
 
 type EmailFormInputs = {
   name: string;
@@ -352,8 +353,8 @@ const EmailWindow: React.FC<WindowState> = () => {
           <h4>Other ways to reach me</h4>
           <p>
             📧 Email:{" "}
-            <ContactLink href="mailto:prasadkjose@gmail.com">
-              prasadkjose@gmail.com
+            <ContactLink href={`mailto:${PERSONAL_DATA.personalInfo.email}`}>
+              {PERSONAL_DATA.personalInfo.email}
             </ContactLink>
           </p>
           <p>

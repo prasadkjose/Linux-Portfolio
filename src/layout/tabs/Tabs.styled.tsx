@@ -14,7 +14,7 @@ export const TabBar = styled.div`
   display: flex;
   background: linear-gradient(
     to bottom,
-    rgba(32, 32, 32, 0.9),
+    ${({ theme }) => theme.colors.primary},
     rgba(24, 24, 24, 0.9)
   );
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -56,17 +56,17 @@ export const TabButton = styled.button<{
   ${({ $isBrowserTabs }) => !$isBrowserTabs && `width: 100%;`}
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: ${({ theme }) => theme.colors.primary};
     color: #eceff4;
   }
 
   ${({ $isActive }) =>
     $isActive &&
     css`
-      background: rgba(0, 212, 255, 0.15);
-      color: #00d4ff;
-      border-bottom: 2px solid #00d4ff;
-      box-shadow: 0 2px 8px rgba(0, 212, 255, 0.2);
+      background: ${({ theme }) => theme.colors.body};
+      color: ${({ theme }) => theme.colors.text["100"]};
+      border-bottom: 2px solid ${({ theme }) => theme.colors.primary};
+      box-shadow: 0 2px 8px ${({ theme }) => theme.colors.body};
 
       &::after {
         content: "";
@@ -75,7 +75,7 @@ export const TabButton = styled.button<{
         left: 0;
         right: 0;
         height: 2px;
-        background: #00d4ff;
+        background: ${({ theme }) => theme.colors.text["200"]};
       }
     `}
 
