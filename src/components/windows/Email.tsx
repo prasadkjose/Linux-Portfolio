@@ -63,14 +63,6 @@ const FormSubtitle = styled.p`
   line-height: 1.5;
 `;
 
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  max-width: 650px;
-`;
-
 const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
@@ -287,7 +279,14 @@ const EmailWindow: React.FC<WindowState> = () => {
       )}
 
       <FormLayout>
-        <StyledForm
+        <form
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 20,
+            width: "100%",
+            maxWidth: 650,
+          }}
           onSubmit={handleSubmit(onSubmit)}
           name="contact"
           method="POST"
@@ -352,7 +351,7 @@ const EmailWindow: React.FC<WindowState> = () => {
               "Send Message"
             )}
           </SubmitButton>
-        </StyledForm>
+        </form>
 
         <ContactInfo>
           <h4>Other ways to reach me</h4>
