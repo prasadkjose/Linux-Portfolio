@@ -53,6 +53,8 @@ export const Frame = styled.div<{
     $isTransforming
       ? "left 180ms ease, top 180ms ease, width 180ms ease, height 180ms ease, border-radius 180ms ease"
       : "none"};
+  user-select: text;
+  pointer-events: auto;
 `;
 
 export const TitleBar = styled.div`
