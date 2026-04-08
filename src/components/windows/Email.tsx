@@ -287,7 +287,12 @@ const EmailWindow: React.FC<WindowState> = () => {
       )}
 
       <FormLayout>
-        <StyledForm onSubmit={handleSubmit(onSubmit)} data-netlify="true">
+        <StyledForm
+          onSubmit={handleSubmit(onSubmit)}
+          name="contact"
+          method="POST"
+          data-netlify="true"
+        >
           <FormGroup>
             <Label htmlFor="name">Name</Label>
             <Input
