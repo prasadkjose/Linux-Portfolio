@@ -28,7 +28,6 @@ const FormContainer = styled.div`
   width: 100%;
   padding-bottom: 30px;
   height: 100%;
-  background: rgba(24, 24, 24, 0.85);
   scrollbar-width: thin; /* Firefox */
   animation: ${slideIn} 0.3s ease-out;
 `;
@@ -83,7 +82,7 @@ const baseInputStyles = (theme: import("styled-components").DefaultTheme) => `
   padding: 14px 16px;
   border: 2px solid #6a6162ff !important;
   border-radius: 10px;
-  background: rgba(24, 24, 24, 0.85);
+  background-color: transparent !important;  
   color: ${theme.colors.text["100"]};
   font-size: 0.95rem;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -101,7 +100,7 @@ const baseInputStyles = (theme: import("styled-components").DefaultTheme) => `
   }
 
   &::placeholder {
-    color: ${theme.colors.text["300"]};
+    color: ${theme.colors.text["100"]};
     opacity: 0.7;
   }
 `;

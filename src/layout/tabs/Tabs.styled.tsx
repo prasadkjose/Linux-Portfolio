@@ -11,11 +11,7 @@ export const TabContainer = styled.div`
 
 export const TabBar = styled.div`
   display: flex;
-  background: linear-gradient(
-    to bottom,
-    ${({ theme }) => theme.colors.primary},
-    rgba(24, 24, 24, 0.9)
-  );
+  background: rgba(22, 22, 22, 1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding: 0 8px;
   height: 40px;
