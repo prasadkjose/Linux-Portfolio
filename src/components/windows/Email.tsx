@@ -88,17 +88,6 @@ const baseInputStyles = (theme: import("styled-components").DefaultTheme) => `
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
-  &:hover:not(:focus) {
-    border-color: ${theme.colors.text["200"]};
-  }
-
-  &:focus {
-    outline: none;
-    border-color: ${theme.colors.primary};
-    box-shadow: 0 0 0 3px ${`${theme.colors.primary}20`}, 0 4px 12px rgba(0, 0, 0, 0.08);
-    transform: translateY(-1px);
-  }
-
   &::placeholder {
     color: ${theme.colors.text["100"]};
     opacity: 0.7;
@@ -293,7 +282,7 @@ const EmailWindow: React.FC<WindowState> = () => {
           method="POST"
           data-netlify="true"
         >
-          <input type="hidden" name="form-name" value="your-form-name" />
+          <input type="hidden" name="form-name" value="contact" />
           <FormGroup>
             <Label htmlFor="name">Name</Label>
             <Input
