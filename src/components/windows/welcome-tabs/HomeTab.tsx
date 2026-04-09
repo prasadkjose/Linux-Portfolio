@@ -9,7 +9,7 @@ const HeroSection = styled.section`
   display: flex;
   gap: 20px;
   align-items: center;
-  margin-bottom: 24px;
+  padding: "32px 0";
 `;
 
 const ProfileImage = styled.img`
@@ -108,7 +108,7 @@ const HomeTab: React.FC = () => {
       </section>
 
       {/* Skills Overview */}
-      <section>
+      <section style={{ padding: "32px 0" }}>
         <h2
           style={{
             margin: "0 0 12px 0",

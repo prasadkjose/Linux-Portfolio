@@ -7,9 +7,7 @@ const RecommendationsSection = styled.section`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin-bottom: 24px;
-
-  @media (max-width: 550px) {
+  padding: "32px 0" @media (max-width: 550px) {
     grid-template-columns: 1fr;
   }
 `;

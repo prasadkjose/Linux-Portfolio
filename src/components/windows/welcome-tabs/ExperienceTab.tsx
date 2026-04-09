@@ -59,7 +59,7 @@ const ExperienceTab: React.FC = () => {
       </ExperienceSection>
 
       {/* Additional Experience Info */}
-      <section style={{ marginTop: "32px" }}>
+      <section style={{ padding: "32px 0" }}>
         <h3
           style={{
             margin: "0 0 12px 0",
