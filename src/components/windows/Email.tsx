@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import styled, { keyframes } from "styled-components";
 import { WindowState } from "../../types/window";
 import { PERSONAL_DATA } from "../../config/personalData.config";
+import logger from "../../utils/logger";
 
 type EmailFormInputs = {
   name: string;
@@ -245,12 +246,27 @@ const EmailWindow: React.FC<WindowState> = () => {
     },
   });
 
+  const encode = (data: Record<string, string>) => {
+    return Object.keys(data)
+      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+      .join("&");
+  };
+
   const onSubmit: SubmitHandler<EmailFormInputs> = async data => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
-    console.log("Email form submitted:", data);
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: encode({ "form-name": "contact", ...data }),
+    })
+      .then(() => logger.info("Email form submitted"))
+      .catch(error => logger.info(`Email form failed: ${error}`));
+
     reset();
   };
+
+  /* Here’s the juicy bit for posting the form submission */
 
   return (
     <FormContainer>
