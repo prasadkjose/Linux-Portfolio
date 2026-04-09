@@ -10,6 +10,7 @@ const RecommendationsSection = styled.section`
   padding: "32px 0" @media (max-width: 550px) {
     grid-template-columns: 1fr;
   }
+  padding: 32px 0;
 `;
 
 const SectionTitle = styled.h2`

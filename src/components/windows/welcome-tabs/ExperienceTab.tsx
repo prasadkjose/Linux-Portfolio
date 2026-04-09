@@ -7,7 +7,7 @@ const ExperienceSection = styled.section`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
-  margin-bottom: 24px;
+  padding: 32px 0;
 `;
 
 const SectionTitle = styled.h2`

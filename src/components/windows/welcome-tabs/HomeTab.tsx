@@ -9,7 +9,7 @@ const HeroSection = styled.section`
   display: flex;
   gap: 20px;
   align-items: center;
-  padding: "32px 0";
+  padding: 32px 0;
 `;
 
 const ProfileImage = styled.img`
