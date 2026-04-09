@@ -255,6 +255,7 @@ const EmailWindow: React.FC<WindowState> = () => {
   const onSubmit: SubmitHandler<EmailFormInputs> = async data => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
+    /* Here’s the juicy bit for posting the form submission */
     fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -265,8 +266,6 @@ const EmailWindow: React.FC<WindowState> = () => {
 
     reset();
   };
-
-  /* Here’s the juicy bit for posting the form submission */
 
   return (
     <FormContainer>
