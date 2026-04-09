@@ -295,10 +295,7 @@ const EmailWindow: React.FC<WindowState> = () => {
           onSubmit={handleSubmit(onSubmit)}
           name="contact"
           method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
         >
-          <input type="hidden" name="form-name" value="contact" />
           <FormGroup>
             <Label htmlFor="name">Name</Label>
             <Input
