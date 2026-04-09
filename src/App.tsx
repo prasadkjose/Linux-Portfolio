@@ -33,7 +33,17 @@ function App() {
       {/* Theme Switcher - 3-way toggle for Linux, Fedora, Kali themes */}
       <ThemeSwitcher {...themeProps} />
       {!themeLoaded ? (
-        <div style={{ width: "100%", height: "100%", position: "absolute" }}>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            background: "#ffffff",
+            backgroundImage:
+              "radial-gradient(circle, hsl(240, 5%, 65%, 0.15) 1px, transparent 1px)",
+            backgroundSize: "20px 20px",
+          }}
+        >
           <Antigravity
             count={600}
             magnetRadius={50}

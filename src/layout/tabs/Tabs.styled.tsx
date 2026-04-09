@@ -4,7 +4,6 @@ export const TabContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: rgba(24, 24, 24, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   overflow: hidden;
@@ -114,6 +113,12 @@ export const TabContent = styled.div`
   flex: 1;
   padding: 16px;
   background: rgba(24, 24, 24, 0.85);
+  background-image: radial-gradient(
+    circle,
+    hsl(240, 5%, 65%, 0.15) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
   color: #eceff4;
   font-family:
     system-ui,

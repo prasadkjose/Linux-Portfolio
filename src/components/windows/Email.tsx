@@ -37,7 +37,8 @@ const FormLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 320px;
   gap: 48px;
-  width: 100%;
+  width: 60%;
+  align-self: center;
 
   @media (max-width: 550px) {
     grid-template-columns: 1fr;
@@ -46,6 +47,7 @@ const FormLayout = styled.div`
 
 const FormHeader = styled.div`
   margin-bottom: 32px;
+  padding-left: 45px;
 `;
 
 const FormTitle = styled.h2`
