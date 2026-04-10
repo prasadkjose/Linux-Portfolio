@@ -248,14 +248,14 @@ const EmailWindow: React.FC<WindowState> = () => {
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: value }));
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
 
     // Clear error for field when user types
-    if (errors[id as keyof EmailFormInputs]) {
+    if (errors[name as keyof EmailFormInputs]) {
       setErrors(prev => {
         const newErrors = { ...prev };
-        delete newErrors[id as keyof EmailFormInputs];
+        delete newErrors[name as keyof EmailFormInputs];
         return newErrors;
       });
     }
@@ -293,7 +293,7 @@ const EmailWindow: React.FC<WindowState> = () => {
       .join("&");
   };
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validateForm()) {
