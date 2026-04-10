@@ -302,7 +302,7 @@ const EmailWindow: React.FC<WindowState> = () => {
               id="name"
               type="text"
               placeholder="Your full name"
-              {...register("name", { required: "Name is required" })}
+              // {...register("name", { required: "Name is required" })}
             />
             {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
           </FormGroup>
