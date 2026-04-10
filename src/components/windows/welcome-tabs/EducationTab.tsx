@@ -26,6 +26,12 @@ const EducationTab: React.FC = () => {
   const { education, certifications } = PERSONAL_DATA;
   return (
     <Fragment>
+      <textarea
+              id="message"
+              name="message"
+              placeholder="Write your message here..."
+              autoComplete="off"
+            />
       <SectionTitle>
         {education.value}
         <img
