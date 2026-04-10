@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { WindowState } from "../../types/window";
 import { PERSONAL_DATA } from "../../config/personalData.config";
@@ -235,6 +235,8 @@ const ContactInfo = styled.div`
 `;
 
 const EmailWindow: React.FC<WindowState> = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const [formData, setFormData] = useState<EmailFormInputs>({
     name: "",
     email: "",
@@ -244,6 +246,7 @@ const EmailWindow: React.FC<WindowState> = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
   const [errors, setErrors] = useState<Partial<EmailFormInputs>>({});
+  const [rerender, setRerender] = useState(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -300,6 +303,7 @@ const EmailWindow: React.FC<WindowState> = () => {
       return;
     }
 
+    setRerender(true);
     setIsSubmitting(true);
 
     // Simulate API call
@@ -324,10 +328,20 @@ const EmailWindow: React.FC<WindowState> = () => {
       subject: "",
       message: "",
     });
+
+    setRerender(false);
   };
 
+  // Auto-scroll to bottom when form state changes (success message, errors, submit state)
+  useEffect(() => {
+    const el = containerRef?.current as unknown as HTMLElement | null;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
+  }, [isSubmitSuccessful, errors, isSubmitting, rerender]);
+
   return (
-    <FormContainer>
+    <FormContainer ref={containerRef}>
       <FormHeader>
         <FormTitle>Get In Touch</FormTitle>
         <FormSubtitle>
