@@ -37,11 +37,42 @@ const CardSpotlight = styled.div`
   &:focus-within::before {
     opacity: 0.6;
   }
+
+  &::before,
+  &::after,
+  > :first-child::before,
+  > :first-child::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #99ddcc6a;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  &::before {
+    top: 12px;
+    left: 14px;
+  }
+  &::after {
+    top: 12px;
+    right: 14px;
+  }
+  > :first-child::before {
+    bottom: 12px;
+    left: 14px;
+  }
+  > :first-child::after {
+    bottom: 12px;
+    right: 14px;
+  }
 `;
 
-const HighlightCard: React.FC<Data & { className?: string }> = ({
-  href,
+const HighlightCard: React.FC<Data> = ({
   style,
+  href,
   value,
   icon,
   iconSize,
