@@ -252,6 +252,10 @@ const EmailWindow: React.FC<WindowState> = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+
+    // Prevent unnecessary rerenders when typing - same logic as terminal
+    setRerender(false);
+
     setFormData(prev => ({ ...prev, [name]: value }));
 
     // Clear error for field when user types
