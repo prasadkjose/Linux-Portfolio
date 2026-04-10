@@ -6,7 +6,7 @@ const CardSpotlight = styled.div`
   position: relative;
   background-color: "linear-gradient(135deg, rgba(136, 192, 208, 0.10) 0%, rgba(94, 129, 172, 0.10) 100%)";
   padding: 2rem;
-  cursor: "pointer";
+  cursor: pointer;
   border-radius: 14px;
   border: 1px solid rgba(136, 192, 208, 0.25);
   transition:
@@ -79,9 +79,9 @@ const HighlightCard: React.FC<Data & { className?: string }> = ({
         ...style,
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.transform = "translateY(-3px)";
+        e.currentTarget.style.transform = "translateY(-1px)";
         e.currentTarget.style.boxShadow =
-          "0 14px 30px rgba(136, 192, 208, 0.18)";
+          "0 14px 30px rgba(136, 192, 208, 0.05)";
       }}
       onClick={() => window.open(href, "_blank")}
       onMouseLeave={e => {
