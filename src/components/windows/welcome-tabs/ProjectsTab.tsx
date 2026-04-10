@@ -62,15 +62,7 @@ const ProjectsTab: React.FC = () => {
         projects.data && (
           <ProjectsSection>
             {projects.data.map(data => (
-              <HighlightCard
-                key={data.value}
-                style={{
-                  background:
-                    "linear-gradient(135deg, rgba(136, 192, 208, 0.10) 0%, rgba(94, 129, 172, 0.10) 100%)",
-                  border: "1px solid rgba(136, 192, 208, 0.25)",
-                }}
-                {...data}
-              />
+              <HighlightCard key={data.value} {...data} />
             ))}
           </ProjectsSection>
         )}
