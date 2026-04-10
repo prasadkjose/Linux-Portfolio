@@ -297,12 +297,12 @@ const EmailWindow: React.FC<WindowState> = () => {
           method="POST"
         >
           <FormGroup>
-            <Label htmlFor="name">Name</Label>
+            <Label>Name</Label>
             <Input
               id="name"
               type="text"
               placeholder="Your full name"
-              // {...register("name", { required: "Name is required" })}
+              {...register("name", { required: "Name is required" })}
             />
             {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
           </FormGroup>
