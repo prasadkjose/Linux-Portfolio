@@ -342,14 +342,11 @@ const EmailWindow: React.FC<WindowState> = () => {
         </SuccessMessage>
       )}
 
-      <Textarea
+      <textarea
               id="message"
               name="message"
               placeholder="Write your message here..."
               autoComplete="off"
-              value={formData.message}
-              onChange={handleInputChange}
-              required
             />
     </FormContainer>
   );
