@@ -6,7 +6,7 @@ import SplashScreen from "./components/SplashScreen";
 import ThemeSwitcher from "./layout/widgets/ThemeSwitcher";
 import { ThemeSwitcherProps } from "./types/window";
 import { preloadResources } from "./utils/resource-utils";
-import Antigravity from "./components/Antigravity";
+import ShapeGrid from "./components/Antigravity";
 
 function App() {
   // themes
@@ -44,22 +44,14 @@ function App() {
             backgroundSize: "20px 20px",
           }}
         >
-          <Antigravity
-            count={600}
-            magnetRadius={50}
-            ringRadius={7}
-            waveSpeed={4.8}
-            waveAmplitude={0.2}
-            particleSize={0.8}
-            lerpSpeed={0.2}
-            color="#D9DDDC"
-            autoAnimate={false}
-            particleVariance={0.2}
-            rotationSpeed={0.8}
-            depthFactor={3.1}
-            pulseSpeed={5.3}
-            particleShape="sphere"
-            fieldStrength={20}
+          <ShapeGrid
+            speed={0.1}
+            squareSize={10}
+            hoverTrailAmount={18} // number of trailing hovered shapes (0 = no trail)
+            direction="diagonal"
+            borderColor="#998ead21"
+            hoverFillColor="#2b2b2b"
+            shape="hexagon"
           />
         </div>
       ) : (
