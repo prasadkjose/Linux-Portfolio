@@ -302,6 +302,7 @@ const EmailWindow: React.FC<WindowState> = () => {
               id="name"
               type="text"
               placeholder="Your full name"
+              autoComplete="name"
               {...register("name", { required: "Name is required" })}
             />
             {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
@@ -313,6 +314,7 @@ const EmailWindow: React.FC<WindowState> = () => {
               id="email"
               type="email"
               placeholder="your@email.com"
+              autoComplete="email"
               {...register("email", {
                 required: "Email is required",
                 pattern: {
@@ -330,6 +332,7 @@ const EmailWindow: React.FC<WindowState> = () => {
               id="subject"
               type="text"
               placeholder="What's this about?"
+              autoComplete="off"
               {...register("subject", { required: "Subject is required" })}
             />
             {errors.subject && <ErrorText>{errors.subject.message}</ErrorText>}
@@ -340,6 +343,7 @@ const EmailWindow: React.FC<WindowState> = () => {
             <Textarea
               id="message"
               placeholder="Write your message here..."
+              autoComplete="off"
               {...register("message", { required: "Message is required" })}
             />
             {errors.message && <ErrorText>{errors.message.message}</ErrorText>}
