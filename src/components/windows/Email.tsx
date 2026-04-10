@@ -248,7 +248,7 @@ const EmailWindow: React.FC<WindowState> = () => {
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.currentTarget;
+    const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
 
     // Clear error for field when user types
