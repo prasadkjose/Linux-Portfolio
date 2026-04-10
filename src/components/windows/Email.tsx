@@ -1,5 +1,4 @@
-import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { WindowState } from "../../types/window";
 import { PERSONAL_DATA } from "../../config/personalData.config";
@@ -92,6 +91,10 @@ const baseInputStyles = (theme: import("styled-components").DefaultTheme) => `
   &::placeholder {
     color: ${theme.colors.text["100"]};
     opacity: 0.7;
+  }
+
+  &:invalid:not(:placeholder-shown) {
+    border-color: #bf616a !important;
   }
 `;
 
@@ -232,19 +235,57 @@ const ContactInfo = styled.div`
 `;
 
 const EmailWindow: React.FC<WindowState> = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
-    reset,
-  } = useForm<EmailFormInputs>({
-    defaultValues: {
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    },
+  const [formData, setFormData] = useState<EmailFormInputs>({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
+  const [errors, setErrors] = useState<Partial<EmailFormInputs>>({});
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({ ...prev, [id]: value }));
+
+    // Clear error for field when user types
+    if (errors[id as keyof EmailFormInputs]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[id as keyof EmailFormInputs];
+        return newErrors;
+      });
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<EmailFormInputs> = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    if (!formData.subject.trim()) {
+      newErrors.subject = "Subject is required";
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const encode = (data: Record<string, string>) => {
     return Object.keys(data)
@@ -252,19 +293,37 @@ const EmailWindow: React.FC<WindowState> = () => {
       .join("&");
   };
 
-  const onSubmit: SubmitHandler<EmailFormInputs> = async data => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
-    /* Here’s the juicy bit for posting the form submission */
+
+    /* Post form submission to Netlify */
     fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: encode({ "form-name": "contact", ...data }),
+      body: encode({ "form-name": "contact", ...formData }),
     })
       .then(() => logger.info("Email form submitted"))
       .catch(error => logger.info(`Email form failed: ${error}`));
 
-    reset();
+    setIsSubmitting(false);
+    setIsSubmitSuccessful(true);
+
+    // Reset form
+    setFormData({
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    });
   };
 
   return (
@@ -292,61 +351,71 @@ const EmailWindow: React.FC<WindowState> = () => {
             width: "100%",
             maxWidth: 650,
           }}
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={onSubmit}
           name="contact"
           method="POST"
+          noValidate
         >
+          <input type="hidden" name="form-name" value="contact" />
+
           <FormGroup>
-            <Label>Name</Label>
+            <Label htmlFor="name">Name</Label>
             <Input
               id="name"
+              name="name"
               type="text"
               placeholder="Your full name"
               autoComplete="name"
-              {...register("name", { required: "Name is required" })}
+              value={formData.name}
+              onChange={handleInputChange}
+              required
             />
-            {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
+            {errors.name && <ErrorText>{errors.name}</ErrorText>}
           </FormGroup>
 
           <FormGroup>
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
+              name="email"
               type="email"
               placeholder="your@email.com"
               autoComplete="email"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Please enter a valid email address",
-                },
-              })}
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+              pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
             />
-            {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
+            {errors.email && <ErrorText>{errors.email}</ErrorText>}
           </FormGroup>
 
           <FormGroup>
             <Label htmlFor="subject">Subject</Label>
             <Input
               id="subject"
+              name="subject"
               type="text"
               placeholder="What's this about?"
               autoComplete="off"
-              {...register("subject", { required: "Subject is required" })}
+              value={formData.subject}
+              onChange={handleInputChange}
+              required
             />
-            {errors.subject && <ErrorText>{errors.subject.message}</ErrorText>}
+            {errors.subject && <ErrorText>{errors.subject}</ErrorText>}
           </FormGroup>
 
           <FormGroup>
             <Label htmlFor="message">Message</Label>
             <Textarea
               id="message"
+              name="message"
               placeholder="Write your message here..."
               autoComplete="off"
-              {...register("message", { required: "Message is required" })}
+              value={formData.message}
+              onChange={handleInputChange}
+              required
             />
-            {errors.message && <ErrorText>{errors.message.message}</ErrorText>}
+            {errors.message && <ErrorText>{errors.message}</ErrorText>}
           </FormGroup>
 
           <SubmitButton type="submit" disabled={isSubmitting}>
