@@ -12,11 +12,6 @@ export const formatGithubProjectData = (repo: Repository) => ({
   value: repo.name,
   description: repo.description || "No description available.",
   href: repo.url,
-  style: {
-    background:
-      "linear-gradient(135deg, rgba(136, 192, 208, 0.10) 0%, rgba(94, 129, 172, 0.10) 100%)",
-    border: "1px solid rgba(136, 192, 208, 0.25)",
-  },
 });
 
 /**

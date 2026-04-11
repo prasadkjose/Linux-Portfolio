@@ -1,5 +1,4 @@
-import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import React, { useState, useRef, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { WindowState } from "../../types/window";
 import { PERSONAL_DATA } from "../../config/personalData.config";
@@ -93,6 +92,10 @@ const baseInputStyles = (theme: import("styled-components").DefaultTheme) => `
     color: ${theme.colors.text["100"]};
     opacity: 0.7;
   }
+
+  &:invalid:not(:placeholder-shown) {
+    border-color: #bf616a !important;
+  }
 `;
 
 const Input = styled.input`
@@ -178,6 +181,34 @@ const SuccessMessage = styled.div`
   box-shadow: 0 4px 12px rgba(163, 190, 140, 0.3);
 `;
 
+const ErrorMessage = styled.div`
+  padding: 20px;
+  background: linear-gradient(135deg, #bf616a, #d08770);
+  color: #2e3440;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  text-align: center;
+  font-weight: 600;
+  animation: ${slideIn} 0.3s ease-out;
+  box-shadow: 0 4px 12px rgba(191, 97, 106, 0.3);
+
+  p {
+    margin: 8px 0;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  a {
+    color: #2e3440;
+    text-decoration: underline;
+    font-weight: 600;
+
+    &:hover {
+      color: #eceff4;
+    }
+  }
+`;
+
 const ContactLink = styled.a`
   color: ${({ theme }) => theme.colors.text["200"]};
   text-decoration: none;
@@ -232,19 +263,69 @@ const ContactInfo = styled.div`
 `;
 
 const EmailWindow: React.FC<WindowState> = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
-    reset,
-  } = useForm<EmailFormInputs>({
-    defaultValues: {
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    },
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const [formData, setFormData] = useState<EmailFormInputs>({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
+  const [isSubmitFailed, setIsSubmitFailed] = useState(false);
+  const [errors, setErrors] = useState<Partial<EmailFormInputs>>({});
+  const [rerender, setRerender] = useState(false);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    // Prevent unnecessary rerenders when typing - same logic as terminal
+    setRerender(false);
+
+    setFormData(prev => ({ ...prev, [name]: value }));
+
+    // Clear error for field when user types
+    if (errors[name as keyof EmailFormInputs]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name as keyof EmailFormInputs];
+        return newErrors;
+      });
+    }
+
+    // Reset submission states when user starts typing again
+    setIsSubmitSuccessful(false);
+    setIsSubmitFailed(false);
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<EmailFormInputs> = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    if (!formData.subject.trim()) {
+      newErrors.subject = "Subject is required";
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const encode = (data: Record<string, string>) => {
     return Object.keys(data)
@@ -252,23 +333,64 @@ const EmailWindow: React.FC<WindowState> = () => {
       .join("&");
   };
 
-  const onSubmit: SubmitHandler<EmailFormInputs> = async data => {
+  const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setRerender(true);
+    setIsSubmitting(true);
+    setIsSubmitSuccessful(false);
+    setIsSubmitFailed(false);
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
-    /* Here’s the juicy bit for posting the form submission */
+
+    /* Post form submission to Netlify */
     fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: encode({ "form-name": "contact", ...data }),
+      body: encode({ "form-name": "contact", ...formData }),
     })
-      .then(() => logger.info("Email form submitted"))
-      .catch(error => logger.info(`Email form failed: ${error}`));
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        logger.info("Email form submitted");
+        setIsSubmitSuccessful(true);
+        setIsSubmitFailed(false);
 
-    reset();
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+      })
+      .catch(error => {
+        logger.info(`Email form failed: ${error}`);
+        setIsSubmitSuccessful(false);
+        setIsSubmitFailed(true);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+        setRerender(false);
+      });
   };
 
+  // Auto-scroll to bottom when form state changes (success message, errors, submit state)
+  useEffect(() => {
+    const el = containerRef?.current as unknown as HTMLElement | null;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
+  }, [isSubmitSuccessful, isSubmitFailed, errors, isSubmitting, rerender]);
+
   return (
-    <FormContainer>
+    <FormContainer ref={containerRef}>
       <FormHeader>
         <FormTitle>Get In Touch</FormTitle>
         <FormSubtitle>
@@ -283,6 +405,19 @@ const EmailWindow: React.FC<WindowState> = () => {
         </SuccessMessage>
       )}
 
+      {isSubmitFailed && (
+        <ErrorMessage>
+          ✗ There was an error sending your message.
+          <p>
+            You can email me directly at:{" "}
+            <a href={`mailto:${PERSONAL_DATA.personalInfo.email}`}>
+              {PERSONAL_DATA.personalInfo.email}
+            </a>
+          </p>
+          <p>Or reach out through social links on the right.</p>
+        </ErrorMessage>
+      )}
+
       <FormLayout>
         <form
           style={{
@@ -292,57 +427,71 @@ const EmailWindow: React.FC<WindowState> = () => {
             width: "100%",
             maxWidth: 650,
           }}
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={onSubmit}
           name="contact"
           method="POST"
+          noValidate
         >
+          <input type="hidden" name="form-name" value="contact" />
+
           <FormGroup>
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"
+              name="name"
               type="text"
               placeholder="Your full name"
-              {...register("name", { required: "Name is required" })}
+              autoComplete="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              required
             />
-            {errors.name && <ErrorText>{errors.name.message}</ErrorText>}
+            {errors.name && <ErrorText>{errors.name}</ErrorText>}
           </FormGroup>
 
           <FormGroup>
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
+              name="email"
               type="email"
               placeholder="your@email.com"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Please enter a valid email address",
-                },
-              })}
+              autoComplete="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+              pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
             />
-            {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
+            {errors.email && <ErrorText>{errors.email}</ErrorText>}
           </FormGroup>
 
           <FormGroup>
             <Label htmlFor="subject">Subject</Label>
             <Input
               id="subject"
+              name="subject"
               type="text"
               placeholder="What's this about?"
-              {...register("subject", { required: "Subject is required" })}
+              autoComplete="off"
+              value={formData.subject}
+              onChange={handleInputChange}
+              required
             />
-            {errors.subject && <ErrorText>{errors.subject.message}</ErrorText>}
+            {errors.subject && <ErrorText>{errors.subject}</ErrorText>}
           </FormGroup>
 
           <FormGroup>
             <Label htmlFor="message">Message</Label>
             <Textarea
               id="message"
+              name="message"
               placeholder="Write your message here..."
-              {...register("message", { required: "Message is required" })}
+              autoComplete="off"
+              value={formData.message}
+              onChange={handleInputChange}
+              required
             />
-            {errors.message && <ErrorText>{errors.message.message}</ErrorText>}
+            {errors.message && <ErrorText>{errors.message}</ErrorText>}
           </FormGroup>
 
           <SubmitButton type="submit" disabled={isSubmitting}>

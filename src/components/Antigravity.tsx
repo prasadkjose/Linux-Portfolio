@@ -1,206 +1,455 @@
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import React, { useMemo, useRef } from "react";
-import * as THREE from "three";
+import React, { useRef, useEffect } from "react";
 
-interface AntigravityProps {
-  count?: number;
-  magnetRadius?: number;
-  ringRadius?: number;
-  waveSpeed?: number;
-  waveAmplitude?: number;
-  particleSize?: number;
-  lerpSpeed?: number;
-  color?: string;
-  autoAnimate?: boolean;
-  particleVariance?: number;
-  rotationSpeed?: number;
-  depthFactor?: number;
-  pulseSpeed?: number;
-  particleShape?: "capsule" | "sphere" | "box" | "tetrahedron";
-  fieldStrength?: number;
+type CanvasStrokeStyle = string | CanvasGradient | CanvasPattern;
+
+interface GridOffset {
+  x: number;
+  y: number;
 }
 
-const AntigravityInner: React.FC<AntigravityProps> = ({
-  count = 300,
-  magnetRadius = 10,
-  ringRadius = 10,
-  waveSpeed = 0.4,
-  waveAmplitude = 1,
-  particleSize = 2,
-  lerpSpeed = 0.1,
-  color = "#FF9FFC",
-  autoAnimate = false,
-  particleVariance = 1,
-  rotationSpeed = 0,
-  depthFactor = 1,
-  pulseSpeed = 3,
-  particleShape = "capsule",
-  fieldStrength = 10,
+interface ShapeGridProps {
+  direction?: "diagonal" | "up" | "right" | "down" | "left";
+  speed?: number;
+  borderColor?: CanvasStrokeStyle;
+  squareSize?: number;
+  hoverFillColor?: CanvasStrokeStyle;
+  shape?: "square" | "hexagon" | "circle" | "triangle";
+  hoverTrailAmount?: number;
+}
+
+const ShapeGrid: React.FC<ShapeGridProps> = ({
+  direction = "right",
+  speed = 1,
+  borderColor = "#999",
+  squareSize = 40,
+  hoverFillColor = "#222",
+  shape = "square",
+  hoverTrailAmount = 0,
 }) => {
-  const meshRef = useRef<THREE.InstancedMesh>(null);
-  const { viewport } = useThree();
-  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const requestRef = useRef<number | null>(null);
+  const numSquaresX = useRef<number>(0);
+  const numSquaresY = useRef<number>(0);
+  const gridOffset = useRef<GridOffset>({ x: 0, y: 0 });
+  const hoveredSquareRef = useRef<GridOffset | null>(null);
+  const trailCells = useRef<GridOffset[]>([]);
+  const cellOpacities = useRef<Map<string, number>>(new Map());
 
-  const lastMousePos = useRef({ x: 0, y: 0 });
-  const lastMouseMoveTime = useRef(0);
-  const virtualMouse = useRef({ x: 0, y: 0 });
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
 
-  const particles = useMemo(() => {
-    const temp = [];
-    const width = viewport.width || 100;
-    const height = viewport.height || 100;
+    const isHex = shape === "hexagon";
+    const isTri = shape === "triangle";
+    const hexHoriz = squareSize * 1.5;
+    const hexVert = squareSize * Math.sqrt(3);
 
-    for (let i = 0; i < count; i++) {
-      const t = Math.random() * 100;
-      const factor = 20 + Math.random() * 100;
-      const speed = 0.01 + Math.random() / 200;
-      const xFactor = -50 + Math.random() * 100;
-      const yFactor = -50 + Math.random() * 100;
-      const zFactor = -50 + Math.random() * 100;
+    const resizeCanvas = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      numSquaresX.current = Math.ceil(canvas.width / squareSize) + 1;
+      numSquaresY.current = Math.ceil(canvas.height / squareSize) + 1;
+    };
 
-      const x = (Math.random() - 0.5) * width;
-      const y = (Math.random() - 0.5) * height;
-      const z = (Math.random() - 0.5) * 20;
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
 
-      const randomRadiusOffset = (Math.random() - 0.5) * 2;
+    const drawHex = (cx: number, cy: number, size: number) => {
+      if (!ctx) return;
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i;
+        const vx = cx + size * Math.cos(angle);
+        const vy = cy + size * Math.sin(angle);
+        if (i === 0) ctx.moveTo(vx, vy);
+        else ctx.lineTo(vx, vy);
+      }
+      ctx.closePath();
+    };
 
-      temp.push({
-        t,
-        factor,
-        speed,
-        xFactor,
-        yFactor,
-        zFactor,
-        mx: x,
-        my: y,
-        mz: z,
-        cx: x,
-        cy: y,
-        cz: z,
-        vx: 0,
-        vy: 0,
-        vz: 0,
-        randomRadiusOffset,
-      });
-    }
-    return temp;
-  }, [count, viewport.width, viewport.height]);
+    const drawCircle = (cx: number, cy: number, size: number) => {
+      if (!ctx) return;
+      ctx.beginPath();
+      ctx.arc(cx, cy, size / 2, 0, Math.PI * 2);
+      ctx.closePath();
+    };
 
-  useFrame(state => {
-    const mesh = meshRef.current;
-    if (!mesh) return;
+    const drawTriangle = (
+      cx: number,
+      cy: number,
+      size: number,
+      flip: boolean
+    ) => {
+      if (!ctx) return;
+      ctx.beginPath();
+      if (flip) {
+        ctx.moveTo(cx, cy + size / 2);
+        ctx.lineTo(cx + size / 2, cy - size / 2);
+        ctx.lineTo(cx - size / 2, cy - size / 2);
+      } else {
+        ctx.moveTo(cx, cy - size / 2);
+        ctx.lineTo(cx + size / 2, cy + size / 2);
+        ctx.lineTo(cx - size / 2, cy + size / 2);
+      }
+      ctx.closePath();
+    };
 
-    const { viewport: v, pointer: m } = state;
+    const drawGrid = () => {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const mouseDist = Math.sqrt(
-      Math.pow(m.x - lastMousePos.current.x, 2) +
-        Math.pow(m.y - lastMousePos.current.y, 2)
-    );
+      if (isHex) {
+        const colShift = Math.floor(gridOffset.current.x / hexHoriz);
+        const offsetX =
+          ((gridOffset.current.x % hexHoriz) + hexHoriz) % hexHoriz;
+        const offsetY = ((gridOffset.current.y % hexVert) + hexVert) % hexVert;
 
-    if (mouseDist > 0.001) {
-      lastMouseMoveTime.current = Date.now();
-      lastMousePos.current = { x: m.x, y: m.y };
-    }
+        const cols = Math.ceil(canvas.width / hexHoriz) + 3;
+        const rows = Math.ceil(canvas.height / hexVert) + 3;
 
-    let destX = (m.x * v.width) / 2;
-    let destY = (m.y * v.height) / 2;
+        for (let col = -2; col < cols; col++) {
+          for (let row = -2; row < rows; row++) {
+            const cx = col * hexHoriz + offsetX;
+            const cy =
+              row * hexVert +
+              ((col + colShift) % 2 !== 0 ? hexVert / 2 : 0) +
+              offsetY;
 
-    if (autoAnimate && Date.now() - lastMouseMoveTime.current > 2000) {
-      const time = state.clock.getElapsedTime();
-      destX = Math.sin(time * 0.5) * (v.width / 4);
-      destY = Math.cos(time * 0.5 * 2) * (v.height / 4);
-    }
+            const cellKey = `${col},${row}`;
+            const alpha = cellOpacities.current.get(cellKey);
+            if (alpha) {
+              ctx.globalAlpha = alpha;
+              drawHex(cx, cy, squareSize);
+              ctx.fillStyle = hoverFillColor;
+              ctx.fill();
+              ctx.globalAlpha = 1;
+            }
 
-    const smoothFactor = 0.05;
-    virtualMouse.current.x += (destX - virtualMouse.current.x) * smoothFactor;
-    virtualMouse.current.y += (destY - virtualMouse.current.y) * smoothFactor;
+            drawHex(cx, cy, squareSize);
+            ctx.strokeStyle = borderColor;
+            ctx.stroke();
+          }
+        }
+      } else if (isTri) {
+        const halfW = squareSize / 2;
+        const colShift = Math.floor(gridOffset.current.x / halfW);
+        const rowShift = Math.floor(gridOffset.current.y / squareSize);
+        const offsetX = ((gridOffset.current.x % halfW) + halfW) % halfW;
+        const offsetY =
+          ((gridOffset.current.y % squareSize) + squareSize) % squareSize;
 
-    const targetX = virtualMouse.current.x;
-    const targetY = virtualMouse.current.y;
+        const cols = Math.ceil(canvas.width / halfW) + 4;
+        const rows = Math.ceil(canvas.height / squareSize) + 4;
 
-    const globalRotation = state.clock.getElapsedTime() * rotationSpeed;
+        for (let col = -2; col < cols; col++) {
+          for (let row = -2; row < rows; row++) {
+            const cx = col * halfW + offsetX;
+            const cy = row * squareSize + squareSize / 2 + offsetY;
+            const flip =
+              (((col + colShift + row + rowShift) % 2) + 2) % 2 !== 0;
 
-    particles.forEach((particle, i) => {
-      let { t, speed, mx, my, mz, cz, randomRadiusOffset } = particle;
+            const cellKey = `${col},${row}`;
+            const alpha = cellOpacities.current.get(cellKey);
+            if (alpha) {
+              ctx.globalAlpha = alpha;
+              drawTriangle(cx, cy, squareSize, flip);
+              ctx.fillStyle = hoverFillColor;
+              ctx.fill();
+              ctx.globalAlpha = 1;
+            }
 
-      t = particle.t += speed / 2;
+            drawTriangle(cx, cy, squareSize, flip);
+            ctx.strokeStyle = borderColor;
+            ctx.stroke();
+          }
+        }
+      } else if (shape === "circle") {
+        const offsetX =
+          ((gridOffset.current.x % squareSize) + squareSize) % squareSize;
+        const offsetY =
+          ((gridOffset.current.y % squareSize) + squareSize) % squareSize;
 
-      const projectionFactor = 1 - cz / 50;
-      const projectedTargetX = targetX * projectionFactor;
-      const projectedTargetY = targetY * projectionFactor;
+        const cols = Math.ceil(canvas.width / squareSize) + 3;
+        const rows = Math.ceil(canvas.height / squareSize) + 3;
 
-      const dx = mx - projectedTargetX;
-      const dy = my - projectedTargetY;
-      const dist = Math.sqrt(dx * dx + dy * dy);
+        for (let col = -2; col < cols; col++) {
+          for (let row = -2; row < rows; row++) {
+            const cx = col * squareSize + squareSize / 2 + offsetX;
+            const cy = row * squareSize + squareSize / 2 + offsetY;
 
-      let targetPos = { x: mx, y: my, z: mz * depthFactor };
+            const cellKey = `${col},${row}`;
+            const alpha = cellOpacities.current.get(cellKey);
+            if (alpha) {
+              ctx.globalAlpha = alpha;
+              drawCircle(cx, cy, squareSize);
+              ctx.fillStyle = hoverFillColor;
+              ctx.fill();
+              ctx.globalAlpha = 1;
+            }
 
-      if (dist < magnetRadius) {
-        const angle = Math.atan2(dy, dx) + globalRotation;
+            drawCircle(cx, cy, squareSize);
+            ctx.strokeStyle = borderColor;
+            ctx.stroke();
+          }
+        }
+      } else {
+        const offsetX =
+          ((gridOffset.current.x % squareSize) + squareSize) % squareSize;
+        const offsetY =
+          ((gridOffset.current.y % squareSize) + squareSize) % squareSize;
 
-        const wave = Math.sin(t * waveSpeed + angle) * (0.5 * waveAmplitude);
-        const deviation = randomRadiusOffset * (5 / (fieldStrength + 0.1));
+        const cols = Math.ceil(canvas.width / squareSize) + 3;
+        const rows = Math.ceil(canvas.height / squareSize) + 3;
 
-        const currentRingRadius = ringRadius + wave + deviation;
+        for (let col = -2; col < cols; col++) {
+          for (let row = -2; row < rows; row++) {
+            const sx = col * squareSize + offsetX;
+            const sy = row * squareSize + offsetY;
 
-        targetPos.x = projectedTargetX + currentRingRadius * Math.cos(angle);
-        targetPos.y = projectedTargetY + currentRingRadius * Math.sin(angle);
-        targetPos.z =
-          mz * depthFactor + Math.sin(t) * (1 * waveAmplitude * depthFactor);
+            const cellKey = `${col},${row}`;
+            const alpha = cellOpacities.current.get(cellKey);
+            if (alpha) {
+              ctx.globalAlpha = alpha;
+              ctx.fillStyle = hoverFillColor;
+              ctx.fillRect(sx, sy, squareSize, squareSize);
+              ctx.globalAlpha = 1;
+            }
+
+            ctx.strokeStyle = borderColor;
+            ctx.strokeRect(sx, sy, squareSize, squareSize);
+          }
+        }
       }
 
-      particle.cx += (targetPos.x - particle.cx) * lerpSpeed;
-      particle.cy += (targetPos.y - particle.cy) * lerpSpeed;
-      particle.cz += (targetPos.z - particle.cz) * lerpSpeed;
-
-      dummy.position.set(particle.cx, particle.cy, particle.cz);
-
-      dummy.lookAt(projectedTargetX, projectedTargetY, particle.cz);
-      dummy.rotateX(Math.PI / 2);
-
-      const currentDistToMouse = Math.sqrt(
-        Math.pow(particle.cx - projectedTargetX, 2) +
-          Math.pow(particle.cy - projectedTargetY, 2)
+      const gradient = ctx.createRadialGradient(
+        canvas.width / 2,
+        canvas.height / 2,
+        0,
+        canvas.width / 2,
+        canvas.height / 2,
+        Math.sqrt(canvas.width ** 2 + canvas.height ** 2) / 2
       );
+      gradient.addColorStop(0, "rgba(218, 218, 218, 0)");
+      gradient.addColorStop(1, "#06001037");
 
-      const distFromRing = Math.abs(currentDistToMouse - ringRadius);
-      let scaleFactor = 1 - distFromRing / 10;
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    };
 
-      scaleFactor = Math.max(0, Math.min(1, scaleFactor));
+    const updateAnimation = () => {
+      const effectiveSpeed = Math.max(speed, 0.1);
+      const wrapX = isHex ? hexHoriz * 2 : squareSize;
+      const wrapY = isHex ? hexVert : isTri ? squareSize * 2 : squareSize;
 
-      const finalScale =
-        scaleFactor *
-        (0.8 + Math.sin(t * pulseSpeed) * 0.2 * particleVariance) *
-        particleSize;
-      dummy.scale.set(finalScale, finalScale, finalScale);
+      switch (direction) {
+        case "right":
+          gridOffset.current.x =
+            (gridOffset.current.x - effectiveSpeed + wrapX) % wrapX;
+          break;
+        case "left":
+          gridOffset.current.x =
+            (gridOffset.current.x + effectiveSpeed + wrapX) % wrapX;
+          break;
+        case "up":
+          gridOffset.current.y =
+            (gridOffset.current.y + effectiveSpeed + wrapY) % wrapY;
+          break;
+        case "down":
+          gridOffset.current.y =
+            (gridOffset.current.y - effectiveSpeed + wrapY) % wrapY;
+          break;
+        case "diagonal":
+          gridOffset.current.x =
+            (gridOffset.current.x - effectiveSpeed + wrapX) % wrapX;
+          gridOffset.current.y =
+            (gridOffset.current.y - effectiveSpeed + wrapY) % wrapY;
+          break;
+        default:
+          break;
+      }
 
-      dummy.updateMatrix();
+      updateCellOpacities();
+      drawGrid();
+      requestRef.current = requestAnimationFrame(updateAnimation);
+    };
 
-      mesh.setMatrixAt(i, dummy.matrix);
-    });
+    const updateCellOpacities = () => {
+      const targets = new Map<string, number>();
 
-    mesh.instanceMatrix.needsUpdate = true;
-  });
+      if (hoveredSquareRef.current) {
+        targets.set(
+          `${hoveredSquareRef.current.x},${hoveredSquareRef.current.y}`,
+          1
+        );
+      }
+
+      if (hoverTrailAmount > 0) {
+        for (let i = 0; i < trailCells.current.length; i++) {
+          const t = trailCells.current[i];
+          const key = `${t.x},${t.y}`;
+          if (!targets.has(key)) {
+            targets.set(
+              key,
+              (trailCells.current.length - i) / (trailCells.current.length + 1)
+            );
+          }
+        }
+      }
+
+      for (const [key] of targets) {
+        if (!cellOpacities.current.has(key)) {
+          cellOpacities.current.set(key, 0);
+        }
+      }
+
+      for (const [key, opacity] of cellOpacities.current) {
+        const target = targets.get(key) || 0;
+        const next = opacity + (target - opacity) * 0.15;
+        if (next < 0.005) {
+          cellOpacities.current.delete(key);
+        } else {
+          cellOpacities.current.set(key, next);
+        }
+      }
+    };
+
+    const handleMouseMove = (event: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+
+      if (isHex) {
+        const colShift = Math.floor(gridOffset.current.x / hexHoriz);
+        const offsetX =
+          ((gridOffset.current.x % hexHoriz) + hexHoriz) % hexHoriz;
+        const offsetY = ((gridOffset.current.y % hexVert) + hexVert) % hexVert;
+        const adjustedX = mouseX - offsetX;
+        const adjustedY = mouseY - offsetY;
+
+        const col = Math.round(adjustedX / hexHoriz);
+        const rowOffset = (col + colShift) % 2 !== 0 ? hexVert / 2 : 0;
+        const row = Math.round((adjustedY - rowOffset) / hexVert);
+
+        if (
+          !hoveredSquareRef.current ||
+          hoveredSquareRef.current.x !== col ||
+          hoveredSquareRef.current.y !== row
+        ) {
+          if (hoveredSquareRef.current && hoverTrailAmount > 0) {
+            trailCells.current.unshift({ ...hoveredSquareRef.current });
+            if (trailCells.current.length > hoverTrailAmount)
+              trailCells.current.length = hoverTrailAmount;
+          }
+          hoveredSquareRef.current = { x: col, y: row };
+        }
+      } else if (isTri) {
+        const halfW = squareSize / 2;
+        const offsetX = ((gridOffset.current.x % halfW) + halfW) % halfW;
+        const offsetY =
+          ((gridOffset.current.y % squareSize) + squareSize) % squareSize;
+
+        const adjustedX = mouseX - offsetX;
+        const adjustedY = mouseY - offsetY;
+
+        const col = Math.round(adjustedX / halfW);
+        const row = Math.floor(adjustedY / squareSize);
+
+        if (
+          !hoveredSquareRef.current ||
+          hoveredSquareRef.current.x !== col ||
+          hoveredSquareRef.current.y !== row
+        ) {
+          if (hoveredSquareRef.current && hoverTrailAmount > 0) {
+            trailCells.current.unshift({ ...hoveredSquareRef.current });
+            if (trailCells.current.length > hoverTrailAmount)
+              trailCells.current.length = hoverTrailAmount;
+          }
+          hoveredSquareRef.current = { x: col, y: row };
+        }
+      } else if (shape === "circle") {
+        const offsetX =
+          ((gridOffset.current.x % squareSize) + squareSize) % squareSize;
+        const offsetY =
+          ((gridOffset.current.y % squareSize) + squareSize) % squareSize;
+
+        const adjustedX = mouseX - offsetX;
+        const adjustedY = mouseY - offsetY;
+
+        const col = Math.round(adjustedX / squareSize);
+        const row = Math.round(adjustedY / squareSize);
+
+        if (
+          !hoveredSquareRef.current ||
+          hoveredSquareRef.current.x !== col ||
+          hoveredSquareRef.current.y !== row
+        ) {
+          if (hoveredSquareRef.current && hoverTrailAmount > 0) {
+            trailCells.current.unshift({ ...hoveredSquareRef.current });
+            if (trailCells.current.length > hoverTrailAmount)
+              trailCells.current.length = hoverTrailAmount;
+          }
+          hoveredSquareRef.current = { x: col, y: row };
+        }
+      } else {
+        const offsetX =
+          ((gridOffset.current.x % squareSize) + squareSize) % squareSize;
+        const offsetY =
+          ((gridOffset.current.y % squareSize) + squareSize) % squareSize;
+
+        const adjustedX = mouseX - offsetX;
+        const adjustedY = mouseY - offsetY;
+
+        const col = Math.floor(adjustedX / squareSize);
+        const row = Math.floor(adjustedY / squareSize);
+
+        if (
+          !hoveredSquareRef.current ||
+          hoveredSquareRef.current.x !== col ||
+          hoveredSquareRef.current.y !== row
+        ) {
+          if (hoveredSquareRef.current && hoverTrailAmount > 0) {
+            trailCells.current.unshift({ ...hoveredSquareRef.current });
+            if (trailCells.current.length > hoverTrailAmount)
+              trailCells.current.length = hoverTrailAmount;
+          }
+          hoveredSquareRef.current = { x: col, y: row };
+        }
+      }
+    };
+
+    const handleMouseLeave = () => {
+      if (hoveredSquareRef.current && hoverTrailAmount > 0) {
+        trailCells.current.unshift({ ...hoveredSquareRef.current });
+        if (trailCells.current.length > hoverTrailAmount)
+          trailCells.current.length = hoverTrailAmount;
+      }
+      hoveredSquareRef.current = null;
+    };
+
+    canvas.addEventListener("mousemove", handleMouseMove);
+    canvas.addEventListener("mouseleave", handleMouseLeave);
+    requestRef.current = requestAnimationFrame(updateAnimation);
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      canvas.removeEventListener("mousemove", handleMouseMove);
+      canvas.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [
+    direction,
+    speed,
+    borderColor,
+    hoverFillColor,
+    squareSize,
+    shape,
+    hoverTrailAmount,
+  ]);
 
   return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
-      {particleShape === "capsule" && (
-        <capsuleGeometry args={[0.1, 0.4, 4, 8]} />
-      )}
-      {particleShape === "sphere" && <sphereGeometry args={[0.2, 16, 16]} />}
-      {particleShape === "box" && <boxGeometry args={[0.3, 0.3, 0.3]} />}
-      {particleShape === "tetrahedron" && <tetrahedronGeometry args={[0.3]} />}
-      <meshBasicMaterial color={color} />
-    </instancedMesh>
+    <canvas ref={canvasRef} style={{ width: "100%", height: "100%" }}></canvas>
   );
 };
 
-const Antigravity: React.FC<AntigravityProps> = props => {
-  return (
-    <Canvas camera={{ position: [0, 0, 50], fov: 35 }}>
-      <AntigravityInner {...props} />
-    </Canvas>
-  );
-};
-
-export default Antigravity;
+export default ShapeGrid;
