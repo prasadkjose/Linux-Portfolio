@@ -181,6 +181,34 @@ const SuccessMessage = styled.div`
   box-shadow: 0 4px 12px rgba(163, 190, 140, 0.3);
 `;
 
+const ErrorMessage = styled.div`
+  padding: 20px;
+  background: linear-gradient(135deg, #bf616a, #d08770);
+  color: #2e3440;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  text-align: center;
+  font-weight: 600;
+  animation: ${slideIn} 0.3s ease-out;
+  box-shadow: 0 4px 12px rgba(191, 97, 106, 0.3);
+
+  p {
+    margin: 8px 0;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  a {
+    color: #2e3440;
+    text-decoration: underline;
+    font-weight: 600;
+
+    &:hover {
+      color: #eceff4;
+    }
+  }
+`;
+
 const ContactLink = styled.a`
   color: ${({ theme }) => theme.colors.text["200"]};
   text-decoration: none;
@@ -245,6 +273,7 @@ const EmailWindow: React.FC<WindowState> = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitSuccessful, setIsSubmitSuccessful] = useState(false);
+  const [isSubmitFailed, setIsSubmitFailed] = useState(false);
   const [errors, setErrors] = useState<Partial<EmailFormInputs>>({});
   const [rerender, setRerender] = useState(false);
 
@@ -266,6 +295,10 @@ const EmailWindow: React.FC<WindowState> = () => {
         return newErrors;
       });
     }
+
+    // Reset submission states when user starts typing again
+    setIsSubmitSuccessful(false);
+    setIsSubmitFailed(false);
   };
 
   const validateForm = (): boolean => {
@@ -309,6 +342,8 @@ const EmailWindow: React.FC<WindowState> = () => {
 
     setRerender(true);
     setIsSubmitting(true);
+    setIsSubmitSuccessful(false);
+    setIsSubmitFailed(false);
 
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
@@ -319,21 +354,31 @@ const EmailWindow: React.FC<WindowState> = () => {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: encode({ "form-name": "contact", ...formData }),
     })
-      .then(() => logger.info("Email form submitted"))
-      .catch(error => logger.info(`Email form failed: ${error}`));
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        logger.info("Email form submitted");
+        setIsSubmitSuccessful(true);
+        setIsSubmitFailed(false);
 
-    setIsSubmitting(false);
-    setIsSubmitSuccessful(true);
-
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
-
-    setRerender(false);
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+      })
+      .catch(error => {
+        logger.info(`Email form failed: ${error}`);
+        setIsSubmitSuccessful(false);
+        setIsSubmitFailed(true);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+        setRerender(false);
+      });
   };
 
   // Auto-scroll to bottom when form state changes (success message, errors, submit state)
@@ -342,7 +387,7 @@ const EmailWindow: React.FC<WindowState> = () => {
     if (el) {
       el.scrollTop = el.scrollHeight;
     }
-  }, [isSubmitSuccessful, errors, isSubmitting, rerender]);
+  }, [isSubmitSuccessful, isSubmitFailed, errors, isSubmitting, rerender]);
 
   return (
     <FormContainer ref={containerRef}>
@@ -358,6 +403,19 @@ const EmailWindow: React.FC<WindowState> = () => {
         <SuccessMessage>
           ✓ Thank you! Your message has been sent successfully.
         </SuccessMessage>
+      )}
+
+      {isSubmitFailed && (
+        <ErrorMessage>
+          ✗ There was an error sending your message.
+          <p>
+            You can email me directly at:{" "}
+            <a href={`mailto:${PERSONAL_DATA.personalInfo.email}`}>
+              {PERSONAL_DATA.personalInfo.email}
+            </a>
+          </p>
+          <p>Or reach out through social links on the right.</p>
+        </ErrorMessage>
       )}
 
       <FormLayout>
