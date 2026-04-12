@@ -58,15 +58,12 @@ const Terminal = () => {
   };
 
   // focus on input when terminal is clicked
-  const handleDivClick = () => {
-    return inputRef.current && inputRef.current.focus();
+  const handleTerminalClick = () => {
+    // Always focus terminal input when ANY part of the terminal is clicked
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
-  useEffect(() => {
-    document.addEventListener("click", handleDivClick);
-    return () => {
-      document.removeEventListener("click", handleDivClick);
-    };
-  }, [containerRef]);
 
   // Keyboard Press
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -156,7 +153,11 @@ const Terminal = () => {
   }, [cmdHistory, rerender]);
 
   return (
-    <Wrapper data-testid="terminal-wrapper" ref={containerRef}>
+    <Wrapper
+      data-testid="terminal-wrapper"
+      ref={containerRef}
+      onClick={handleTerminalClick}
+    >
       {cmdHistory.map((cmdH, index) => {
         const commandArray = _.split(_.trim(cmdH), " ");
         const validCommand = _.find(commands, { cmd: commandArray[0] });
