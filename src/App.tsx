@@ -7,6 +7,7 @@ import ThemeSwitcher from "./layout/widgets/ThemeSwitcher";
 import { ThemeSwitcherProps } from "./types/window";
 import { preloadResources } from "./utils/resource-utils";
 import ShapeGrid from "./components/Antigravity";
+import LoadingStatusBar from "./components/LoadingStatusBar";
 
 function App() {
   // themes
@@ -53,6 +54,8 @@ function App() {
             hoverFillColor="#2b2b2b"
             shape="hexagon"
           />
+
+          <LoadingStatusBar />
         </div>
       ) : (
         <Suspense fallback={<SplashScreen {...themeProps} />}>
