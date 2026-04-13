@@ -7,7 +7,7 @@ import {
   useTransform,
   type Transition,
 } from "motion/react";
-// replace icons with your own if needed
+
 import {
   FiCircle,
   FiCode,
