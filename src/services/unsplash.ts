@@ -66,6 +66,7 @@ class UnsplashService {
         path: "search-photos",
         query: searchQuery || this.config.query || "nature",
         page: page?.toString() || "1",
+        // eslint-disable-next-line camelcase
         per_page: (this.config.perPage ?? 10).toString(),
       };
 
