@@ -147,7 +147,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
             bringToFront={resume.bringToFront}
           />
         )}
-        <Draggable>
+        <Draggable position="right">
           <Carousel />
         </Draggable>
       </themeContext.Provider>
