@@ -155,9 +155,12 @@ const DesktopShortcuts: React.FC<Props> = ({
         const shortcutPos = getInitialPosition(firstShortcutIndex + idx);
 
         return (
-          <Draggable initialX={shortcutPos.x} initialY={shortcutPos.y}>
+          <Draggable
+            key={idx}
+            initialX={shortcutPos.x}
+            initialY={shortcutPos.y}
+          >
             <DesktopShortcut
-              key={idx}
               label={data.value}
               href={data.href}
               onOpen={openAction}
