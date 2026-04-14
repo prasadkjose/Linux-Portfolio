@@ -36,19 +36,10 @@ const Grid = styled.div<{ hidden?: boolean; $mobileExpanded?: boolean }>`
     $mobileExpanded
       ? `
     top: 12px; left: 12px; right: 12px; bottom: 60px;
-    grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
-    grid-auto-rows: max-content;
-    gap: 20px;
-    justify-items: center;
-    align-content: start;
     overflow: auto;
   `
       : `
     top: 24px; left: 24px; bottom: 60px;
-    grid-auto-flow: column;
-    grid-template-rows: repeat(auto-fill, 88px);
-    grid-auto-columns: max-content;
-    gap: 18px;
   `}
 `;
 
@@ -71,18 +62,32 @@ const DesktopShortcuts: React.FC<Props> = ({
   // Calculate responsive initial positions based on layout mode
   const getInitialPosition = (index: number) => {
     if (mobileExpanded) {
-      // Mobile horizontal grid layout
+      // Mobile horizontal grid layout with proper wrapping - full left aligned
       const colWidth = 96 + 20;
+      const rowHeight = 96 + 20;
+      const availableWidth = window.innerWidth;
+      const itemsPerRow = Math.max(1, Math.floor(availableWidth / colWidth));
+
+      const col = index % itemsPerRow;
+      const row = Math.floor(index / itemsPerRow);
+
       return {
-        x: 12 + index * colWidth,
-        y: 12,
+        x: col * colWidth,
+        y: 12 + row * rowHeight,
       };
     }
-    // Desktop vertical grid layout
+    // Desktop vertical grid layout with column wrapping
     const rowHeight = 88 + 18;
+    const colWidth = 88 + 18;
+    const availableHeight = window.innerHeight - 60 - 24; // Account for bottom taskbar and top padding
+    const itemsPerColumn = Math.max(1, Math.floor(availableHeight / rowHeight));
+
+    const row = index % itemsPerColumn;
+    const col = Math.floor(index / itemsPerColumn);
+
     return {
-      x: 24,
-      y: 24 + index * rowHeight,
+      x: 24 + col * colWidth,
+      y: 24 + row * rowHeight,
     };
   };
 
