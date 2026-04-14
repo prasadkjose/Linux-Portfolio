@@ -2,6 +2,11 @@ import React, { useState, useCallback } from "react";
 import { motion, useMotionValue } from "motion/react";
 import styled from "styled-components";
 import { getFromLS, setToLS } from "../utils/storage";
+import {
+  getComponentId,
+  DRAGGABLE_STORAGE_KEY,
+  DraggablePositionsMap,
+} from "../utils/draggableUtils";
 
 const DraggableContainer = styled(motion.div)`
   position: absolute;
@@ -31,28 +36,8 @@ const Draggable: React.FC<DraggableProps> = ({
   initialX,
   initialY,
 }) => {
-  // Auto-detect unique id from child component type name
-  const getComponentId = () => {
-    if (React.isValidElement(children)) {
-      const childType = children.type;
-      const componentName =
-        typeof childType === "function" ? childType.name : String(childType);
-      if (typeof childType === "function") {
-        if (children?.props) {
-          const props = children.props as { label?: string };
-          return `${componentName}_${props.label}`;
-        }
-        return componentName;
-      }
-      if (typeof childType === "string") {
-        return childType;
-      }
-    }
-    return "default";
-  };
-
-  const componentId = getComponentId();
-  const STORAGE_KEY = `draggable_positions`;
+  const componentId = getComponentId(children);
+  const STORAGE_KEY = DRAGGABLE_STORAGE_KEY;
   const [zIndex, setZIndex] = useState(10);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -62,9 +47,7 @@ const Draggable: React.FC<DraggableProps> = ({
 
   // Use useLayoutEffect to set position BEFORE browser paints anything (prevents flicker)
   React.useLayoutEffect(() => {
-    const allSavedPositions = getFromLS<
-      Record<string, { x: number; y: number }>
-    >(STORAGE_KEY, {});
+    const allSavedPositions = getFromLS<DraggablePositionsMap>(STORAGE_KEY, {});
     const savedPosition = allSavedPositions[componentId];
 
     if (savedPosition) {
@@ -105,9 +88,7 @@ const Draggable: React.FC<DraggableProps> = ({
   // Save position to localStorage when drag ends (store all components in single object)
   const handleDragEnd = useCallback(() => {
     // Get current positions, update only this component's position
-    const currentPositions = getFromLS<
-      Record<string, { x: number; y: number }>
-    >(STORAGE_KEY, {});
+    const currentPositions = getFromLS<DraggablePositionsMap>(STORAGE_KEY, {});
     const updatedPositions = {
       ...currentPositions,
       [componentId]: {
