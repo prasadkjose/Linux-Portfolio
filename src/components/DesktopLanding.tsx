@@ -147,9 +147,12 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
             bringToFront={resume.bringToFront}
           />
         )}
-        <Draggable initialX={window.innerWidth - 310} initialY={120}>
-          <Carousel />
-        </Draggable>
+
+        {!isMobile && (
+          <Draggable initialX={window.innerWidth - 310} initialY={120}>
+            <Carousel />
+          </Draggable>
+        )}
       </themeContext.Provider>
     </ThemeProvider>
   );
