@@ -26,10 +26,11 @@ interface DraggableProps {
   initialY?: number;
 }
 
-const Draggable: React.FC<DraggableProps> = ({ children }) => {
-  const [isDragged, setIsDragged] = useState(false);
-  // Calculate initial position based on position prop if provided
-
+const Draggable: React.FC<DraggableProps> = ({
+  children,
+  initialX,
+  initialY,
+}) => {
   // Auto-detect unique id from child component type name
   const getComponentId = () => {
     if (React.isValidElement(children)) {
@@ -54,13 +55,13 @@ const Draggable: React.FC<DraggableProps> = ({ children }) => {
   const STORAGE_KEY = `draggable_positions`;
   const [zIndex, setZIndex] = useState(10);
 
-  // Motion values for tracking position - initialize to 0 first
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  // Initialize motion values with null - will be set before first paint
+  const x = useMotionValue<number | null>(null);
+  const y = useMotionValue<number | null>(null);
 
-  // Load saved position or use natural DOM position after mount
-  React.useEffect(() => {
+  // Use useLayoutEffect to set position BEFORE browser paints anything (prevents flicker)
+  React.useLayoutEffect(() => {
     const allSavedPositions = getFromLS<
       Record<string, { x: number; y: number }>
     >(STORAGE_KEY, {});
@@ -70,16 +71,19 @@ const Draggable: React.FC<DraggableProps> = ({ children }) => {
       // Use saved position from localStorage if available
       x.set(savedPosition.x);
       y.set(savedPosition.y);
+    } else if (initialX !== undefined && initialY !== undefined) {
+      // Use explicit initial coordinates if provided via props
+      x.set(initialX);
+      y.set(initialY);
     } else if (containerRef.current) {
-      // No saved position - use actual natural position of element in DOM
+      // No saved position or override - use actual natural DOM position as initial value
       const rect = containerRef.current.getBoundingClientRect();
       x.set(rect.left);
       y.set(rect.top);
     }
-  }, [componentId, x, y]);
+  }, [componentId, x, y, initialX, initialY]);
 
   const bringToFront = () => {
-    setIsDragged(true);
     setZIndex(100);
     // Reset z-index after short delay if another element is clicked
     setTimeout(() => setZIndex(10), 300);
@@ -120,7 +124,23 @@ const Draggable: React.FC<DraggableProps> = ({ children }) => {
       drag
       dragMomentum={false}
       dragElastic={0}
-      style={isDragged ? { x, y, zIndex } : { zIndex }}
+      style={(() => {
+        const baseStyles = { zIndex };
+        // Only apply transform positioning if we have explicit values set
+        // This preserves original CSS grid/flex positioning until first drag!
+        const currentX = x.get();
+        const currentY = y.get();
+
+        if (currentX !== null && currentY !== null) {
+          return {
+            ...baseStyles,
+            x: currentX,
+            y: currentY,
+          };
+        }
+
+        return baseStyles;
+      })()}
       onMouseDown={bringToFront}
       onDragEnd={handleDragEnd}
       dragConstraints={getDragConstraints()}

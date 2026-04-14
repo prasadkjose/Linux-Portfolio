@@ -12,8 +12,6 @@ import { useState, useEffect } from "react";
 import { useWindowManager } from "../hooks/useWindowManager";
 import { ThemeSwitcherProps, WindowManager } from "../types/window";
 import { isMobileDevice } from "../utils/typeGuards";
-import Carousel from "../layout/widgets/Carousel";
-import Draggable from "../layout/Draggable";
 
 const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
   currentTheme,
@@ -147,9 +145,9 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
             bringToFront={resume.bringToFront}
           />
         )}
-        <Draggable position="right">
+        {/* <Draggable position="right">
           <Carousel />
-        </Draggable>
+        </Draggable> */}
       </themeContext.Provider>
     </ThemeProvider>
   );

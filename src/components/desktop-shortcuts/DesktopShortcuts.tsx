@@ -67,9 +67,33 @@ const DesktopShortcuts: React.FC<Props> = ({
   onOpenBrowserWithUrl,
 }) => {
   const { contextMenu, handleContextMenu, closeContextMenu } = useTaskMenu();
+
+  // Calculate responsive initial positions based on layout mode
+  const getInitialPosition = (index: number) => {
+    if (mobileExpanded) {
+      // Mobile horizontal grid layout
+      const colWidth = 96 + 20;
+      return {
+        x: 12 + index * colWidth,
+        y: 12,
+      };
+    }
+    // Desktop vertical grid layout
+    const rowHeight = 88 + 18;
+    return {
+      x: 24,
+      y: 24 + index * rowHeight,
+    };
+  };
+
+  const browserPos = getInitialPosition(0);
+  const terminalPos = getInitialPosition(1);
+  const firstShortcutIndex = 2;
+  const resumeIndex = firstShortcutIndex + SHORTCUTS.length;
+
   return (
     <Grid hidden={hidden} $mobileExpanded={mobileExpanded}>
-      <Draggable>
+      <Draggable initialX={browserPos.x} initialY={browserPos.y}>
         <DesktopShortcut
           label="Browser"
           onOpen={onOpenWelcome}
@@ -91,27 +115,28 @@ const DesktopShortcuts: React.FC<Props> = ({
           }
         />
       </Draggable>
-
-      <DesktopShortcut
-        label="Terminal"
-        onOpen={onOpenTerminal}
-        icon={Icons.Terminal}
-        active={activeTerminal}
-        onContextMenu={
-          terminal ? e => handleContextMenu(e, "terminal") : undefined
-        }
-        contextMenu={
-          contextMenu.visible &&
-          contextMenu.windowKey === "terminal" &&
-          terminal ? (
-            <ContextMenu
-              items={getWindowContextMenuItems(terminal)["desktop-shortcuts"]}
-              onClose={closeContextMenu}
-              position={"bottom-right"}
-            />
-          ) : undefined
-        }
-      />
+      <Draggable initialX={terminalPos.x} initialY={terminalPos.y}>
+        <DesktopShortcut
+          label="Terminal"
+          onOpen={onOpenTerminal}
+          icon={Icons.Terminal}
+          active={activeTerminal}
+          onContextMenu={
+            terminal ? e => handleContextMenu(e, "terminal") : undefined
+          }
+          contextMenu={
+            contextMenu.visible &&
+            contextMenu.windowKey === "terminal" &&
+            terminal ? (
+              <ContextMenu
+                items={getWindowContextMenuItems(terminal)["desktop-shortcuts"]}
+                onClose={closeContextMenu}
+                position={"bottom-right"}
+              />
+            ) : undefined
+          }
+        />
+      </Draggable>
       {SHORTCUTS.map((data, idx) => {
         // Type-safe access to Icons object
         const iconKey = data.value as IconKey;
@@ -122,54 +147,65 @@ const DesktopShortcuts: React.FC<Props> = ({
             ? () => window.open(data.href, "_blank")
             : () => onOpenBrowserWithUrl?.(data.href as string);
 
+        const shortcutPos = getInitialPosition(firstShortcutIndex + idx);
+
         return (
-          <DesktopShortcut
-            key={idx}
-            label={data.value}
-            href={data.href}
-            onOpen={openAction}
-            icon={icon}
-            onContextMenu={e => handleContextMenu(e, shortcutKey)}
-            contextMenu={
-              contextMenu.visible && contextMenu.windowKey === shortcutKey ? (
-                <ContextMenu
-                  items={[
-                    {
-                      icon: OpenIcon,
-                      label: "Open",
-                      onClick: () => {
-                        openAction?.();
-                        closeContextMenu();
+          <Draggable initialX={shortcutPos.x} initialY={shortcutPos.y}>
+            <DesktopShortcut
+              key={idx}
+              label={data.value}
+              href={data.href}
+              onOpen={openAction}
+              icon={icon}
+              onContextMenu={e => handleContextMenu(e, shortcutKey)}
+              contextMenu={
+                contextMenu.visible && contextMenu.windowKey === shortcutKey ? (
+                  <ContextMenu
+                    items={[
+                      {
+                        icon: OpenIcon,
+                        label: "Open",
+                        onClick: () => {
+                          openAction?.();
+                          closeContextMenu();
+                        },
+                        disabled: !openAction,
                       },
-                      disabled: !openAction,
-                    },
-                  ]}
-                  onClose={closeContextMenu}
-                  position={"bottom-right"}
-                />
-              ) : undefined
-            }
-          />
+                    ]}
+                    onClose={closeContextMenu}
+                    position={"bottom-right"}
+                  />
+                ) : undefined
+              }
+            />
+          </Draggable>
         );
       })}
-      <DesktopShortcut
-        label="Resume"
-        onOpen={onOpenResume}
-        icon={Icons.PDF}
-        active={activeResume}
-        onContextMenu={resume ? e => handleContextMenu(e, "resume") : undefined}
-        contextMenu={
-          contextMenu.visible &&
-          contextMenu.windowKey === "resume" &&
-          resume ? (
-            <ContextMenu
-              items={getWindowContextMenuItems(resume)["desktop-shortcuts"]}
-              onClose={closeContextMenu}
-              position={"bottom-right"}
-            />
-          ) : undefined
-        }
-      />
+      <Draggable
+        initialX={getInitialPosition(resumeIndex).x}
+        initialY={getInitialPosition(resumeIndex).y}
+      >
+        <DesktopShortcut
+          label="Resume"
+          onOpen={onOpenResume}
+          icon={Icons.PDF}
+          active={activeResume}
+          onContextMenu={
+            resume ? e => handleContextMenu(e, "resume") : undefined
+          }
+          contextMenu={
+            contextMenu.visible &&
+            contextMenu.windowKey === "resume" &&
+            resume ? (
+              <ContextMenu
+                items={getWindowContextMenuItems(resume)["desktop-shortcuts"]}
+                onClose={closeContextMenu}
+                position={"bottom-right"}
+              />
+            ) : undefined
+          }
+        />
+      </Draggable>
     </Grid>
   );
 };
