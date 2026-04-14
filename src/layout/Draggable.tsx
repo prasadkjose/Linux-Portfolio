@@ -107,20 +107,13 @@ const Draggable: React.FC<DraggableProps> = ({
       dragElastic={0}
       style={(() => {
         const baseStyles = { zIndex };
-        // Only apply transform positioning if we have explicit values set
-        // This preserves original CSS grid/flex positioning until first drag!
-        const currentX = x.get();
-        const currentY = y.get();
-
-        if (currentX !== null && currentY !== null) {
-          return {
-            ...baseStyles,
-            x: currentX,
-            y: currentY,
-          };
-        }
-
-        return baseStyles;
+        // Always pass MotionValue objects directly - Motion will handle updates
+        // Passing raw numbers breaks drag binding! Motion can't update your variables
+        return {
+          ...baseStyles,
+          x,
+          y,
+        };
       })()}
       onMouseDown={bringToFront}
       onDragEnd={handleDragEnd}
