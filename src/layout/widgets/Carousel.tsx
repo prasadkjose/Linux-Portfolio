@@ -7,6 +7,7 @@ import {
   useTransform,
   type Transition,
 } from "motion/react";
+import styled from "styled-components";
 
 import {
   FiCircle,
@@ -15,7 +16,6 @@ import {
   FiLayers,
   FiLayout,
 } from "react-icons/fi";
-import "./Carousel.css";
 
 export interface Item {
   title: string;
@@ -34,36 +34,172 @@ export interface CarouselProps {
   round?: boolean;
 }
 
+// Styled Components
+const CarouselContainer = styled.div<{ $round: boolean }>`
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #555;
+  border-radius: ${props => (props.$round ? "50%" : "24px")};
+  padding: 16px;
+  --outer-r: 24px;
+  --p-distance: 12px;
+
+  ${props =>
+    props.$round &&
+    `
+    border: 1px solid #555;
+  `}
+`;
+
+const CarouselTrack = styled(motion.div)`
+  display: flex;
+`;
+
+const CarouselItemWrapper = styled(motion.div)<{ $round: boolean }>`
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  border: 1px solid #555;
+  border-radius: calc(var(--outer-r) - var(--p-distance));
+  background-color: #0d0716;
+  overflow: hidden;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  ${props =>
+    props.$round &&
+    `
+    background-color: #0d0716;
+    position: relative;
+    bottom: 0.1em;
+    border: 1px solid #555;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 50%;
+  `}
+`;
+
+const CarouselItemHeader = styled.div<{ $round: boolean }>`
+  margin-bottom: 16px;
+  padding: 20px;
+  padding-top: 20px;
+
+  ${props =>
+    props.$round &&
+    `
+    padding: 0;
+    margin: 0;
+  `}
+`;
+
+const CarouselIconContainer = styled.span`
+  display: flex;
+  height: 28px;
+  width: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #fff;
+`;
+
+const CarouselItemContent = styled.div`
+  padding: 20px;
+  padding-bottom: 20px;
+`;
+
+const CarouselItemTitle = styled.div`
+  margin-bottom: 4px;
+  font-weight: 900;
+  font-size: 18px;
+  color: #fff;
+`;
+
+const CarouselItemDescription = styled.p`
+  font-size: 14px;
+  color: #fff;
+`;
+
+const CarouselIndicatorsContainer = styled.div<{ $round: boolean }>`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+
+  ${props =>
+    props.$round &&
+    `
+    position: absolute;
+    z-index: 2;
+    bottom: 3em;
+    left: 50%;
+    transform: translateX(-50%);
+  `}
+`;
+
+const CarouselIndicators = styled.div`
+  margin-top: 16px;
+  display: flex;
+  width: 150px;
+  justify-content: space-between;
+  padding: 0 32px;
+`;
+
+const CarouselIndicator = styled(motion.div)<{
+  $active: boolean;
+  $round?: boolean;
+}>`
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 150ms;
+
+  ${props =>
+    props.$active
+      ? `
+    background-color: ${props.$round ? "#333333" : "#fff"};
+  `
+      : `
+    background-color: ${props.$round ? "rgba(51, 51, 51, 0.4)" : "#555"};
+  `}
+`;
+
 const DEFAULT_ITEMS: Item[] = [
   {
     title: "Text Animations",
     description: "Cool text animations for your projects.",
     id: 1,
-    icon: <FiFileText className="carousel-icon" />,
+    icon: <FiFileText />,
   },
   {
     title: "Animations",
     description: "Smooth animations for your projects.",
     id: 2,
-    icon: <FiCircle className="carousel-icon" />,
+    icon: <FiCircle />,
   },
   {
     title: "Components",
     description: "Reusable components for your projects.",
     id: 3,
-    icon: <FiLayers className="carousel-icon" />,
+    icon: <FiLayers />,
   },
   {
     title: "Backgrounds",
     description: "Beautiful backgrounds and patterns for your projects.",
     id: 4,
-    icon: <FiLayout className="carousel-icon" />,
+    icon: <FiLayout />,
   },
   {
     title: "Common UI",
     description: "Common UI components are coming soon!",
     id: 5,
-    icon: <FiCode className="carousel-icon" />,
+    icon: <FiCode />,
   },
 ];
 
@@ -100,25 +236,24 @@ function CarouselItem({
   const rotateY = useTransform(x, range, outputRange, { clamp: false });
 
   return (
-    <motion.div
+    <CarouselItemWrapper
       key={`${item?.id ?? index}-${index}`}
-      className={`carousel-item ${round ? "round" : ""}`}
+      $round={round}
       style={{
         width: itemWidth,
         height: round ? itemWidth : "100%",
         rotateY: rotateY,
-        ...(round && { borderRadius: "50%" }),
       }}
       transition={transition}
     >
-      <div className={`carousel-item-header ${round ? "round" : ""}`}>
-        <span className="carousel-icon-container">{item.icon}</span>
-      </div>
-      <div className="carousel-item-content">
-        <div className="carousel-item-title">{item.title}</div>
-        <p className="carousel-item-description">{item.description}</p>
-      </div>
-    </motion.div>
+      <CarouselItemHeader $round={round}>
+        <CarouselIconContainer>{item.icon}</CarouselIconContainer>
+      </CarouselItemHeader>
+      <CarouselItemContent>
+        <CarouselItemTitle>{item.title}</CarouselItemTitle>
+        <CarouselItemDescription>{item.description}</CarouselItemDescription>
+      </CarouselItemContent>
+    </CarouselItemWrapper>
   );
 }
 
@@ -262,16 +397,15 @@ export default function Carousel({
         : Math.min(position, items.length - 1);
 
   return (
-    <div
+    <CarouselContainer
       ref={containerRef}
-      className={`carousel-container ${round ? "round" : ""}`}
+      $round={round}
       style={{
         width: `${baseWidth}px`,
-        ...(round && { height: `${baseWidth}px`, borderRadius: "50%" }),
+        ...(round && { height: `${baseWidth}px` }),
       }}
     >
-      <motion.div
-        className="carousel-track"
+      <CarouselTrack
         drag={isAnimating ? false : "x"}
         {...dragProps}
         style={{
@@ -299,13 +433,14 @@ export default function Carousel({
             transition={effectiveTransition}
           />
         ))}
-      </motion.div>
-      <div className={`carousel-indicators-container ${round ? "round" : ""}`}>
-        <div className="carousel-indicators">
+      </CarouselTrack>
+      <CarouselIndicatorsContainer $round={round}>
+        <CarouselIndicators>
           {items.map((_, index) => (
-            <motion.div
+            <CarouselIndicator
               key={index}
-              className={`carousel-indicator ${activeIndex === index ? "active" : "inactive"}`}
+              $active={activeIndex === index}
+              $round={round}
               animate={{
                 scale: activeIndex === index ? 1.2 : 1,
               }}
@@ -313,8 +448,8 @@ export default function Carousel({
               transition={{ duration: 0.15 }}
             />
           ))}
-        </div>
-      </div>
-    </div>
+        </CarouselIndicators>
+      </CarouselIndicatorsContainer>
+    </CarouselContainer>
   );
 }
