@@ -19,7 +19,7 @@ const DraggableContainer = styled(motion.div)`
   }
 `;
 
-interface DraggableCarouselWrapperProps {
+interface DraggableProps {
   children: React.ReactNode;
   initialX?: number;
   initialY?: number;
@@ -27,7 +27,7 @@ interface DraggableCarouselWrapperProps {
 
 const STORAGE_KEY = "draggable-carousel-position";
 
-const DraggableCarouselWrapper: React.FC<DraggableCarouselWrapperProps> = ({
+const Draggable: React.FC<DraggableProps> = ({
   children,
   initialX = window.innerWidth - 360,
   initialY = 80,
@@ -75,4 +75,4 @@ const DraggableCarouselWrapper: React.FC<DraggableCarouselWrapperProps> = ({
   );
 };
 
-export default DraggableCarouselWrapper;
+export default Draggable;

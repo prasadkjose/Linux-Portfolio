@@ -9,6 +9,7 @@ import { WindowState } from "../../types/window";
 import { getWindowContextMenuItems } from "../context-menu/contextMenu.config";
 import { OpenIcon } from "../context-menu/contextMenu.icons";
 import { isInternalUrl } from "../../utils/funcs";
+import Draggable from "../../layout/Draggable";
 
 type Props = {
   onOpenTerminal?: () => void;
@@ -68,26 +69,29 @@ const DesktopShortcuts: React.FC<Props> = ({
   const { contextMenu, handleContextMenu, closeContextMenu } = useTaskMenu();
   return (
     <Grid hidden={hidden} $mobileExpanded={mobileExpanded}>
-      <DesktopShortcut
-        label="Browser"
-        onOpen={onOpenWelcome}
-        icon={Icons.Browser}
-        active={activeBrowser}
-        onContextMenu={
-          welcome ? e => handleContextMenu(e, "welcome") : undefined
-        }
-        contextMenu={
-          contextMenu.visible &&
-          contextMenu.windowKey === "welcome" &&
-          welcome ? (
-            <ContextMenu
-              items={getWindowContextMenuItems(welcome)["desktop-shortcuts"]}
-              onClose={closeContextMenu}
-              position={"bottom-right"}
-            />
-          ) : undefined
-        }
-      />
+      <Draggable>
+        <DesktopShortcut
+          label="Browser"
+          onOpen={onOpenWelcome}
+          icon={Icons.Browser}
+          active={activeBrowser}
+          onContextMenu={
+            welcome ? e => handleContextMenu(e, "welcome") : undefined
+          }
+          contextMenu={
+            contextMenu.visible &&
+            contextMenu.windowKey === "welcome" &&
+            welcome ? (
+              <ContextMenu
+                items={getWindowContextMenuItems(welcome)["desktop-shortcuts"]}
+                onClose={closeContextMenu}
+                position={"bottom-right"}
+              />
+            ) : undefined
+          }
+        />
+      </Draggable>
+
       <DesktopShortcut
         label="Terminal"
         onOpen={onOpenTerminal}
