@@ -7,6 +7,7 @@ import {
   useTransform,
   type Transition,
 } from "motion/react";
+import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 
 import {
@@ -15,7 +16,11 @@ import {
   FiFileText,
   FiLayers,
   FiLayout,
+  FiImage,
 } from "react-icons/fi";
+
+import UnsplashService from "../../services/unsplash";
+import { useTheme } from "../../hooks/useTheme";
 
 export interface Item {
   title: string;
@@ -32,6 +37,7 @@ export interface CarouselProps {
   pauseOnHover?: boolean;
   loop?: boolean;
   round?: boolean;
+  useThemePhotos?: boolean;
 }
 
 // Styled Components
@@ -265,15 +271,51 @@ export default function Carousel({
   pauseOnHover = false,
   loop = false,
   round = false,
+  useThemePhotos = true,
 }: CarouselProps): React.JSX.Element {
+  const { theme } = useTheme();
+
+  // Fetch Unsplash photos using React Query when theme changes
+  const { data: photos, isError } = useQuery({
+    queryKey: ["unsplash-photos", theme.name],
+    queryFn: async () => {
+      const unsplashService = new UnsplashService({
+        query: theme.name,
+        perPage: 5,
+      });
+      return unsplashService.searchPhotos("Ubuntu");
+    },
+    enabled: useThemePhotos,
+    staleTime: 1000 * 60 * 30, // Cache for 30 minutes
+    retry: 2,
+  });
+
+  // Convert photos to carousel items
+  const displayItems = useMemo(() => {
+    if (!useThemePhotos || isError || !photos?.results?.length) {
+      return items;
+    }
+
+    return photos.results.map((photo, index) => ({
+      title: theme.name,
+      description:
+        photo.altDescription || photo.description || `${theme.name} wallpaper`,
+      id: index,
+      icon: <FiImage />,
+    }));
+  }, [useThemePhotos, photos, isError, theme.name, items]);
   const containerPadding = 16;
   const itemWidth = baseWidth - containerPadding * 2;
   const trackItemOffset = itemWidth + GAP;
   const itemsForRender = useMemo(() => {
-    if (!loop) return items;
-    if (items.length === 0) return [];
-    return [items[items.length - 1], ...items, items[0]];
-  }, [items, loop]);
+    if (!loop) return displayItems;
+    if (displayItems.length === 0) return [];
+    return [
+      displayItems[displayItems.length - 1],
+      ...displayItems,
+      displayItems[0],
+    ];
+  }, [displayItems, loop]);
 
   const [position, setPosition] = useState<number>(loop ? 1 : 0);
   const x = useMotionValue(0);
@@ -307,11 +349,12 @@ export default function Carousel({
     return () => clearInterval(timer);
   }, [autoplay, autoplayDelay, isHovered, pauseOnHover, itemsForRender.length]);
 
+  // Reset position when display items change
   useEffect(() => {
     const startingPosition = loop ? 1 : 0;
     setPosition(startingPosition);
     x.set(-startingPosition * trackItemOffset);
-  }, [items.length, loop, trackItemOffset, x]);
+  }, [displayItems.length, loop, trackItemOffset, x]);
 
   useEffect(() => {
     if (!loop && position > itemsForRender.length - 1) {
@@ -390,11 +433,11 @@ export default function Carousel({
       };
 
   const activeIndex =
-    items.length === 0
+    displayItems.length === 0
       ? 0
       : loop
-        ? (position - 1 + items.length) % items.length
-        : Math.min(position, items.length - 1);
+        ? (position - 1 + displayItems.length) % displayItems.length
+        : Math.min(position, displayItems.length - 1);
 
   return (
     <CarouselContainer
@@ -436,7 +479,7 @@ export default function Carousel({
       </CarouselTrack>
       <CarouselIndicatorsContainer $round={round}>
         <CarouselIndicators>
-          {items.map((_, index) => (
+          {displayItems.map((_, index) => (
             <CarouselIndicator
               key={index}
               $active={activeIndex === index}

@@ -63,7 +63,7 @@ class UnsplashService {
   ): Promise<UnsplashSearchResult> {
     try {
       const params: Record<string, string> = {
-        path: "search-photos",
+        path: "search/photos",
         query: searchQuery || this.config.query || "nature",
         page: page?.toString() || "1",
         // eslint-disable-next-line camelcase
