@@ -150,7 +150,10 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
 
         {!isMobile && (
           <Draggable initialX={window.innerWidth - 310} initialY={120}>
-            <Carousel currentTheme={currentTheme} />
+            <Carousel
+              currentTheme={currentTheme}
+              themeSwitcher={themeSwitcher}
+            />
           </Draggable>
         )}
       </themeContext.Provider>

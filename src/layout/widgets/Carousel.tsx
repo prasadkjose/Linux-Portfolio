@@ -33,6 +33,7 @@ export interface Item {
 
 export interface CarouselProps {
   currentTheme: DefaultTheme;
+  themeSwitcher: (theme: DefaultTheme) => void;
   items?: Item[];
   baseWidth?: number;
   autoplay?: boolean;
@@ -221,6 +222,8 @@ interface CarouselItemProps {
   trackItemOffset: number;
   x: MotionValue<number>;
   transition: Transition;
+  currentTheme: DefaultTheme;
+  themeSwitcher: (theme: DefaultTheme) => void;
 }
 
 function CarouselItem({
@@ -231,6 +234,8 @@ function CarouselItem({
   trackItemOffset,
   x,
   transition,
+  currentTheme,
+  themeSwitcher,
 }: CarouselItemProps) {
   const range = [
     -(index + 1) * trackItemOffset,
@@ -265,6 +270,12 @@ function CarouselItem({
           <img
             src={item.url}
             alt={item.title}
+            onClick={() => {
+              themeSwitcher({
+                ...currentTheme,
+                backgroundImage: item.url,
+              });
+            }}
             style={{
               width: "100%",
               height: round ? itemWidth - 80 : "180px",
@@ -272,7 +283,7 @@ function CarouselItem({
               objectPosition: "center",
               borderRadius: "12px",
               aspectRatio: "16 / 9",
-              pointerEvents: "none",
+              cursor: "pointer",
               userSelect: "none",
             }}
             loading="lazy"
@@ -286,6 +297,7 @@ function CarouselItem({
 
 export default function Carousel({
   currentTheme = theme.ubuntu,
+  themeSwitcher,
   items = DEFAULT_ITEMS,
   baseWidth = 300,
   autoplay = false,
@@ -506,6 +518,8 @@ export default function Carousel({
             trackItemOffset={trackItemOffset}
             x={x}
             transition={effectiveTransition}
+            currentTheme={currentTheme}
+            themeSwitcher={themeSwitcher}
           />
         ))}
       </CarouselTrack>
