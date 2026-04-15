@@ -9,7 +9,7 @@ import {
 } from "../utils/draggableUtils";
 
 const DraggableContainer = styled(motion.div)`
-  position: absolute;
+  position: fixed;
   cursor: grab;
   user-select: none;
   z-index: 10;

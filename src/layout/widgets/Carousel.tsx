@@ -163,10 +163,10 @@ const CarouselIndicator = styled(motion.div)<{
   ${props =>
     props.$active
       ? `
-    background-color: ${props.$round ? "#333333" : "#fff"};
+    background-color: ${props.$round ? "#333333" : props.theme.colors.primary};
   `
       : `
-    background-color: ${props.$round ? "rgba(51, 51, 51, 0.4)" : "#555"};
+    background-color: ${props.$round ? "rgba(51, 51, 51, 0.4)" : props.theme.colors.text["100"]};
   `}
 `;
 
