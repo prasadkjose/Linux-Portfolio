@@ -14,6 +14,7 @@ import { ThemeSwitcherProps, WindowManager } from "../types/window";
 import { isMobileDevice } from "../utils/typeGuards";
 import Draggable from "../layout/Draggable";
 import Carousel from "../layout/widgets/Carousel";
+import Tooltip from "../layout/tooltips/Tooltip";
 
 const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
   currentTheme,
@@ -25,6 +26,9 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
 
   // Device detection
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  // Background carousel tooltip
+  const [showTooltip, setShowTooltip] = useState<boolean>(true);
+
   useEffect(() => {
     const update = () => setIsMobile(isMobileDevice());
     update();
@@ -154,6 +158,13 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
               currentTheme={currentTheme}
               themeSwitcher={themeSwitcher}
             />
+            <div style={{ position: "relative", bottom: "50px" }}>
+              <Tooltip
+                id="carousel-hint"
+                showCondition={showTooltip}
+                onClose={() => setShowTooltip(false)}
+              />
+            </div>
           </Draggable>
         )}
       </themeContext.Provider>

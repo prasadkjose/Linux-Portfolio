@@ -20,4 +20,11 @@ export const TOOLTIPS_CONFIG: TooltipConfigItem[] = [
     position: `${isMobileDevice() ? "top-left" : "bottom-right"}`,
     content: "⚙️ Try out a different Linux here.",
   },
+  {
+    id: "carousel-hint",
+    showAfter: 2000,
+    position: "bottom-right",
+    content:
+      "🖼️ Swipe to view images. Click on one to change background wallpaper",
+  },
 ];
