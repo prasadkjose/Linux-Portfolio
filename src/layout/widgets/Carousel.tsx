@@ -20,7 +20,6 @@ import {
 } from "react-icons/fi";
 
 import UnsplashService from "../../services/unsplash";
-import { useTheme } from "../../hooks/useTheme";
 import { DefaultTheme } from "styled-components/dist/types";
 import theme from "../../styles/themes";
 
@@ -290,31 +289,31 @@ export default function Carousel({
   loop = false,
   round = false,
 }: CarouselProps): React.JSX.Element {
-  const { theme } = useTheme();
-
-  // Fetch Unsplash photos using React Query when theme changes
+  // Fetch Unsplash photos using React Query when currentTheme changes
   const {
     data: photos,
     isError,
     refetch,
   } = useQuery({
-    queryKey: ["unsplash-photos", theme.name],
+    queryKey: ["unsplash-photos", currentTheme.name],
     queryFn: async () => {
       const unsplashService = new UnsplashService({
-        query: theme.name,
+        query: currentTheme.name,
         perPage: 5,
       });
-      return unsplashService.searchPhotos(theme.name);
+      return unsplashService.searchPhotos(
+        `Linux ${currentTheme.name} wallpaper technology opensource`
+      );
     },
-    enabled: !!theme.name,
+    enabled: !!currentTheme.name,
     staleTime: 1000 * 60 * 30, // Cache for 30 minutes
     retry: 2,
   });
 
-  // Refetch query automatically when theme changes
+  // Refetch query automatically when currentTheme changes
   useEffect(() => {
     refetch();
-  }, [theme.name, refetch]);
+  }, [currentTheme.name, refetch]);
 
   // Convert photos to carousel items
   const displayItems = useMemo(() => {
@@ -323,14 +322,16 @@ export default function Carousel({
     }
 
     return photos.results.map((photo, index) => ({
-      title: theme.name,
+      title: currentTheme.name,
       description:
-        photo.altDescription || photo.description || `${theme.name} wallpaper`,
+        photo.altDescription ||
+        photo.description ||
+        `${currentTheme.name} wallpaper`,
       id: index,
       icon: <FiImage />,
       url: photo.regularUrl || photo.url,
     }));
-  }, [currentTheme, photos, isError, theme.name, items]);
+  }, [photos, isError, currentTheme.name, items]);
   const containerPadding = 16;
   const itemWidth = baseWidth - containerPadding * 2;
   const trackItemOffset = itemWidth + GAP;
