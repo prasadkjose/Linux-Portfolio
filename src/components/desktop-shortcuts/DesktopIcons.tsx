@@ -112,12 +112,31 @@ export const Icons: Record<IconKey, React.ReactNode> = {
     />
   ),
   Browser: (
-    <img
-      src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Tor_Browser_icon.svg/2048px-Tor_Browser_icon.svg.png"
-      alt="Tor logo"
+    <svg
       width="28"
       height="28"
-    />
+      viewBox="0 0 48 48"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        fill="#7D4698"
+        d="M24 2C11.8 2 2 11.8 2 24s9.8 22 22 22 22-9.8 22-22S36.2 2 24 2z"
+      />
+      <path
+        fill="#FFFFFF"
+        d="M24 7c9.4 0 17 7.6 17 17s-7.6 17-17 17S7 33.4 7 24 14.6 7 24 7z"
+      />
+      <path
+        fill="#7D4698"
+        d="M24 10c7.7 0 14 6.3 14 14s-6.3 14-14 14-14-6.3-14-14 6.3-14 14-14zm0 3c-6.1 0-11 4.9-11 11s4.9 11 11 11 11-4.9 11-11-4.9-11-11-11z"
+      />
+      <path
+        fill="#7D4698"
+        d="M24 16c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8z"
+      />
+      <circle fill="#7D4698" cx="24" cy="24" r="5" />
+    </svg>
   ),
   Fullscreen: (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>

@@ -41,6 +41,49 @@ A serverless function that acts as a proxy for GitHub API requests:
 
 This function is called from the client-side GitHub service to fetch data without exposing the API token to the browser.
 
+---
+
+### Unsplash API Handler (`unsplash.ts`)
+
+A serverless function that acts as a proxy for Unsplash Photo Search API requests:
+
+#### Purpose
+
+- **Security**: Prevents exposing Unsplash API Access Key in client-side code
+- **Rate Limiting**: Server-side handling for Unsplash API rate limits
+- **Request Standardization**: Consistent error handling and response formatting
+- **Parameter Validation**: Proper input validation and query encoding
+
+#### Endpoints
+
+**GET /api/unsplash?path=search/photos&query={search term}**
+
+- Search photos on Unsplash
+- Required parameter: `query` - search term for photos
+- Optional parameters:
+  - `page`: Page number for pagination (default: 1)
+  - `per_page`: Number of results per page (default: 10, max: 30)
+- Returns: Unsplash standard photo search response with results, total pages, and total count
+
+#### Security Features
+
+- Access Key validation: Ensures Unsplash API key is properly configured
+- Input sanitization: URL encodes search queries
+- Proper error handling: Returns meaningful error messages without exposing sensitive data
+
+#### Environment Variables
+
+Looks for environment variables in this priority order:
+
+1.  `UNSPLASH_ACCESS_KEY`: Primary production environment variable
+2.  `VITE_UNSPLASH_ACCESS_KEY`: Fallback for local Vite / .env development
+
+Unsplash API Access Key obtained from Unsplash Developer Portal
+
+#### Usage
+
+This function proxies requests to Unsplash API while keeping the API access key secure on the server side.
+
 ## Deployment Notes
 
 ### Netlify Configuration
@@ -55,7 +98,7 @@ This function is called from the client-side GitHub service to fetch data withou
 
 ### Security Note
 
-GitHub API calls from the client-side require a personal access token with public repository read permissions. The token is passed via hosted environment variables in Netlify and should be properly configured in the deployment environment.
+All API calls from the client-side require a personal access token with public repository read permissions. The token is passed via hosted environment variables in Netlify and should be properly configured in the deployment environment.
 This can also be configured using secrets or vaults, depending on the cloud provider. Make sure you call the right thing in the serverless method.
 
 DO NOT USE .env variables in any source control or anywhere that's not local dev'
