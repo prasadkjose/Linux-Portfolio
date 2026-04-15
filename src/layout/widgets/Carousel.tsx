@@ -21,15 +21,19 @@ import {
 
 import UnsplashService from "../../services/unsplash";
 import { useTheme } from "../../hooks/useTheme";
+import { DefaultTheme } from "styled-components/dist/types";
+import theme from "../../styles/themes";
 
 export interface Item {
   title: string;
   description: string;
   id: number;
   icon: React.ReactElement;
+  url?: string;
 }
 
 export interface CarouselProps {
+  currentTheme: DefaultTheme;
   items?: Item[];
   baseWidth?: number;
   autoplay?: boolean;
@@ -37,7 +41,6 @@ export interface CarouselProps {
   pauseOnHover?: boolean;
   loop?: boolean;
   round?: boolean;
-  useThemePhotos?: boolean;
 }
 
 // Styled Components
@@ -113,11 +116,6 @@ const CarouselIconContainer = styled.span`
   justify-content: center;
   border-radius: 50%;
   background-color: #fff;
-`;
-
-const CarouselItemContent = styled.div`
-  padding: 20px;
-  padding-bottom: 20px;
 `;
 
 const CarouselItemTitle = styled.div`
@@ -253,17 +251,37 @@ function CarouselItem({
       transition={transition}
     >
       <CarouselItemHeader $round={round}>
-        <CarouselIconContainer>{item.icon}</CarouselIconContainer>
+        {!item.url && (
+          <>
+            <CarouselIconContainer>{item.icon}</CarouselIconContainer>
+            <CarouselItemTitle>{item.title}</CarouselItemTitle>
+            <CarouselItemDescription>
+              {item.description}
+            </CarouselItemDescription>
+          </>
+        )}
+        {item.url && (
+          <img
+            src={item.url}
+            alt={item.title}
+            style={{
+              width: "100%",
+              height: round ? itemWidth - 80 : "180px",
+              objectFit: "cover",
+              objectPosition: "center",
+              borderRadius: "12px",
+              aspectRatio: "16 / 9",
+            }}
+            loading="lazy"
+          />
+        )}
       </CarouselItemHeader>
-      <CarouselItemContent>
-        <CarouselItemTitle>{item.title}</CarouselItemTitle>
-        <CarouselItemDescription>{item.description}</CarouselItemDescription>
-      </CarouselItemContent>
     </CarouselItemWrapper>
   );
 }
 
 export default function Carousel({
+  currentTheme = theme.ubuntu,
   items = DEFAULT_ITEMS,
   baseWidth = 300,
   autoplay = false,
@@ -271,28 +289,36 @@ export default function Carousel({
   pauseOnHover = false,
   loop = false,
   round = false,
-  useThemePhotos = true,
 }: CarouselProps): React.JSX.Element {
   const { theme } = useTheme();
 
   // Fetch Unsplash photos using React Query when theme changes
-  const { data: photos, isError } = useQuery({
+  const {
+    data: photos,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ["unsplash-photos", theme.name],
     queryFn: async () => {
       const unsplashService = new UnsplashService({
         query: theme.name,
         perPage: 5,
       });
-      return unsplashService.searchPhotos("Ubuntu");
+      return unsplashService.searchPhotos(theme.name);
     },
-    enabled: useThemePhotos,
+    enabled: !!theme.name,
     staleTime: 1000 * 60 * 30, // Cache for 30 minutes
     retry: 2,
   });
 
+  // Refetch query automatically when theme changes
+  useEffect(() => {
+    refetch();
+  }, [theme.name, refetch]);
+
   // Convert photos to carousel items
   const displayItems = useMemo(() => {
-    if (!useThemePhotos || isError || !photos?.results?.length) {
+    if (isError || !photos?.results?.length) {
       return items;
     }
 
@@ -302,8 +328,9 @@ export default function Carousel({
         photo.altDescription || photo.description || `${theme.name} wallpaper`,
       id: index,
       icon: <FiImage />,
+      url: photo.regularUrl || photo.url,
     }));
-  }, [useThemePhotos, photos, isError, theme.name, items]);
+  }, [currentTheme, photos, isError, theme.name, items]);
   const containerPadding = 16;
   const itemWidth = baseWidth - containerPadding * 2;
   const trackItemOffset = itemWidth + GAP;
@@ -444,7 +471,6 @@ export default function Carousel({
       ref={containerRef}
       $round={round}
       style={{
-        width: `${baseWidth}px`,
         ...(round && { height: `${baseWidth}px` }),
       }}
     >
