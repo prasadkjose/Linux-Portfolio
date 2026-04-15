@@ -51,6 +51,8 @@ const CarouselContainer = styled.div<{ $round: boolean }>`
   padding: 16px;
   --outer-r: 24px;
   --p-distance: 12px;
+  background-color: rgba(43, 43, 43, 0.18);
+  backdrop-filter: blur(8px);
 
   ${props =>
     props.$round &&
@@ -270,8 +272,11 @@ function CarouselItem({
               objectPosition: "center",
               borderRadius: "12px",
               aspectRatio: "16 / 9",
+              pointerEvents: "none",
+              userSelect: "none",
             }}
             loading="lazy"
+            draggable={false}
           />
         )}
       </CarouselItemHeader>
