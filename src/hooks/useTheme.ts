@@ -4,6 +4,7 @@ import { DefaultTheme } from "styled-components";
 import { ThemeSwitcherProps } from "../types/window";
 import logger from "../utils/logger";
 import { RESUME_OS_MAP } from "../config/personalData.config";
+import { getFromLS, setToLS } from "../utils/storage";
 
 interface UseThemeResult {
   theme: DefaultTheme;
@@ -24,6 +25,24 @@ export const useTheme = (): UseThemeResult => {
     setTheme(newTheme);
     setThemeLoaded(true);
     setResume(RESUME_OS_MAP[newTheme.id]);
+
+    // Persist selected background image when it's present
+    if (newTheme.newBackgroundImage) {
+      setToLS("selected-background-image", newTheme.newBackgroundImage);
+      logger.info(`Background image saved to localStorage.`);
+    }
+
+    const savedBackgroundImage = getFromLS<string | null>(
+      "selected-background-image",
+      null
+    );
+    if (savedBackgroundImage) {
+      logger.info(`Restoring saved background image from localStorage.`);
+      setTheme(prevTheme => ({
+        ...prevTheme,
+        newBackgroundImage: savedBackgroundImage,
+      }));
+    }
     logger.info(`Theme sucessfully changed to ${newTheme.name}.`);
   };
 

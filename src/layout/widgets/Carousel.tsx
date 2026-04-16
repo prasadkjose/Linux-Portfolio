@@ -273,7 +273,7 @@ function CarouselItem({
             onClick={() => {
               themeSwitcher({
                 ...currentTheme,
-                backgroundImage: item.url,
+                newBackgroundImage: item.url,
               });
             }}
             style={{
