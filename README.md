@@ -18,6 +18,7 @@ My developer portfolio website themed after Linux, built with React & TypeScript
 - **Responsive Design**: Works seamlessly across desktop, tablet, and mobile devices
 - **Dynamic Resume**: Choose between Ubuntu, Kali, and Fedora themes to view different professional resumes - Ubuntu shows Consultant resume, Kali shows Information Security resume, and Fedora shows SDE resume
 - __Resource Preloading__: Critical assets are preloaded after the splash screen for faster subsequent renders.
+- __Supabase Database Integration__: Built-in visitor analytics, session tracking and persistent data storage using Supabase PostgreSQL database. Handles anonymous visitor metrics securely with row level security.
 - __Serverless Function__: A backend function proxies GraphQL API calls (GitHub fetching pinned repos for now) to keep the token server-side. Look at [serverless/readme](src/serverless/README.md)
 - __Docker Support__: Dockerfile included for containerized deployment.
 - **Modern Taskbar**: Fully featured desktop taskbar with clock, calendar, system announcements and widget panel. See [Taskbar Documentation](src/layout/taskbar/README.md) for full details.
@@ -28,6 +29,7 @@ My developer portfolio website themed after Linux, built with React & TypeScript
 [![React](https://img.shields.io/badge/React-17%2B-%2361DAFB?style=flat-square&logo=react&logoColor=white)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-%40vitejs-%23646cff?style=flat-square&logo=vite)](https://vitejs.dev/)
 [![Styled Components](https://img.shields.io/badge/Styled--Components-102029?style=flat-square&logo=styled-components&logoColor=white)](https://styled-components.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com/)
 
 ## 📦 Installation & Setup
 
