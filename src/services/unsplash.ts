@@ -1,5 +1,5 @@
 import logger from "../utils/logger";
-import { callServerlessFunction } from "./utils/serverlessUtils";
+import { callServerlessFunction } from "./utils/servicesUtils";
 
 export interface UnsplashPhoto {
   id: string;

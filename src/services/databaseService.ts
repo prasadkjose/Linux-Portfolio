@@ -7,7 +7,7 @@
  */
 
 import logger from "../utils/logger";
-import { callServerlessFunction } from "./utils/serverlessUtils";
+import { callServerlessFunction } from "./utils/servicesUtils";
 
 export interface DatabaseConfig {
   host: string;
@@ -35,8 +35,7 @@ export const getDatabaseConfig = async (): Promise<DatabaseConfig> => {
 
   const config = await callServerlessFunction<DatabaseConfig>(
     "database-credentials",
-    {},
-    "../serverless/database-credentials"
+    {}
   );
   cachedConfig = config as DatabaseConfig;
 
