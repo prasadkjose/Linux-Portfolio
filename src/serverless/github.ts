@@ -2,7 +2,7 @@ import {
   createNetlifyResponse,
   NetlifyFunctionEvent,
   withErrorHandling,
-} from "./netlify.config";
+} from "../config/netlify.config";
 
 /**
  * Execute GitHub GraphQL query with common error handling

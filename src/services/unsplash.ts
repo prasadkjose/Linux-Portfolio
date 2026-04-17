@@ -1,5 +1,5 @@
 import logger from "../utils/logger";
-import type { NetlifyFunctionEvent } from "../serverless/netlify.config";
+import type { NetlifyFunctionEvent } from "../config/netlify.config";
 
 export interface UnsplashPhoto {
   id: string;
