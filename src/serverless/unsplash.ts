@@ -2,7 +2,7 @@ import {
   createNetlifyResponse,
   NetlifyFunctionEvent,
   withErrorHandling,
-} from "./netlify.config";
+} from "../config/netlify.config";
 
 /**
  * Execute Unsplash API request with common error handling
