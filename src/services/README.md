@@ -42,5 +42,5 @@ The GitHub service is used throughout the application to:
 
 ### Security Note
 
-GitHub API calls from the client-side require a personal access token with public repository read permissions. The token is passed via hosted environment variables in Netlify and should be properly configured in the deployment environment.
+The token is passed via hosted environment variables in Netlify and should be properly configured in the deployment environment.
 This can also be configured using secrets or vaults, depending on the cloud provider. Make sure you call the right thing in the serverless method.
