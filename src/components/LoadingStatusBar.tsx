@@ -13,7 +13,11 @@ const LoadingStatusBar = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentStateIndex(prev => (prev + 1) % LOADING_STATES.length);
+      setCurrentStateIndex(prev => {
+        if (prev < LOADING_STATES.length) {
+          return prev + 1;
+        } else return LOADING_STATES.length - 1;
+      });
     }, 2000);
 
     return () => clearInterval(interval);
