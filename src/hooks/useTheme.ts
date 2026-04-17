@@ -28,22 +28,25 @@ export const useTheme = (): UseThemeResult => {
 
     // Persist selected background image when it's present
     if (newTheme.newBackgroundImage) {
-      setToLS("selected-background-image", newTheme.newBackgroundImage);
+      setToLS("selected-background-image", {
+        id: newTheme.id,
+        url: newTheme.newBackgroundImage,
+      });
       logger.info(`Background image saved to localStorage.`);
     }
 
-    const savedBackgroundImage = getFromLS<string | null>(
+    const savedBackgroundImage = getFromLS<Record<string, string> | null>(
       "selected-background-image",
       null
     );
-    if (savedBackgroundImage) {
+    if (newTheme.id === savedBackgroundImage?.id) {
       logger.info(`Restoring saved background image from localStorage.`);
       setTheme(prevTheme => ({
         ...prevTheme,
-        newBackgroundImage: savedBackgroundImage,
+        newBackgroundImage: savedBackgroundImage.url,
       }));
     }
-    logger.info(`Theme sucessfully changed to ${newTheme.name}.`);
+    logger.info(`Theme successfully changed to ${newTheme.name}.`);
   };
 
   return { theme, themeLoaded, setMode, resumePath };
