@@ -4,6 +4,11 @@
  */
 
 /**
+ * Netlify serverless path
+ */
+export const NETLIFY_SERVERLESS_PATH = "/.netlify/functions/";
+
+/**
  * Helper to create consistent API responses for Netlify Functions
  */
 export const createNetlifyResponse = (statusCode: number, body: unknown) => ({

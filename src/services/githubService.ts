@@ -1,3 +1,4 @@
+import { NETLIFY_SERVERLESS_PATH } from "../config/netlify.config";
 import logger from "../utils/logger";
 
 export interface Repository {
@@ -38,7 +39,7 @@ class GitHubService {
     params: Record<string, string> = {}
   ): Promise<unknown> {
     const query = new URLSearchParams(params).toString();
-    const res = await fetch(`/.netlify/functions/${endpoint}?${query}`);
+    const res = await fetch(`${NETLIFY_SERVERLESS_PATH}${endpoint}?${query}`);
 
     if (!res.ok) {
       throw new Error("API error");

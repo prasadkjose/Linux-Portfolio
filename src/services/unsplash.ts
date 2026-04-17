@@ -1,5 +1,8 @@
 import logger from "../utils/logger";
-import type { NetlifyFunctionEvent } from "../config/netlify.config";
+import {
+  NETLIFY_SERVERLESS_PATH,
+  type NetlifyFunctionEvent,
+} from "../config/netlify.config";
 
 export interface UnsplashPhoto {
   id: string;
@@ -71,8 +74,7 @@ class UnsplashService {
 
     // Production: use fetch to call Netlify function
     const query = new URLSearchParams(params).toString();
-    const res = await fetch(`/.netlify/functions/${endpoint}?${query}`);
-
+    const res = await fetch(`${NETLIFY_SERVERLESS_PATH}${endpoint}?${query}`);
     if (!res.ok) {
       throw new Error("API error");
     }
