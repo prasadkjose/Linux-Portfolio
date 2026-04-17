@@ -4,7 +4,7 @@ import logger from "../utils/logger";
 
 type LoadingState = {
   label: string;
-  onShow?: () => void;
+  onStateLoad?: () => void;
 };
 
 const LOADING_STATES: LoadingState[] = [
@@ -13,7 +13,7 @@ const LOADING_STATES: LoadingState[] = [
   },
   {
     label: "Configuring Database Connection",
-    onShow: async () => {
+    onStateLoad: async () => {
       logger.log("Establishing database connection...");
       try {
         const status = await getDatabaseStatus();
@@ -47,8 +47,8 @@ const LoadingStatusBar = () => {
   const [currentStateIndex, setCurrentStateIndex] = useState(0);
 
   useEffect(() => {
-    // Run onShow method for initial state
-    LOADING_STATES[0].onShow?.();
+    // Run onStateLoad method for initial state
+    LOADING_STATES[0].onStateLoad?.();
 
     const interval = setInterval(() => {
       setCurrentStateIndex(prev => {
@@ -56,7 +56,7 @@ const LoadingStatusBar = () => {
 
         // Execute optional method when state changes
         if (nextIndex !== prev) {
-          LOADING_STATES[nextIndex].onShow?.();
+          LOADING_STATES[nextIndex].onStateLoad?.();
         }
 
         return nextIndex;

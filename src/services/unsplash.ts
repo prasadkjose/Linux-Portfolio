@@ -1,8 +1,5 @@
 import logger from "../utils/logger";
-import {
-  NETLIFY_SERVERLESS_PATH,
-  type NetlifyFunctionEvent,
-} from "../config/netlify.config";
+import { callServerlessFunction } from "./utils/serverlessUtils";
 
 export interface UnsplashPhoto {
   id: string;
@@ -42,47 +39,6 @@ class UnsplashService {
   }
 
   /**
-   * Call Netlify serverless function
-   * In development environment calls handler directly
-   */
-  private async call(
-    endpoint: string,
-    params: Record<string, string> = {}
-  ): Promise<unknown> {
-    // Call directly in local dev environment
-    if (import.meta.env.DEV && endpoint === "unsplash") {
-      const { handler } = await import("../serverless/unsplash");
-
-      const event: NetlifyFunctionEvent = {
-        queryStringParameters: params,
-        httpMethod: "GET",
-        headers: {},
-        body: null,
-      };
-
-      const response = (await handler(event)) as {
-        statusCode: number;
-        body: string;
-      };
-
-      if (response.statusCode >= 400) {
-        throw new Error(`API error: ${response.statusCode}`);
-      }
-
-      return JSON.parse(response.body);
-    }
-
-    // Production: use fetch to call Netlify function
-    const query = new URLSearchParams(params).toString();
-    const res = await fetch(`${NETLIFY_SERVERLESS_PATH}${endpoint}?${query}`);
-    if (!res.ok) {
-      throw new Error("API error");
-    }
-
-    return res.json();
-  }
-
-  /**
    * Search photos from Unsplash
    */
   async searchPhotos(
@@ -99,7 +55,7 @@ class UnsplashService {
         orientation: "landscape",
       };
 
-      const data = await this.call("unsplash", params);
+      const data = await callServerlessFunction("unsplash", params);
 
       if (!data || typeof data !== "object") {
         throw new Error("Invalid data format received from Unsplash API");
