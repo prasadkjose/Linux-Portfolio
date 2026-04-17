@@ -64,6 +64,11 @@ const Label = styled.div`
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 `;
 
+type MousePosition = {
+  x: number;
+  y: number;
+};
+
 const DesktopShortcut: React.FC<Props> = ({
   onOpen,
   href,
@@ -75,6 +80,22 @@ const DesktopShortcut: React.FC<Props> = ({
   onContextMenu,
   contextMenu,
 }) => {
+  // Track drag position to prevent opening shortcut on drag & drop
+  const mouseDownPosition = React.useRef<MousePosition>({ x: 0, y: 0 });
+  const mouseUpPosition = React.useRef<MousePosition>({ x: 0, y: 0 });
+  const updateMousePos = (
+    ref: React.RefObject<MousePosition>,
+    pos: MousePosition
+  ) => {
+    ref.current = { x: pos.x, y: pos.y };
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) =>
+    updateMousePos(mouseDownPosition, { x: e.clientX, y: e.clientY });
+
+  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) =>
+    updateMousePos(mouseUpPosition, { x: e.clientX, y: e.clientY });
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -83,7 +104,10 @@ const DesktopShortcut: React.FC<Props> = ({
   };
 
   const handleClick = () => {
-    return onOpen ? onOpen() : href && window.open(href, target);
+    // Only open shortcut if this was not a drag operation
+    if (mouseDownPosition.current.x === mouseUpPosition.current.x) {
+      return onOpen ? onOpen() : href && window.open(href, target);
+    }
   };
 
   return (
@@ -92,6 +116,8 @@ const DesktopShortcut: React.FC<Props> = ({
       tabIndex={0}
       aria-label={`Open ${label}`}
       onClick={handleClick}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
       onKeyDown={handleKeyDown}
       onContextMenu={onContextMenu}
       style={style}
