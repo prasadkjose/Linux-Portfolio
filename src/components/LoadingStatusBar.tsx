@@ -1,4 +1,24 @@
+import { useState, useEffect } from "react";
+
+const LOADING_STATES = [
+  "Initializing Resources",
+  "Configuring Database Connection",
+  "Loading Application Assets",
+  "Establishing Secure Session",
+  "Preparing User Interface",
+];
+
 const LoadingStatusBar = () => {
+  const [currentStateIndex, setCurrentStateIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentStateIndex(prev => (prev + 1) % LOADING_STATES.length);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       {/* Status Bar - Loading Indicator */}
@@ -41,7 +61,7 @@ const LoadingStatusBar = () => {
             fontSize: "11px",
           }}
         >
-          Initializing resources
+          {LOADING_STATES[currentStateIndex]}
           <div
             style={{
               width: "12px",
