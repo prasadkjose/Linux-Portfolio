@@ -19,12 +19,11 @@ import {
  */
 export const callServerlessFunction = async <T = unknown>(
   endpoint: string,
-  params: Record<string, string> = {},
-  importPath?: string
+  params: Record<string, string> = {}
 ): Promise<T> => {
   // Call directly in local development environment
   if (import.meta.env.DEV) {
-    const handlerPath = importPath || `../serverless/${endpoint}`;
+    const handlerPath = `../../serverless/${endpoint}`;
     const { handler } = await import(handlerPath);
 
     const event: NetlifyFunctionEvent = {

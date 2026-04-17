@@ -30,17 +30,16 @@ const databaseCredentialsHandler = async (event: NetlifyFunctionEvent) => {
   }
 
   // Build complete connection string on server-side ONLY
-  const connectionString = `postgresql://${user}:${password}@aws-1-us-west-2.pooler.supabase.com:6543/postgres`;
+  // const connectionString = `postgresql://${user}:${password}@aws-1-us-west-2.pooler.supabase.com:6543/postgres`;
 
-  // Return complete configuration securely from server-side
+  // Return success status only - credentials are NOT exposed in response
   return createNetlifyResponse(200, {
+    status: "success",
+    message: "Database credentials successfully loaded on server",
     host: "aws-1-us-west-2.pooler.supabase.com",
     port: 6543,
     database: "postgres",
-    user,
-    password,
     ssl: true,
-    connectionString,
   });
 };
 
