@@ -1,22 +1,65 @@
 import { useState, useEffect } from "react";
+import { getDatabaseStatus } from "../services/databaseService";
+import logger from "../utils/logger";
 
-const LOADING_STATES = [
-  "Initializing Resources",
-  "Configuring Database Connection",
-  "Loading Application Assets",
-  "Establishing Secure Session",
-  "Preparing User Interface",
+type LoadingState = {
+  label: string;
+  onShow?: () => void;
+};
+
+const LOADING_STATES: LoadingState[] = [
+  {
+    label: "Initializing Resources",
+  },
+  {
+    label: "Configuring Database Connection",
+    onShow: async () => {
+      logger.log("Establishing database connection...");
+      try {
+        const status = await getDatabaseStatus();
+        // Log connection info WITHOUT exposing user credentials
+        logger.log(`Database connection status:, {
+          configured: ${status.configured},
+          host: ${status.host},
+          port: ${status.port},
+          database: ${status.database},
+          poolerType: ${status.poolerType},
+          region: ${status.region},
+          timestamp: ${status.timestamp}
+        }`);
+      } catch (error) {
+        logger.error(`Failed to get database status: ${error}`);
+      }
+    },
+  },
+  {
+    label: "Loading Application Assets",
+  },
+  {
+    label: "Establishing Secure Session",
+  },
+  {
+    label: "Preparing User Interface",
+  },
 ];
 
 const LoadingStatusBar = () => {
   const [currentStateIndex, setCurrentStateIndex] = useState(0);
 
   useEffect(() => {
+    // Run onShow method for initial state
+    LOADING_STATES[0].onShow?.();
+
     const interval = setInterval(() => {
       setCurrentStateIndex(prev => {
-        if (prev < LOADING_STATES.length) {
-          return prev + 1;
-        } else return LOADING_STATES.length - 1;
+        const nextIndex = prev < LOADING_STATES.length - 1 ? prev + 1 : prev;
+
+        // Execute optional method when state changes
+        if (nextIndex !== prev) {
+          LOADING_STATES[nextIndex].onShow?.();
+        }
+
+        return nextIndex;
       });
     }, 2000);
 
@@ -65,7 +108,7 @@ const LoadingStatusBar = () => {
             fontSize: "11px",
           }}
         >
-          {LOADING_STATES[currentStateIndex]}
+          {LOADING_STATES[currentStateIndex].label}
           <div
             style={{
               width: "12px",
