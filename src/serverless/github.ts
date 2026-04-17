@@ -58,7 +58,7 @@ const githubHandler = async (event: NetlifyFunctionEvent) => {
   const { path, username } = event.queryStringParameters || {};
 
   // Use environment variable from Netlify function environment
-  const token = process.env.VITE_GITHUB_TOKEN;
+  const token = process.env.GITHUB_TOKEN || process.env.VITE_GITHUB_TOKEN;
 
   if (!token) {
     return createNetlifyResponse(400, { error: "GitHub token not configured" });
