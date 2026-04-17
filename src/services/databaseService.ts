@@ -6,8 +6,8 @@
  * to avoid exposing secrets in client-side bundle. Update this depending on your cloud provider.
  */
 
-import { NETLIFY_SERVERLESS_PATH } from "../config/netlify.config";
 import logger from "../utils/logger";
+import { callServerlessFunction } from "./utils/serverlessUtils";
 
 export interface DatabaseConfig {
   host: string;
@@ -33,19 +33,11 @@ export const getDatabaseConfig = async (): Promise<DatabaseConfig> => {
     return cachedConfig;
   }
 
-  // Fetch complete configuration directly from serverless function
-  const response = await fetch(
-    `${NETLIFY_SERVERLESS_PATH}database-credentials`
+  const config = await callServerlessFunction<DatabaseConfig>(
+    "database-credentials",
+    {},
+    "../serverless/database-credentials"
   );
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(
-      `Failed to retrieve database credentials: ${error?.message || error?.error || response.statusText}`
-    );
-  }
-
-  const config = await response.json();
   cachedConfig = config as DatabaseConfig;
 
   logger.log("Database configuration securely retrieved from server");
