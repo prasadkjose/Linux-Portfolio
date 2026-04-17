@@ -25,9 +25,20 @@ The GitHub service is used throughout the application to:
 
 - `@tanstack/react-query`: For data fetching, caching, and state management
 - Environment variables:
-  - Uses `VITE_GITHUB_TOKEN` for authenticated API access
-  - Uses `VITE_UNSPLASH_ACCESS_KEY` for authenticated API access to unsplash
-  - Uses `VITE_SUPABASE_DB_PASSWORD` for DB access to supabase DB.
+
+  **Serverless Function Environment (Recommended):**
+  - `GITHUB_TOKEN` - GitHub API personal access token
+  - `UNSPLASH_ACCESS_KEY` - Unsplash API access key
+  - `SUPABASE_DB_USER` - Supabase database username
+  - `SUPABASE_DB_PASSWORD` - Supabase database password
+
+  **Client-side Fallback:**
+  - `VITE_GITHUB_TOKEN` - Client-side fallback for GitHub API access
+  - `VITE_UNSPLASH_ACCESS_KEY` - Client-side fallback for Unsplash API access
+  - `VITE_SUPABASE_DB_USER` - Client-side fallback for Supabase database user
+  - `VITE_SUPABASE_DB_PASSWORD` - Client-side fallback for Supabase database password
+
+  _Note: Server environment variables are preferred for security and are never exposed to client-side code. VITE\_ prefixed variables are only used as fallback for local development._
 
 ### Security Note
 
