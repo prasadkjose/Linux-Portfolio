@@ -30,6 +30,10 @@ CREATE TABLE IF NOT EXISTS messages (
 -- WARNING: This schema is for context only and is not meant to be run.
 -- Table order and constraints may not be valid for execution.
 
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+
 
 -- Schema for Supabase
 CREATE TABLE public.messages (
