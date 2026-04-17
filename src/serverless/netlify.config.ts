@@ -29,7 +29,7 @@ export interface NetlifyFunctionEvent {
 /**
  * Standard error handler wrapper for Netlify Functions
  */
-export const withErrorHandling = async (
+export const withErrorHandling = (
   handler: (event: NetlifyFunctionEvent) => Promise<unknown>
 ) => {
   return async (event: NetlifyFunctionEvent) => {

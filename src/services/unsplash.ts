@@ -1,4 +1,5 @@
 import logger from "../utils/logger";
+import type { NetlifyFunctionEvent } from "../serverless/netlify.config";
 
 export interface UnsplashPhoto {
   id: string;
@@ -49,11 +50,17 @@ class UnsplashService {
     if (import.meta.env.DEV && endpoint === "unsplash") {
       const { handler } = await import("../serverless/unsplash");
 
-      const event = {
+      const event: NetlifyFunctionEvent = {
         queryStringParameters: params,
+        httpMethod: "GET",
+        headers: {},
+        body: null,
       };
 
-      const response = await handler(event);
+      const response = (await handler(event)) as {
+        statusCode: number;
+        body: string;
+      };
 
       if (response.statusCode >= 400) {
         throw new Error(`API error: ${response.statusCode}`);
