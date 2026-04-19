@@ -1,5 +1,6 @@
 # Ignore everything
 /*
+/src/db/*
 
 # Except this folder
 !/src

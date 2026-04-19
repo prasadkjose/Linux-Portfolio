@@ -24,9 +24,23 @@ The GitHub service is used throughout the application to:
 ### Dependencies
 
 - `@tanstack/react-query`: For data fetching, caching, and state management
-- Environment variables: Uses `VITE_GITHUB_TOKEN` for authenticated API access
+- Environment variables:
+
+  **Serverless Function Environment (Recommended):**
+  - `GITHUB_TOKEN` - GitHub API personal access token
+  - `UNSPLASH_ACCESS_KEY` - Unsplash API access key
+  - `SUPABASE_DB_USER` - Supabase database username
+  - `SUPABASE_DB_PASSWORD` - Supabase database password
+
+  **Client-side Fallback:**
+  - `VITE_GITHUB_TOKEN` - Client-side fallback for GitHub API access
+  - `VITE_UNSPLASH_ACCESS_KEY` - Client-side fallback for Unsplash API access
+  - `VITE_SUPABASE_DB_USER` - Client-side fallback for Supabase database user
+  - `VITE_SUPABASE_DB_PASSWORD` - Client-side fallback for Supabase database password
+
+  _Note: Server environment variables are preferred for security and are never exposed to client-side code. VITE\_ prefixed variables are only used as fallback for local development._
 
 ### Security Note
 
-GitHub API calls from the client-side require a personal access token with public repository read permissions. The token is passed via hosted environment variables in Netlify and should be properly configured in the deployment environment.
+The token is passed via hosted environment variables in Netlify and should be properly configured in the deployment environment.
 This can also be configured using secrets or vaults, depending on the cloud provider. Make sure you call the right thing in the serverless method.
