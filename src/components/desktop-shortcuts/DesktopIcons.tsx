@@ -97,8 +97,8 @@ export const Icons: Record<IconKey, React.ReactNode> = {
             r="3263.54"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset=".09" stop-color="#fa8f21"></stop>
-            <stop offset=".78" stop-color="#d82d7e"></stop>
+            <stop offset=".09" stop-color="#959595ff"></stop>
+            <stop offset=".78" stop-color="#f6f6f6ff"></stop>
           </radialGradient>
           <radialGradient
             id="1"
@@ -107,8 +107,8 @@ export const Icons: Record<IconKey, React.ReactNode> = {
             r="2572.12"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset=".64" stop-color="#8c3aaa" stop-opacity="0"></stop>
-            <stop offset="1" stop-color="#8c3aaa"></stop>
+            <stop offset=".64" stop-color="#939393ff" stop-opacity="0"></stop>
+            <stop offset="1" stop-color="#939393ff"></stop>
           </radialGradient>
         </defs>
         <path
