@@ -54,6 +54,10 @@ export const PERSONAL_DATA: PersonalData = {
         value: "Facebook",
         href: "https://www.facebook.com/prasadkjose",
       },
+      {
+        value: "Instagram",
+        href: "https://www.instagram.com/prasad_chazing/",
+      },
     ],
   },
   quickLinks: [
@@ -81,6 +85,15 @@ export const PERSONAL_DATA: PersonalData = {
       style: {
         color: "#81A1C1",
         background: "rgba(129, 161, 193, 0.15)",
+        border: "1px solid rgba(129,161,193,0.35)",
+      },
+    },
+    {
+      value: "Instagram",
+      href: "https://www.instagram.com/prasad_chazing/",
+      style: {
+        color: "#b268b5ff",
+        background: "rgba(244, 74, 230, 0.15)",
         border: "1px solid rgba(129,161,193,0.35)",
       },
     },
