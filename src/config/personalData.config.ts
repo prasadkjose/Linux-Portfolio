@@ -54,6 +54,10 @@ export const PERSONAL_DATA: PersonalData = {
         value: "Facebook",
         href: "https://www.facebook.com/prasadkjose",
       },
+      {
+        value: "Instagram",
+        href: "https://www.instagram.com/prasad_chazing/",
+      },
     ],
   },
   quickLinks: [
