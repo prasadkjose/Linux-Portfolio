@@ -89,6 +89,15 @@ export const PERSONAL_DATA: PersonalData = {
       },
     },
     {
+      value: "Instagram",
+      href: "https://www.instagram.com/prasad_chazing/",
+      style: {
+        color: "#b268b5ff",
+        background: "rgba(244, 74, 230, 0.15)",
+        border: "1px solid rgba(129,161,193,0.35)",
+      },
+    },
+    {
       href: "https://dev.to/prasadkjose",
       value: "Blog",
       style: {
