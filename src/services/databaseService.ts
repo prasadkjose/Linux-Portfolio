@@ -88,10 +88,129 @@ export const clearDatabaseConfigCache = () => {
   cachedConfig = null;
 };
 
+/**
+ * Query Types for database operations
+ */
+export interface Visit {
+  id: number;
+  visited_at: string;
+  path: string;
+}
+
+export interface CreateVisitInput {
+  path: string;
+}
+
+export interface UpdateVisitInput {
+  path?: string;
+}
+
+export interface PaginatedResult<T> {
+  status: string;
+  data: T[];
+  total: number;
+  limit: number;
+  offset: number;
+}
+
+export interface SingleResult<T> {
+  status: string;
+  data: T;
+  message?: string;
+}
+
+/**
+ * Get all visits with pagination
+ * @param limit Maximum number of records to return
+ * @param offset Number of records to skip
+ */
+/**
+ * Get all visits with pagination
+ * @param limit Maximum number of records to return
+ * @param offset Number of records to skip
+ */
+export const getVisits = async (
+  limit = 100,
+  offset = 0
+): Promise<PaginatedResult<Visit>> => {
+  return callServerlessFunction<PaginatedResult<Visit>>(
+    "database-queries",
+    { limit: limit.toString(), offset: offset.toString() },
+    { method: "GET" }
+  );
+};
+
+/**
+ * Get single visit by ID
+ * @param id Visit record ID
+ */
+export const getVisitById = async (
+  id: number
+): Promise<SingleResult<Visit>> => {
+  return callServerlessFunction<SingleResult<Visit>>(
+    "database-queries",
+    { id: id.toString() },
+    { method: "GET" }
+  );
+};
+
+/**
+ * Create new visit record
+ * @param data Visit creation data
+ */
+export const createVisit = async (
+  data: CreateVisitInput
+): Promise<SingleResult<Visit>> => {
+  return callServerlessFunction<SingleResult<Visit>>(
+    "database-queries",
+    {},
+    {
+      method: "POST",
+      body: data,
+    }
+  );
+};
+
+/**
+ * Update existing visit record
+ * @param id Visit record ID
+ * @param data Visit update data
+ */
+export const updateVisit = async (
+  id: number,
+  data: UpdateVisitInput
+): Promise<SingleResult<Visit>> => {
+  return callServerlessFunction<SingleResult<Visit>>(
+    "database-queries",
+    { id: id.toString() },
+    {
+      method: "PUT",
+      body: data,
+    }
+  );
+};
+
+/**
+ * Delete visit record
+ * @param id Visit record ID
+ */
+export const deleteVisit = async (id: number): Promise<SingleResult<Visit>> => {
+  return callServerlessFunction<SingleResult<Visit>>(
+    "database-queries",
+    { id: id.toString() },
+    { method: "DELETE" }
+  );
+};
+
 export default {
   getDatabaseConfig,
   getConnectionString,
   isDatabaseConfigValid,
   getDatabaseStatus,
   clearDatabaseConfigCache,
+  getVisits,
+  getVisitById,
+  createVisit,
+  updateVisit,
+  deleteVisit,
 };

@@ -5,6 +5,8 @@ import type { ThemeSwitcherProps } from "../../types/window";
 import { useTheme } from "../../hooks/useTheme";
 import { PERSONAL_DATA } from "../../config/personalData.config";
 import Tooltip from "../tooltips/Tooltip";
+import { getFromSS, setToSS } from "../../utils/storage";
+import { createVisit } from "../../services/databaseService";
 
 interface ThemeButtonProps {
   $isActive: boolean;
@@ -200,6 +202,15 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
     if (newTheme.id !== currentTheme.id) {
       themeSwitcher(newTheme);
       set$themeLoaded(!themeLoaded);
+      const isFirstVisit = getFromSS("first_visit", true);
+
+      // Log visit to database when theme loads
+      if (isFirstVisit) {
+        createVisit({ path: window.location.pathname }).catch(err =>
+          console.debug("Visit tracking skipped:", err)
+        );
+        setToSS("first_visit", false);
+      }
     }
   };
 

@@ -8,6 +8,7 @@ import {
   NETLIFY_SERVERLESS_PATH,
   NetlifyFunctionEvent,
 } from "../../config/netlify.config";
+import logger from "../../utils/logger";
 
 /**
  * Call Netlify serverless function
@@ -17,20 +18,29 @@ import {
  * @param importPath Optional custom import path for dev mode handler (defaults to ../serverless/{endpoint})
  * @returns Parsed JSON response
  */
+export interface CallServerlessOptions {
+  method?: "GET" | "POST" | "PUT" | "DELETE";
+  body?: unknown;
+  headers?: Record<string, string>;
+}
+
 export const callServerlessFunction = async <T = unknown>(
   endpoint: string,
-  params: Record<string, string> = {}
+  params: Record<string, string> = {},
+  options: CallServerlessOptions = {}
 ): Promise<T> => {
   // Call directly in local development environment
+  logger.info(`Calling serverless endpoint: ${endpoint}`);
   if (import.meta.env.DEV) {
     const handlerPath = `../../serverless/${endpoint}`;
     const { handler } = await import(handlerPath);
+    logger.info(`Local Dev env identified. using ${handlerPath}instead`);
 
     const event: NetlifyFunctionEvent = {
       queryStringParameters: params,
-      httpMethod: "GET",
-      headers: {},
-      body: null,
+      httpMethod: options.method || "GET",
+      headers: options.headers || {},
+      body: options.body ? JSON.stringify(options.body) : null,
     };
 
     const response = (await handler(event)) as {
@@ -52,7 +62,14 @@ export const callServerlessFunction = async <T = unknown>(
       ? `${NETLIFY_SERVERLESS_PATH}${endpoint}?${query}`
       : `${NETLIFY_SERVERLESS_PATH}${endpoint}`;
 
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    method: options.method || "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+    body: options.body ? JSON.stringify(options.body) : undefined,
+  });
 
   if (!response.ok) {
     try {
