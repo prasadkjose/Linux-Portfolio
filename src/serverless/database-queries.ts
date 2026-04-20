@@ -19,11 +19,12 @@ interface Visit {
   id: number;
   visited_at: string;
   path: string;
+  visited_from_country?: string;
 }
 
 interface CreateVisitInput {
   path: string;
-  visited_from_country: string;
+  visited_from_country?: string;
 }
 
 interface UpdateVisitInput {
@@ -66,9 +67,9 @@ const databaseQueriesHandler = async (event: NetlifyFunctionEvent) => {
           return createNetlifyResponse(400, { error: "Path is required" });
         }
 
-        const result = await client.query<Visit>(
-          `INSERT INTO visits (path) VALUES ($1) RETURNING *`,
-          [body.path]
+        const result = await client.query<CreateVisitInput>(
+          `INSERT INTO visits (path, visited_from_country) VALUES ($1, $2) RETURNING *`,
+          [body.path, body.visited_from_country || null]
         );
 
         await client.end();
