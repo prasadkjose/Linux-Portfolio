@@ -24,9 +24,13 @@ CREATE TABLE IF NOT EXISTS visits (
 
 -- Schema for Supabase
 
+-- WARNING: This schema is for context only and is not meant to be run.
+-- Table order and constraints may not be valid for execution.
+
 CREATE TABLE public.visits (
   id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
   visited_at timestamp with time zone NOT NULL DEFAULT now(),
   path text,
+  visited_from_country text,
   CONSTRAINT visits_pkey PRIMARY KEY (id)
 );

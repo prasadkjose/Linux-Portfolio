@@ -23,6 +23,7 @@ interface Visit {
 
 interface CreateVisitInput {
   path: string;
+  visited_from_country: string;
 }
 
 interface UpdateVisitInput {

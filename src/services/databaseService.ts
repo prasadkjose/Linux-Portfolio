@@ -95,10 +95,12 @@ export interface Visit {
   id: number;
   visited_at: string;
   path: string;
+  visited_from_country?: string;
 }
 
 export interface CreateVisitInput {
   path: string;
+  visited_from_country?: string;
 }
 
 export interface UpdateVisitInput {
@@ -158,9 +160,30 @@ export const getVisitById = async (
  * Create new visit record
  * @param data Visit creation data
  */
+/**
+ * Create new visit record with client geolocation
+ * @param data Visit creation data
+ */
 export const createVisit = async (
   data: CreateVisitInput
 ): Promise<SingleResult<Visit>> => {
+  // Get client geolocation data from browser
+  try {
+    const geoResponse = await fetch("https://ipapi.co/country/");
+    if (geoResponse.ok) {
+      const countryCode = await geoResponse.text();
+      if (countryCode && countryCode.length === 2) {
+        // eslint-disable-next-line camelcase
+        data.visited_from_country = countryCode.trim().toUpperCase();
+      }
+    }
+  } catch (error) {
+    // Silently fail geolocation lookup - do not block visit recording
+    logger.warn(
+      `Could not retrieve client geolocation: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
+
   return callServerlessFunction<SingleResult<Visit>>(
     "database-queries",
     {},
