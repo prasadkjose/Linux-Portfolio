@@ -18,7 +18,7 @@ My developer portfolio website themed after Linux, built with React & TypeScript
 - **Responsive Design**: Works seamlessly across desktop, tablet, and mobile devices
 - **Dynamic Resume**: Choose between Ubuntu, Kali, and Fedora themes to view different professional resumes - Ubuntu shows Consultant resume, Kali shows Information Security resume, and Fedora shows SDE resume
 - __Resource Preloading__: Critical assets are preloaded after the splash screen for faster subsequent renders.
-- __Supabase Database Integration__: Built-in visitor analytics, session tracking and persistent data storage using Supabase PostgreSQL database. Handles anonymous visitor metrics securely with row level security.
+- __Supabase Database Integration__: Built-in visitor analytics, session tracking and persistent data storage using Supabase PostgreSQL database. Handles anonymous visitor metrics securely with row level security. **Tracks only visitor counts and country location, no IP addresses are stored or logged.**
 - __Serverless Function__: A backend function proxies GraphQL API calls (GitHub fetching pinned repos for now) to keep the token server-side. Look at [serverless/readme](src/serverless/README.md)
 - __Docker Support__: Dockerfile included for containerized deployment.
 - **Modern Taskbar**: Fully featured desktop taskbar with clock, calendar, system announcements and widget panel. See [Taskbar Documentation](src/layout/taskbar/README.md) for full details.
