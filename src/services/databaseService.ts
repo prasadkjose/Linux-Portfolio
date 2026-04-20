@@ -169,12 +169,19 @@ export const createVisit = async (
 ): Promise<SingleResult<Visit>> => {
   // Get client geolocation data from browser
   try {
-    const geoResponse = await fetch("https://ipapi.co/country/");
+    const geoResponse = await fetch("https://ipapi.co/json/");
     if (geoResponse.ok) {
-      const countryCode = await geoResponse.text();
-      if (countryCode && countryCode.length === 2) {
+      const geoData = await geoResponse.json();
+      const locationParts = [];
+
+      if (geoData.city) locationParts.push(geoData.city);
+      if (geoData.region) locationParts.push(geoData.region);
+      if (geoData.country_code)
+        locationParts.push(geoData.country_code.toUpperCase());
+
+      if (locationParts.length > 0) {
         // eslint-disable-next-line camelcase
-        data.visited_from_country = countryCode.trim().toUpperCase();
+        data.visited_from_country = locationParts.join(", ");
       }
     }
   } catch (error) {
