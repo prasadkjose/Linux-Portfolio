@@ -27,15 +27,10 @@ A serverless function that acts as a proxy for GitHub API requests:
 - Fetches user's pinned repositories using GitHub GraphQL API
 - Returns: Array of pinned repositories with name, description, URL, stars, and forks
 
-#### Security Features
-
-- Token validation: Ensures GitHub token is configured
-- Input validation: Validates required parameters
-- Error sanitization: Prevents exposing sensitive information in error responses
-
 #### Environment Variables
 
-- `VITE_GITHUB_TOKEN`: GitHub personal access token with public repository read permissions
+1.  `GITHUB_TOKEN`: Primary production environment variable
+2.  `VITE_GITHUB_TOKEN`: Fallback for local Vite / .env development
 
 #### Usage
 
@@ -65,12 +60,6 @@ A serverless function that acts as a proxy for Unsplash Photo Search API request
   - `per_page`: Number of results per page (default: 10, max: 30)
 - Returns: Unsplash standard photo search response with results, total pages, and total count
 
-#### Security Features
-
-- Access Key validation: Ensures Unsplash API key is properly configured
-- Input sanitization: URL encodes search queries
-- Proper error handling: Returns meaningful error messages without exposing sensitive data
-
 #### Environment Variables
 
 Looks for environment variables in this priority order:
@@ -83,6 +72,33 @@ Unsplash API Access Key obtained from Unsplash Developer Portal
 #### Usage
 
 This function proxies requests to Unsplash API while keeping the API access key secure on the server side.
+
+---
+
+### Database Credentials Provider (`database-credentials.ts`)
+
+A secure serverless function that provides database connection credentials:
+
+#### Endpoints
+
+**GET /.netlify/functions/database-credentials**
+
+- Returns complete database configuration object
+- Includes connection string already built with credentials
+- Response includes host, port, database, user, password, ssl flag, and full connection string
+
+#### Environment Variables
+
+Looks for environment variables in this priority order:
+
+1.  `SUPABASE_DB_USER`: Production database username
+2.  `VITE_SUPABASE_DB_USER`: Fallback for local development
+3.  `SUPABASE_DB_PASSWORD`: Production database password
+4.  `VITE_SUPABASE_DB_PASSWORD`: Fallback for local development
+
+#### Usage
+
+This function is called internally from `databaseService.ts`. Client application never handles or processes database credentials directly.
 
 ## Deployment Notes
 
@@ -102,3 +118,7 @@ All API calls from the client-side require a personal access token with public r
 This can also be configured using secrets or vaults, depending on the cloud provider. Make sure you call the right thing in the serverless method.
 
 DO NOT USE .env variables in any source control or anywhere that's not local dev'
+
+- Access Key validation: Ensures Unsplash API key is properly configured
+- Input sanitization: URL encodes search queries
+- Proper error handling: Returns meaningful error messages without exposing sensitive data

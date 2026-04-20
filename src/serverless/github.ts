@@ -1,10 +1,8 @@
-/**
- * Helper to create consistent API responses
- */
-const createResponse = (statusCode: number, body: unknown) => ({
-  statusCode,
-  body: JSON.stringify(body),
-});
+import {
+  createNetlifyResponse,
+  NetlifyFunctionEvent,
+  withErrorHandling,
+} from "../config/netlify.config";
 
 /**
  * Execute GitHub GraphQL query with common error handling
@@ -56,79 +54,73 @@ const executeRestRequest = async (
   return res.json();
 };
 
-export async function handler(event: {
-  queryStringParameters?: { path?: string; username?: string };
-}) {
+const githubHandler = async (event: NetlifyFunctionEvent) => {
   const { path, username } = event.queryStringParameters || {};
 
-  try {
-    // Use environment variable from Netlify function environment
-    const token = process.env.VITE_GITHUB_TOKEN;
+  // Use environment variable from Netlify function environment
+  const token = process.env.GITHUB_TOKEN || process.env.VITE_GITHUB_TOKEN;
 
-    if (!token) {
-      return createResponse(400, { error: "GitHub token not configured" });
-    }
-
-    if (path === "user" && username) {
-      const data = await executeRestRequest(token, `/users/${username}`);
-      return createResponse(200, data);
-    }
-
-    if (path === "pinned-repos" && username) {
-      const query = `
-        query($username: String!) {
-          user(login: $username) {
-            pinnedItems(first: 6) {
-              nodes {
-                ... on Repository {
-                  name
-                  description
-                  url
-                  stargazerCount
-                  forkCount
-                }
-              }
-            }
-          }
-        }
-      `;
-
-      const data = (await executeGraphQLQuery(token, query, {
-        username,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      })) as any;
-      return createResponse(200, data.user.pinnedItems.nodes);
-    }
-
-    if (path === "top-closed-issues") {
-      const query = `
-        query {
-          repository(owner: "prasadkjose", name: "Linux-Portfolio") {
-            issues(first: 5, states: CLOSED, orderBy: {field: UPDATED_AT, direction: DESC}) {
-              nodes {
-                number
-                title
-                url
-                createdAt
-                closedAt
-                comments {
-                  totalCount
-                }
-              }
-            }
-          }
-        }
-      `;
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const data = (await executeGraphQLQuery(token, query)) as any;
-      return createResponse(200, data.repository.issues.nodes);
-    }
-
-    return createResponse(400, { error: "Invalid path parameter" });
-  } catch (err) {
-    const errorMessage =
-      err instanceof Error ? err.message : "An unknown error occurred";
-    return createResponse(500, { error: errorMessage });
+  if (!token) {
+    return createNetlifyResponse(400, { error: "GitHub token not configured" });
   }
-}
+
+  if (path === "user" && username) {
+    const data = await executeRestRequest(token, `/users/${username}`);
+    return createNetlifyResponse(200, data);
+  }
+
+  if (path === "pinned-repos" && username) {
+    const query = `
+      query($username: String!) {
+        user(login: $username) {
+          pinnedItems(first: 6) {
+            nodes {
+              ... on Repository {
+                name
+                description
+                url
+                stargazerCount
+                forkCount
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const data = (await executeGraphQLQuery(token, query, {
+      username,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    })) as any;
+    return createNetlifyResponse(200, data.user.pinnedItems.nodes);
+  }
+
+  if (path === "top-closed-issues") {
+    const query = `
+      query {
+        repository(owner: "prasadkjose", name: "Linux-Portfolio") {
+          issues(first: 5, states: CLOSED, orderBy: {field: UPDATED_AT, direction: DESC}) {
+            nodes {
+              number
+              title
+              url
+              createdAt
+              closedAt
+              comments {
+                totalCount
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data = (await executeGraphQLQuery(token, query)) as any;
+    return createNetlifyResponse(200, data.repository.issues.nodes);
+  }
+
+  return createNetlifyResponse(400, { error: "Invalid path parameter" });
+};
+
+export const handler = withErrorHandling(githubHandler);

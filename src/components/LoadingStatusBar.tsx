@@ -1,4 +1,71 @@
+import { useState, useEffect } from "react";
+import { getDatabaseStatus } from "../services/databaseService";
+import logger from "../utils/logger";
+
+type LoadingState = {
+  label: string;
+  onStateLoad?: () => void;
+};
+
+const LOADING_STATES: LoadingState[] = [
+  {
+    label: "Initializing Resources",
+  },
+  {
+    label: "Configuring Database Connection",
+    onStateLoad: async () => {
+      logger.log("Establishing database connection...");
+      try {
+        const status = await getDatabaseStatus();
+        // Log connection info WITHOUT exposing user credentials
+        logger.log(`Database connection status:, {
+          configured: ${status.configured},
+          host: ${status.host},
+          port: ${status.port},
+          database: ${status.database},
+          poolerType: ${status.poolerType},
+          region: ${status.region},
+          timestamp: ${status.timestamp}
+        }`);
+      } catch (error) {
+        logger.error(`Failed to get database status: ${error}`);
+      }
+    },
+  },
+  {
+    label: "Loading Application Assets",
+  },
+  {
+    label: "Establishing Secure Session",
+  },
+  {
+    label: "Preparing User Interface",
+  },
+];
+
 const LoadingStatusBar = () => {
+  const [currentStateIndex, setCurrentStateIndex] = useState(0);
+
+  useEffect(() => {
+    // Run onStateLoad method for initial state
+    LOADING_STATES[0].onStateLoad?.();
+
+    const interval = setInterval(() => {
+      setCurrentStateIndex(prev => {
+        const nextIndex = prev < LOADING_STATES.length - 1 ? prev + 1 : prev;
+
+        // Execute optional method when state changes
+        if (nextIndex !== prev) {
+          LOADING_STATES[nextIndex].onStateLoad?.();
+        }
+
+        return nextIndex;
+      });
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       {/* Status Bar - Loading Indicator */}
@@ -41,7 +108,7 @@ const LoadingStatusBar = () => {
             fontSize: "11px",
           }}
         >
-          Initializing resources
+          {LOADING_STATES[currentStateIndex].label}
           <div
             style={{
               width: "12px",
