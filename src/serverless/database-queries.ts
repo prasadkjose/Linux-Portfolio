@@ -11,6 +11,9 @@ import {
   withErrorHandling,
 } from "../config/netlify.config";
 
+// Import shared database connection logic
+import { getDatabaseCredentials } from "./database-credentials";
+
 // Types matching database schema
 interface Visit {
   id: number;
@@ -27,19 +30,14 @@ interface UpdateVisitInput {
 }
 
 const databaseQueriesHandler = async (event: NetlifyFunctionEvent) => {
-  // Get credentials directly from environment variables (safe server-side only)
-  const user =
-    process.env.SUPABASE_DB_USER || process.env.VITE_SUPABASE_DB_USER;
-  const password =
-    process.env.SUPABASE_DB_PASSWORD || process.env.VITE_SUPABASE_DB_PASSWORD;
+  // Get shared database credentials logic
+  const dbCredentials = getDatabaseCredentials();
 
-  if (!user || !password) {
-    return createNetlifyResponse(500, {
-      error: "Database credentials not configured on server",
-    });
+  if (dbCredentials.error) {
+    return createNetlifyResponse(500, { error: dbCredentials.message });
   }
 
-  const connectionString = `postgresql://${user}:${password}@aws-1-us-west-2.pooler.supabase.com:6543/postgres`;
+  const { connectionString } = dbCredentials;
 
   // Extract HTTP method and path parameters
   const httpMethod = event.httpMethod;
