@@ -139,13 +139,6 @@ const WidgetContainer = styled(motion.div)<{
   }}
 `;
 
-const Backdrop = styled.div`
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-  background: transparent;
-`;
-
 export default function MobileWidgetButton({
   children,
   isMobile,
@@ -164,6 +157,7 @@ export default function MobileWidgetButton({
   const [offsetX, setOffsetX] = useState(0);
   const [offsetY, setOffsetY] = useState(0);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const widgetRef = useRef<HTMLDivElement>(null);
 
   const calculateOptimalPosition = useCallback(() => {
     if (!buttonRef.current) return;
@@ -238,12 +232,37 @@ export default function MobileWidgetButton({
     setIsOpen(prev => !prev);
   };
 
-  const handleOutsideClick = (e: React.MouseEvent) => {
-    if (closeOnOutsideClick && isOpen) {
-      e.stopPropagation();
-      setIsOpen(false);
-    }
-  };
+  // Handle outside click to close widget
+  useEffect(() => {
+    if (!closeOnOutsideClick || !isOpen) return;
+
+    const handleOutsideClick = (event: MouseEvent) => {
+      // Check if click is outside both button and widget
+      const isOutsideButton =
+        buttonRef.current && !buttonRef.current.contains(event.target as Node);
+      const isOutsideWidget =
+        widgetRef.current && !widgetRef.current.contains(event.target as Node);
+
+      if (isOutsideButton && isOutsideWidget) {
+        setIsOpen(false);
+      }
+    };
+
+    // Use mousedown instead of click to catch the event earlier
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener(
+      "touchstart",
+      handleOutsideClick as EventListener
+    );
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener(
+        "touchstart",
+        handleOutsideClick as EventListener
+      );
+    };
+  }, [isOpen, closeOnOutsideClick]);
 
   // Close widget on escape key
   useEffect(() => {
@@ -260,12 +279,6 @@ export default function MobileWidgetButton({
   if (isMobile)
     return (
       <>
-        <AnimatePresence>
-          {isOpen && closeOnOutsideClick && (
-            <Backdrop onClick={handleOutsideClick} />
-          )}
-        </AnimatePresence>
-
         <ButtonWrapper
           ref={buttonRef}
           onClick={handleClick}
@@ -279,6 +292,7 @@ export default function MobileWidgetButton({
           <AnimatePresence>
             {isOpen && (
               <WidgetContainer
+                ref={widgetRef}
                 className={widgetClassName}
                 $position={calculatedPosition}
                 $offsetX={offsetX}
