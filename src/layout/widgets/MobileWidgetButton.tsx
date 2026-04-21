@@ -276,7 +276,7 @@ export default function MobileWidgetButton({
     return () => window.removeEventListener("keydown", handleEscape);
   }, [isOpen]);
 
-  if (isMobile)
+  if (isMobile) {
     return (
       <>
         <ButtonWrapper
@@ -350,4 +350,7 @@ export default function MobileWidgetButton({
         </ButtonWrapper>
       </>
     );
+  } else {
+    return widget;
+  }
 }
