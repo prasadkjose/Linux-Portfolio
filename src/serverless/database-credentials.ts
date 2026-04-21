@@ -9,7 +9,7 @@ import {
   createNetlifyResponse,
   NetlifyFunctionEvent,
   withErrorHandling,
-} from "../config/netlify.config";
+} from "../utils/netlify";
 
 // Exportable pure logic for internal usage by other serverless functions
 export const getDatabaseCredentials = () => {

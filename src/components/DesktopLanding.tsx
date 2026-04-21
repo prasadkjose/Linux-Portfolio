@@ -15,6 +15,9 @@ import { isMobileDevice } from "../utils/typeGuards";
 import Draggable from "../layout/Draggable";
 import Carousel from "../layout/widgets/Carousel";
 import Tooltip from "../layout/tooltips/Tooltip";
+import { TOOLTIP_IDS } from "../layout/tooltips/tooltips.config";
+import MobileWidgetButton from "../layout/widgets/MobileWidgetButton";
+import { FiImage } from "react-icons/fi";
 
 const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
   currentTheme,
@@ -27,7 +30,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
   // Device detection
   const [isMobile, setIsMobile] = useState<boolean>(false);
   // Background carousel tooltip
-  const [showTooltip, setShowTooltip] = useState<boolean>(true);
+  const [showCarouselTooltip, setShowCarouselTooltip] = useState<boolean>(true);
 
   useEffect(() => {
     const update = () => setIsMobile(isMobileDevice());
@@ -59,6 +62,11 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
     metaMsTileColor?.setAttribute("content", themeColor);
     maskIcon?.setAttribute("color", themeColor);
   }, [theme]);
+
+  const carouselPos = {
+    initialX: isMobile ? 0 : window.innerWidth - 310,
+    initialY: isMobile ? window.innerHeight - 210 : 120,
+  };
 
   return (
     <ThemeProvider theme={currentTheme}>
@@ -152,21 +160,47 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
           />
         )}
 
-        {!isMobile && (
-          <Draggable initialX={window.innerWidth - 310} initialY={120}>
-            <Carousel
-              currentTheme={currentTheme}
-              themeSwitcher={themeSwitcher}
-            />
-            <div style={{ position: "relative", bottom: "50px" }}>
-              <Tooltip
-                id="carousel-hint"
-                showCondition={showTooltip}
-                onClose={() => setShowTooltip(false)}
+        <Draggable {...carouselPos}>
+          <MobileWidgetButton
+            isMobile={isMobile}
+            onClick={() => setShowCarouselTooltip(false)}
+            widget={
+              <Carousel
+                currentTheme={currentTheme}
+                themeSwitcher={themeSwitcher}
+                baseWidth={isMobile ? 250 : 300}
+                autoplay={false}
+                loop={true}
               />
+            }
+          >
+            <div
+              style={{
+                width: "56px",
+                height: "56px",
+                borderRadius: "50%",
+                backgroundColor: "rgba(20, 20, 20, 0.9)",
+                backdropFilter: "blur(8px)",
+                border: "1px solid rgba(255, 255, 255, 0.15)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 4px 16px rgba(0, 0, 0, 0.3)",
+              }}
+            >
+              <FiImage size={24} color="white" />
             </div>
-          </Draggable>
-        )}
+          </MobileWidgetButton>
+          <div
+            style={{ position: "relative", bottom: isMobile ? "60px" : "50px" }}
+          >
+            <Tooltip
+              id={TOOLTIP_IDS.CAROUSEL_HINT}
+              showCondition={showCarouselTooltip}
+              onClose={() => setShowCarouselTooltip(false)}
+            />
+          </div>
+        </Draggable>
       </themeContext.Provider>
     </ThemeProvider>
   );

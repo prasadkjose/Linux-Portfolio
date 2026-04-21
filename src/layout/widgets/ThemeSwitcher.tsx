@@ -7,6 +7,7 @@ import { PERSONAL_DATA } from "../../config/personalData.config";
 import Tooltip from "../tooltips/Tooltip";
 import { getFromSS, setToSS } from "../../utils/storage";
 import { createVisit } from "../../services/databaseService";
+import { TOOLTIP_IDS } from "../tooltips/tooltips.config";
 
 interface ThemeButtonProps {
   $isActive: boolean;
@@ -230,7 +231,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       ))}
       {
         <Tooltip
-          id="theme-switcher-hint"
+          id={TOOLTIP_IDS.THEME_SWITCHER_HINT}
           showCondition={showTooltip && $themeLoaded}
           onClose={() => setShowTooltip(false)}
         />
