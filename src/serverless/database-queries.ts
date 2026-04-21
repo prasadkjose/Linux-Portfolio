@@ -9,7 +9,7 @@ import {
   createNetlifyResponse,
   NetlifyFunctionEvent,
   withErrorHandling,
-} from "../config/netlify.config";
+} from "../utils/netlify";
 
 // Import shared database connection logic
 import { getDatabaseCredentials } from "./database-credentials";

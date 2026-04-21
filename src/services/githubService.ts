@@ -1,4 +1,4 @@
-import { NETLIFY_SERVERLESS_PATH } from "../config/netlify.config";
+import { NETLIFY_SERVERLESS_PATH } from "../utils/netlify";
 import logger from "../utils/logger";
 
 export interface Repository {

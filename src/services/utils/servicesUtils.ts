@@ -7,7 +7,7 @@
 import {
   NETLIFY_SERVERLESS_PATH,
   NetlifyFunctionEvent,
-} from "../../config/netlify.config";
+} from "../../utils/netlify";
 import logger from "../../utils/logger";
 
 /**
