@@ -65,7 +65,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
 
   const carouselPos = {
     initialX: isMobile ? 0 : window.innerWidth - 310,
-    initialY: isMobile ? window.innerHeight - 145 : 120,
+    initialY: isMobile ? window.innerHeight - 210 : 120,
   };
 
   return (
@@ -191,7 +191,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
               <FiImage size={24} color="white" />
             </div>
           </MobileWidgetButton>
-          <div style={{ position: "relative", bottom: "50px" }}>
+          <div style={{ position: "relative", bottom: "60px" }}>
             <Tooltip
               id={TOOLTIP_IDS.CAROUSEL_HINT}
               showCondition={showCarouselTooltip}
