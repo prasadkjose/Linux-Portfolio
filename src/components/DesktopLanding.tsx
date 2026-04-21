@@ -15,6 +15,8 @@ import { isMobileDevice } from "../utils/typeGuards";
 import Draggable from "../layout/Draggable";
 import Carousel from "../layout/widgets/Carousel";
 import Tooltip from "../layout/tooltips/Tooltip";
+import MobileWidgetButton from "../layout/widgets/MobileWidgetButton";
+import { FiImage } from "react-icons/fi";
 
 const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
   currentTheme,
@@ -165,6 +167,39 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
                 onClose={() => setShowTooltip(false)}
               />
             </div>
+          </Draggable>
+        )}
+
+        {isMobile && (
+          <Draggable initialX={0} initialY={window.innerHeight - 145}>
+            <MobileWidgetButton
+              widget={
+                <Carousel
+                  currentTheme={currentTheme}
+                  themeSwitcher={themeSwitcher}
+                  baseWidth={250}
+                  autoplay={false}
+                  loop={true}
+                />
+              }
+            >
+              <div
+                style={{
+                  width: "56px",
+                  height: "56px",
+                  borderRadius: "50%",
+                  backgroundColor: "rgba(20, 20, 20, 0.9)",
+                  backdropFilter: "blur(8px)",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "0 4px 16px rgba(0, 0, 0, 0.3)",
+                }}
+              >
+                <FiImage size={24} color="white" />
+              </div>
+            </MobileWidgetButton>
           </Draggable>
         )}
       </themeContext.Provider>
