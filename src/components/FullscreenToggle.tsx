@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { isMobileDevice } from "../utils/typeGuards";
 import Tooltip from "../layout/tooltips/Tooltip";
+import { TOOLTIP_IDS } from "../layout/tooltips/tooltips.config";
 
 type Props = {
   isFullscreen: boolean;
@@ -82,7 +83,7 @@ const FullscreenToggle: React.FC<Props> = ({ isFullscreen, onToggle }) => {
       aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
     >
       <Tooltip
-        id="fullscreen-hint"
+        id={TOOLTIP_IDS.FULLSCREEN_HINT}
         showCondition={showTooltip && isMobileDevice()}
         onClose={() => setShowTooltip(false)}
       />

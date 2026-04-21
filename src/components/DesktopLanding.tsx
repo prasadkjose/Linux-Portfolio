@@ -15,6 +15,7 @@ import { isMobileDevice } from "../utils/typeGuards";
 import Draggable from "../layout/Draggable";
 import Carousel from "../layout/widgets/Carousel";
 import Tooltip from "../layout/tooltips/Tooltip";
+import { TOOLTIP_IDS } from "../layout/tooltips/tooltips.config";
 import MobileWidgetButton from "../layout/widgets/MobileWidgetButton";
 import { FiImage } from "react-icons/fi";
 
@@ -192,7 +193,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
           </MobileWidgetButton>
           <div style={{ position: "relative", bottom: "50px" }}>
             <Tooltip
-              id="carousel-hint"
+              id={TOOLTIP_IDS.CAROUSEL_HINT}
               showCondition={showCarouselTooltip}
               onClose={() => setShowCarouselTooltip(false)}
             />
