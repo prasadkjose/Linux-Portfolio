@@ -16,6 +16,7 @@ type Position =
 interface MobileWidgetButtonProps {
   /** Button content (icon, text etc.) */
   children: ReactNode;
+  isMobile: boolean;
   /** Widget content to display when opened */
   widget: ReactNode;
   /** Preferred position, will auto fallback if out of viewport */
@@ -147,6 +148,7 @@ const Backdrop = styled.div`
 
 export default function MobileWidgetButton({
   children,
+  isMobile,
   widget,
   preferredPosition = "top",
   onClick,
@@ -255,82 +257,83 @@ export default function MobileWidgetButton({
     return () => window.removeEventListener("keydown", handleEscape);
   }, [isOpen]);
 
-  return (
-    <>
-      <AnimatePresence>
-        {isOpen && closeOnOutsideClick && (
-          <Backdrop onClick={handleOutsideClick} />
-        )}
-      </AnimatePresence>
-
-      <ButtonWrapper
-        ref={buttonRef}
-        onClick={handleClick}
-        disabled={disabled}
-        className={className}
-        aria-expanded={isOpen}
-        aria-haspopup="true"
-      >
-        {children}
-
+  if (isMobile)
+    return (
+      <>
         <AnimatePresence>
-          {isOpen && (
-            <WidgetContainer
-              className={widgetClassName}
-              $position={calculatedPosition}
-              $offsetX={offsetX}
-              $offsetY={offsetY}
-              initial={{
-                opacity: 0,
-                scale: 0.85,
-                translateY:
-                  calculatedPosition === "top"
-                    ? 10
-                    : calculatedPosition === "bottom"
-                      ? -10
-                      : 0,
-                translateX:
-                  calculatedPosition === "left"
-                    ? 10
-                    : calculatedPosition === "right"
-                      ? -10
-                      : 0,
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                translateY: 0,
-                translateX: 0,
-              }}
-              exit={{
-                opacity: 0,
-                scale: 0.85,
-                translateY:
-                  calculatedPosition === "top"
-                    ? 10
-                    : calculatedPosition === "bottom"
-                      ? -10
-                      : 0,
-                translateX:
-                  calculatedPosition === "left"
-                    ? 10
-                    : calculatedPosition === "right"
-                      ? -10
-                      : 0,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 400,
-                damping: 30,
-                duration: 0.2,
-              }}
-              onClick={e => e.stopPropagation()}
-            >
-              {widget}
-            </WidgetContainer>
+          {isOpen && closeOnOutsideClick && (
+            <Backdrop onClick={handleOutsideClick} />
           )}
         </AnimatePresence>
-      </ButtonWrapper>
-    </>
-  );
+
+        <ButtonWrapper
+          ref={buttonRef}
+          onClick={handleClick}
+          disabled={disabled}
+          className={className}
+          aria-expanded={isOpen}
+          aria-haspopup="true"
+        >
+          {children}
+
+          <AnimatePresence>
+            {isOpen && (
+              <WidgetContainer
+                className={widgetClassName}
+                $position={calculatedPosition}
+                $offsetX={offsetX}
+                $offsetY={offsetY}
+                initial={{
+                  opacity: 0,
+                  scale: 0.85,
+                  translateY:
+                    calculatedPosition === "top"
+                      ? 10
+                      : calculatedPosition === "bottom"
+                        ? -10
+                        : 0,
+                  translateX:
+                    calculatedPosition === "left"
+                      ? 10
+                      : calculatedPosition === "right"
+                        ? -10
+                        : 0,
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  translateY: 0,
+                  translateX: 0,
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.85,
+                  translateY:
+                    calculatedPosition === "top"
+                      ? 10
+                      : calculatedPosition === "bottom"
+                        ? -10
+                        : 0,
+                  translateX:
+                    calculatedPosition === "left"
+                      ? 10
+                      : calculatedPosition === "right"
+                        ? -10
+                        : 0,
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 30,
+                  duration: 0.2,
+                }}
+                onClick={e => e.stopPropagation()}
+              >
+                {widget}
+              </WidgetContainer>
+            )}
+          </AnimatePresence>
+        </ButtonWrapper>
+      </>
+    );
 }

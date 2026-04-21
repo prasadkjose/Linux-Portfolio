@@ -23,8 +23,7 @@ export const TOOLTIPS_CONFIG: TooltipConfigItem[] = [
   {
     id: "carousel-hint",
     showAfter: 2000,
-    position: "bottom-right",
-    content:
-      "🖼️ Swipe to view images. Click on one to change background wallpaper",
+    position: `${isMobileDevice() ? "top-left" : "bottom-right"}`,
+    content: `${isMobileDevice() ? "🖼️ Click to view images. Swipe and click to change wallpaper." : "🖼️ Swipe to view images. Click on one to change background wallpaper"}`,
   },
 ];
