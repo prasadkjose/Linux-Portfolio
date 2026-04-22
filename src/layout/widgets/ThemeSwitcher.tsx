@@ -8,6 +8,7 @@ import Tooltip from "../tooltips/Tooltip";
 import { getFromSS, setToSS } from "../../utils/storage";
 import { createVisit } from "../../services/databaseService";
 import { TOOLTIP_IDS } from "../tooltips/tooltips.config";
+import logger from "../../utils/logger";
 
 interface ThemeButtonProps {
   $isActive: boolean;
@@ -208,7 +209,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       // Log visit to database when theme loads
       if (isFirstVisit) {
         createVisit({ path: window.location.pathname }).catch(err =>
-          console.debug("Visit tracking skipped:", err)
+          logger.log(`Visit tracking skipped: ${err}`)
         );
         setToSS("first_visit", false);
       }
