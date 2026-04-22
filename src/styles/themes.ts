@@ -37,6 +37,7 @@ const theme: Themes = {
       },
     },
     splashImage: "ubuntu-splash.svg",
+    startupSound: "sounds/login.wav",
     backgroundImage:
       "https://res.cloudinary.com/canonical/image/fetch/f_auto,q_auto,fl_sanitize,c_fill,w_1681/https%3A%2F%2Fubuntu.com%2Fwp-content%2Fuploads%2F834a%2FHigh-contrastResolute_Raccoon_Wallpaper_Color_1920x1080.png",
   },
@@ -56,6 +57,7 @@ const theme: Themes = {
       },
     },
     splashImage: "fedora-splash.svg",
+    startupSound: "sounds/login.wav",
     backgroundImage: "https://wallpapercave.com/wp/BFBePbi.jpg",
   },
   kali: {
@@ -75,6 +77,7 @@ const theme: Themes = {
     },
     backgroundImage: "https://www.kali.org/wallpapers/images/2026/kali-net.jpg",
     splashImage: "kali-splash.svg",
+    startupSound: "sounds/login.wav",
   },
 };
 

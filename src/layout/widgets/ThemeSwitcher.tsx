@@ -203,6 +203,11 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       setShowTooltip(false);
     }
     if (newTheme.id !== currentTheme.id) {
+      // Play theme startup sound
+      const audio = new Audio(newTheme.startupSound);
+      audio.volume = 1;
+      audio.play().catch(err => logger.log(`Startup sound failed: ${err}`));
+
       themeSwitcher(newTheme);
       set$themeLoaded(!themeLoaded);
       setIsBGChange(false);
