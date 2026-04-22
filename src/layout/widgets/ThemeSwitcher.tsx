@@ -182,6 +182,7 @@ const TypingText = styled.div`
 const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   themeSwitcher,
   currentTheme,
+  setIsBGChange,
 }) => {
   const { themeLoaded } = useTheme();
   const [$themeLoaded, set$themeLoaded] = useState(themeLoaded);
@@ -204,6 +205,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
     if (newTheme.id !== currentTheme.id) {
       themeSwitcher(newTheme);
       set$themeLoaded(!themeLoaded);
+      setIsBGChange(false);
       const isFirstVisit = getFromSS("first_visit", true);
 
       // Log visit to database when theme loads

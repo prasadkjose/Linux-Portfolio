@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { DefaultTheme } from "styled-components";
 
 /**
@@ -77,6 +78,8 @@ export interface ThemeSwitcherProps {
   currentTheme: DefaultTheme;
   themeLoaded: boolean;
   resumePath: string;
+  isBGChange?: boolean;
+  setIsBGChange: Dispatch<SetStateAction<boolean>>;
 }
 
 /**

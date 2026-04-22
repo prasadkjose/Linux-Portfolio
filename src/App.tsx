@@ -12,9 +12,11 @@ import { isMobileDevice } from "./utils/typeGuards";
 
 function App() {
   // themes
-  const { theme, themeLoaded, setMode, resumePath } = useTheme();
+  const { theme, themeLoaded, setMode, resumePath, isBGChange, setIsBGChange } =
+    useTheme();
   const DesktopLanding = lazy(() => {
-    return new Promise(resolve => setTimeout(resolve, 2000)).then(() => {
+    const timeout = isBGChange ? 50 : 2000;
+    return new Promise(resolve => setTimeout(resolve, timeout)).then(() => {
       preloadResources(theme);
       return import("./components/DesktopLanding");
     });
@@ -28,6 +30,8 @@ function App() {
     currentTheme: theme,
     themeLoaded,
     resumePath,
+    isBGChange,
+    setIsBGChange,
   };
 
   return (
