@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useState } from "react";
 import themes from "../styles/themes";
 import { DefaultTheme } from "styled-components";
 import { ThemeSwitcherProps } from "../types/window";
@@ -11,12 +11,15 @@ interface UseThemeResult {
   themeLoaded: boolean;
   setMode: (theme: DefaultTheme) => void;
   resumePath: string;
+  isBGChange?: boolean;
+  setIsBGChange: Dispatch<SetStateAction<boolean>>;
 }
 export const themeContext = createContext<ThemeSwitcherProps | null>(null);
 
 export const useTheme = (): UseThemeResult => {
   const [theme, setTheme] = useState<DefaultTheme>(themes.empty);
   const [themeLoaded, setThemeLoaded] = useState<boolean>(false);
+  const [isBGChange, setIsBGChange] = useState<boolean>(false);
   // Add OS Specific resume to global themeContext
   const [resumePath, setResume] = useState<string>(RESUME_OS_MAP.ubuntu);
 
@@ -28,6 +31,7 @@ export const useTheme = (): UseThemeResult => {
 
     // Persist selected background image when it's present
     if (newTheme.newBackgroundImage) {
+      setIsBGChange(true); // Mark BG only change in themeContext
       setToLS("selected-background-image", {
         id: newTheme.id,
         url: newTheme.newBackgroundImage,
@@ -49,5 +53,5 @@ export const useTheme = (): UseThemeResult => {
     logger.info(`Theme successfully changed to ${newTheme.name}.`);
   };
 
-  return { theme, themeLoaded, setMode, resumePath };
+  return { theme, themeLoaded, setMode, resumePath, isBGChange, setIsBGChange };
 };

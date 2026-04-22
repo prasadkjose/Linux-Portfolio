@@ -5,6 +5,7 @@
  * All database operations run securely on the server, never expose credentials to client
  */
 
+import logger from "../utils/logger";
 import {
   createNetlifyResponse,
   NetlifyFunctionEvent,
@@ -184,7 +185,7 @@ const databaseQueriesHandler = async (event: NetlifyFunctionEvent) => {
         return createNetlifyResponse(405, { error: "Method not allowed" });
     }
   } catch (error) {
-    console.error("Database query error:", error);
+    logger.error(`Database query error: ${error}`);
     return createNetlifyResponse(500, {
       error: "Internal server error",
       message: error instanceof Error ? error.message : "Unknown error",

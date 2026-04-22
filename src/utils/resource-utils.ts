@@ -16,8 +16,9 @@ export function preloadResources(theme: DefaultTheme) {
   });
   logger.info("Preloaded Resources from CDN.");
 
-  if (theme.backgroundImage) {
-    preload(theme.backgroundImage, { as: "image" });
+  if (theme) {
+    preload(theme.backgroundImage || "", { as: "image" });
+    preload(theme.startupSound || "", { as: "audio" });
     logger.info("Preloaded theme specific Resources.");
   }
 }

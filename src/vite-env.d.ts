@@ -21,5 +21,6 @@ declare module "styled-components" {
     backgroundImage?: string;
     newBackgroundImage?: string;
     splashImage?: string;
+    startupSound?: string;
   }
 }

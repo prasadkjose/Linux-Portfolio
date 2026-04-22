@@ -8,6 +8,7 @@ import Tooltip from "../tooltips/Tooltip";
 import { getFromSS, setToSS } from "../../utils/storage";
 import { createVisit } from "../../services/databaseService";
 import { TOOLTIP_IDS } from "../tooltips/tooltips.config";
+import logger from "../../utils/logger";
 
 interface ThemeButtonProps {
   $isActive: boolean;
@@ -181,6 +182,7 @@ const TypingText = styled.div`
 const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   themeSwitcher,
   currentTheme,
+  setIsBGChange,
 }) => {
   const { themeLoaded } = useTheme();
   const [$themeLoaded, set$themeLoaded] = useState(themeLoaded);
@@ -201,14 +203,20 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       setShowTooltip(false);
     }
     if (newTheme.id !== currentTheme.id) {
+      // Play theme startup sound
+      const audio = new Audio(newTheme.startupSound);
+      audio.volume = 1;
+      audio.play().catch(err => logger.log(`Startup sound failed: ${err}`));
+
       themeSwitcher(newTheme);
       set$themeLoaded(!themeLoaded);
+      setIsBGChange(false);
       const isFirstVisit = getFromSS("first_visit", true);
 
       // Log visit to database when theme loads
       if (isFirstVisit) {
         createVisit({ path: window.location.pathname }).catch(err =>
-          console.debug("Visit tracking skipped:", err)
+          logger.log(`Visit tracking skipped: ${err}`)
         );
         setToSS("first_visit", false);
       }
