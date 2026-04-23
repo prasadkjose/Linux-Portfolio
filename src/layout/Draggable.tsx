@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { motion, useMotionValue } from "motion/react";
 import styled from "styled-components";
 import { getFromLS, setToLS } from "../utils/storage";
@@ -39,6 +39,10 @@ const Draggable: React.FC<DraggableProps> = ({
   const componentId = getComponentId(children);
   const STORAGE_KEY = DRAGGABLE_STORAGE_KEY;
   const [zIndex, setZIndex] = useState(10);
+  const [isMobile, setIsMobile] = useState(false);
+  const [canDrag, setCanDrag] = useState(true);
+  const longPressTimer = React.useRef<number | null>(null);
+  const LONG_PRESS_DELAY = 500; // 500ms long press required on mobile
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   // Initialize motion values with null - will be set before first paint
@@ -65,6 +69,47 @@ const Draggable: React.FC<DraggableProps> = ({
       y.set(rect.top);
     }
   }, [componentId, x, y, initialX, initialY]);
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      setCanDrag(!mobile); // Disable drag by default on mobile, enable on desktop
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Handle touch events for mobile long press
+  const handleTouchStart = useCallback(() => {
+    if (!isMobile) return;
+
+    longPressTimer.current = window.setTimeout(() => {
+      setCanDrag(true);
+      bringToFront();
+    }, LONG_PRESS_DELAY);
+  }, [isMobile]);
+
+  const handleTouchEnd = useCallback(() => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+    // Reset drag capability after touch ends
+    if (isMobile) {
+      setTimeout(() => setCanDrag(false), 300);
+    }
+  }, [isMobile]);
+
+  const handleTouchMove = useCallback(() => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  }, []);
 
   const bringToFront = () => {
     setZIndex(100);
@@ -102,7 +147,7 @@ const Draggable: React.FC<DraggableProps> = ({
   return (
     <DraggableContainer
       ref={containerRef}
-      drag
+      drag={canDrag}
       dragMomentum={false}
       dragElastic={0}
       style={(() => {
@@ -113,11 +158,15 @@ const Draggable: React.FC<DraggableProps> = ({
           ...baseStyles,
           x,
           y,
+          touchAction: isMobile ? "manipulation" : "none",
         };
       })()}
       onMouseDown={bringToFront}
       onDragEnd={handleDragEnd}
       dragConstraints={getDragConstraints()}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchMove={handleTouchMove}
     >
       {children}
     </DraggableContainer>
