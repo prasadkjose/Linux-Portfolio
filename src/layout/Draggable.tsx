@@ -79,7 +79,7 @@ const Draggable: React.FC<DraggableProps> = ({
       setCanDrag(true);
       bringToFront();
     }, LONG_PRESS_DELAY);
-  }, [isMobile]);
+  }, [longPressTimer.current]);
 
   const handleTouchEnd = useCallback(() => {
     if (longPressTimer.current) {
@@ -90,14 +90,14 @@ const Draggable: React.FC<DraggableProps> = ({
     if (isMobile) {
       setTimeout(() => setCanDrag(false), 300);
     }
-  }, [isMobile]);
+  }, [longPressTimer.current]);
 
   const handleTouchMove = useCallback(() => {
     if (longPressTimer.current) {
       clearTimeout(longPressTimer.current);
       longPressTimer.current = null;
     }
-  }, []);
+  }, [longPressTimer.current]);
 
   const bringToFront = () => {
     setZIndex(100);
