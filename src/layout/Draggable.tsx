@@ -41,8 +41,7 @@ const Draggable: React.FC<DraggableProps> = ({
   const STORAGE_KEY = DRAGGABLE_STORAGE_KEY;
   const [zIndex, setZIndex] = useState(10);
   const [isMobile] = useState(isMobileDevice());
-  const [canDrag, setCanDrag] = useState(!isMobile);
-  const longPressTimer = React.useRef<number | null>(null);
+  const [canDrag, setCanDrag] = useState(true);
   const LONG_PRESS_DELAY = 500; // 500ms long press required on mobile
 
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -74,35 +73,22 @@ const Draggable: React.FC<DraggableProps> = ({
   // Handle touch events for mobile long press
   const handleTouchStart = () => {
     if (!isMobile) return;
+    setCanDrag(false);
 
-    longPressTimer.current = window.setTimeout(() => {
+    window.setTimeout(() => {
       setCanDrag(true);
       bringToFront();
     }, LONG_PRESS_DELAY);
   };
 
   const handleTouchEnd = () => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
-    }
+    if (!isMobile) return;
     // Reset drag capability after touch ends
-    if (isMobile) {
-      setTimeout(() => setCanDrag(false), 100);
-    }
-  };
-
-  const handleTouchMove = () => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
-    }
+    setCanDrag(false);
   };
 
   const bringToFront = () => {
     setZIndex(100);
-    // Reset z-index after short delay if another element is clicked
-    setTimeout(() => setZIndex(10), 300);
   };
 
   // Calculate dynamic drag constraints based on actual component size
@@ -154,7 +140,6 @@ const Draggable: React.FC<DraggableProps> = ({
       dragConstraints={getDragConstraints()}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      onTouchMove={handleTouchMove}
     >
       {children}
     </DraggableContainer>
