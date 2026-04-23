@@ -1,7 +1,8 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { motion, useMotionValue } from "motion/react";
 import styled from "styled-components";
 import { getFromLS, setToLS } from "../utils/storage";
+import { isMobileDevice } from "../utils/typeGuards";
 import {
   getComponentId,
   DRAGGABLE_STORAGE_KEY,
@@ -39,8 +40,8 @@ const Draggable: React.FC<DraggableProps> = ({
   const componentId = getComponentId(children);
   const STORAGE_KEY = DRAGGABLE_STORAGE_KEY;
   const [zIndex, setZIndex] = useState(10);
-  const [isMobile, setIsMobile] = useState(false);
-  const [canDrag, setCanDrag] = useState(true);
+  const [isMobile] = useState(isMobileDevice());
+  const [canDrag, setCanDrag] = useState(!isMobile);
   const longPressTimer = React.useRef<number | null>(null);
   const LONG_PRESS_DELAY = 500; // 500ms long press required on mobile
 
@@ -69,19 +70,6 @@ const Draggable: React.FC<DraggableProps> = ({
       y.set(rect.top);
     }
   }, [componentId, x, y, initialX, initialY]);
-
-  // Detect mobile viewport
-  useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      setCanDrag(!mobile); // Disable drag by default on mobile, enable on desktop
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   // Handle touch events for mobile long press
   const handleTouchStart = useCallback(() => {
