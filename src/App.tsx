@@ -44,7 +44,7 @@ function App() {
             width: "100%",
             height: "100%",
             position: "absolute",
-            background: "#181818ff",
+            background: "#000000ff",
             backgroundImage:
               "radial-gradient(circle, hsl(240, 5%, 65%, 0.15) 1px, transparent 1px)",
             backgroundSize: "20px 20px",
@@ -55,8 +55,8 @@ function App() {
             squareSize={10}
             hoverTrailAmount={18} // number of trailing hovered shapes (0 = no trail)
             direction="diagonal"
-            borderColor="#dcdcdd2c"
-            hoverFillColor="#656464ff"
+            borderColor="#dcdcdd14"
+            hoverFillColor="#dcdcddff"
             shape="hexagon"
           />
           {!isMobileDevice() && <LoadingStatusBar />}

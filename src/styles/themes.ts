@@ -24,7 +24,7 @@ const theme: Themes = {
   tech: {
     id: "ubuntu",
     name: "Ubuntu",
-    subtitle: "Engineer",
+    subtitle: "Engineering",
     logo: "icons/ubuntu-logo.svg",
     colors: {
       body: "#77216e67;",
@@ -46,7 +46,7 @@ const theme: Themes = {
   fedora: {
     id: "fedora",
     name: "Fedora",
-    subtitle: "Consultant",
+    subtitle: "Consulting",
     logo: "icons/fedora-logo.svg",
     colors: {
       body: "#3c6eb482",
