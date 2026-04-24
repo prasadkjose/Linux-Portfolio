@@ -26,7 +26,7 @@ const Container = styled.div<{ $themeLoaded: boolean }>`
   display: grid;
   grid-template-columns: 3fr 3fr 3fr;
   background: rgba(0, 0, 0, 0.96);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.34);
   border-radius: 8px;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -56,9 +56,10 @@ const ThemeButton = styled.button<ThemeButtonProps>`
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.36);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.36);
 
-  &:last-child {
+  &:nth-last-child(2) {
     border-right: none;
   }
 

@@ -81,7 +81,7 @@ const LoadingStatusBar = () => {
           padding: "0 16px",
           fontFamily: "system-ui, -apple-system, sans-serif",
           fontSize: "13px",
-          color: "#555",
+          color: "#ccccccff",
           zIndex: 1000,
         }}
       >
@@ -104,7 +104,7 @@ const LoadingStatusBar = () => {
             display: "flex",
             gap: "4px",
             marginLeft: "auto",
-            color: "#888",
+            color: "#dcdcdcff",
             fontSize: "11px",
           }}
         >
