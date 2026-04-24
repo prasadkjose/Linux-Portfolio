@@ -6,6 +6,8 @@ declare module "styled-components" {
   export interface DefaultTheme {
     id: string;
     name: string;
+    subtitle?: string;
+    logo?: string;
     colors: {
       body: string;
       scrollHandle: string;

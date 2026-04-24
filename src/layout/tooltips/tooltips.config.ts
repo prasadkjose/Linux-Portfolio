@@ -24,7 +24,7 @@ export const TOOLTIPS_CONFIG: TooltipConfigItem[] = [
   },
   {
     id: TOOLTIP_IDS.THEME_SWITCHER_HINT,
-    showAfter: 60000,
+    showAfter: 1000,
     position: `${isMobileDevice() ? "top-left" : "bottom-right"}`,
     content: "⚙️ Try out a different Linux here.",
   },

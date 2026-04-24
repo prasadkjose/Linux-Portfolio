@@ -38,7 +38,7 @@ const Container = styled.div<{ $themeLoaded: boolean }>`
     `@media (max-width: 550px) {
     width: 100%;
     right: 0;
-    top: calc(100% - 86px);
+    top: calc(100% - 160px);
   }`}
 `;
 
@@ -56,6 +56,11 @@ const ThemeButton = styled.button<ThemeButtonProps>`
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
 
   &:nth-last-child(2) {
     border-right: none;
@@ -90,6 +95,16 @@ const ThemeButton = styled.button<ThemeButtonProps>`
   &:focus {
     outline: 2px solid rgba(255, 255, 255, 0.5);
     outline-offset: 2px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 9px;
+    font-weight: normal;
+    text-transform: none;
+    opacity: 0.7;
+    color: ${props => props.$theme.colors.text[200]};
+    letter-spacing: 0.3px;
   }
 
   /* Terminal-style cursor for active button */
@@ -233,7 +248,15 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
           aria-label={`Switch to ${label} theme`}
           title={`Switch to ${label} theme`}
         >
+          <img
+            src={theme.logo}
+            alt={`${label} logo`}
+            width="54"
+            height="54"
+            loading="lazy"
+          />
           {label}
+          <p>{theme.subtitle}</p>
         </ThemeButton>
       ))}
       {
