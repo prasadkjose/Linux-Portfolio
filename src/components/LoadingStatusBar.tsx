@@ -1,11 +1,64 @@
 import { useState, useEffect } from "react";
+import styled from "styled-components";
 import { getDatabaseStatus } from "../services/databaseService";
 import logger from "../utils/logger";
+import { ThemeSwitcherProps } from "../types/window";
+import { DefaultTheme } from "styled-components/dist/types";
 
 type LoadingState = {
   label: string;
   onStateLoad?: () => void;
 };
+
+const StatusContainer = styled.div<{ $currentTheme: DefaultTheme }>`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 13px;
+  color: ${props => props.$currentTheme.colors.text[100]};
+  z-index: 1000;
+`;
+
+const StatusIndicator = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const StatusPulse = styled.div`
+  width: 10px;
+  height: 10px;
+  background-color: #22c55e;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+`;
+
+const LoadingStatus = styled.div`
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+  font-size: 11px;
+  align-items: center;
+`;
+
+const LoadingSpinner = styled.div`
+  width: 12px;
+  height: 12px;
+  border: 2px solid #ccc;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+`;
 
 const LOADING_STATES: LoadingState[] = [
   {
@@ -43,7 +96,7 @@ const LOADING_STATES: LoadingState[] = [
   },
 ];
 
-const LoadingStatusBar = () => {
+const LoadingStatusBar: React.FC<ThemeSwitcherProps> = ({ currentTheme }) => {
   const [currentStateIndex, setCurrentStateIndex] = useState(0);
 
   useEffect(() => {
@@ -69,58 +122,17 @@ const LoadingStatusBar = () => {
   return (
     <>
       {/* Status Bar - Loading Indicator */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: "32px",
-          display: "flex",
-          alignItems: "center",
-          padding: "0 16px",
-          fontFamily: "system-ui, -apple-system, sans-serif",
-          fontSize: "13px",
-          color: "#ccccccff",
-          zIndex: 1000,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      <StatusContainer $currentTheme={currentTheme}>
+        <StatusIndicator>
           {/* Green Success Pulse Indicator */}
-          <div
-            style={{
-              width: "10px",
-              height: "10px",
-              backgroundColor: "#22c55e",
-              borderRadius: "50%",
-              animation: "pulse 1.5s ease-in-out infinite",
-              boxShadow: "0 0 0 0 rgba(34, 197, 94, 0.7)",
-            }}
-          />
+          <StatusPulse />
           <span>Active</span>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            gap: "4px",
-            marginLeft: "auto",
-            color: "#dcdcdcff",
-            fontSize: "11px",
-          }}
-        >
-          {LOADING_STATES[currentStateIndex].label}
-          <div
-            style={{
-              width: "12px",
-              height: "12px",
-              border: "2px solid #ccc",
-              borderTopColor: "#2563eb",
-              borderRadius: "50%",
-              animation: "spin 0.8s linear infinite",
-            }}
-          />
-        </div>
-      </div>
+        </StatusIndicator>
+        <LoadingStatus>
+          {LOADING_STATES[currentStateIndex].label} ...
+          <LoadingSpinner />
+        </LoadingStatus>
+      </StatusContainer>
 
       <style>{`
         @keyframes spin {

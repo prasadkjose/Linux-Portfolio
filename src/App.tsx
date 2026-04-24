@@ -60,7 +60,7 @@ function App() {
             hoverFillColor={theme.colors.text[100]}
             shape="hexagon"
           />
-          {!isMobileDevice() && <LoadingStatusBar />}
+          {!isMobileDevice() && <LoadingStatusBar {...themeProps} />}
         </div>
       ) : (
         <Suspense fallback={<SplashScreen {...themeProps} />}>
