@@ -15,7 +15,7 @@ interface ThemeButtonProps {
   $theme: DefaultTheme;
 }
 
-const Container = styled.div<{ $themeLoaded: boolean }>`
+const Container = styled.div<{ $themeLoaded: boolean; $theme: DefaultTheme }>`
   position: fixed;
   top: ${props => (!props.$themeLoaded ? "50%" : "60px")};
   left: ${props => (!props.$themeLoaded ? "50%" : "")};
@@ -31,6 +31,36 @@ const Container = styled.div<{ $themeLoaded: boolean }>`
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   width: auto;
+  overflow: hidden;
+
+  // Skip the glow if the OS is selected
+  ${props =>
+    !props.$themeLoaded &&
+    `&::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 8px;
+    padding: 2px;
+    background: linear-gradient(90deg, transparent 0%, ${props.$theme.colors.text[100]} 25%, transparent 50%);
+    background-size: 200% 100%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    animation: borderRun 5.5s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  @keyframes borderRun {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+`}
 
   // isMobile
   ${props =>
@@ -42,12 +72,31 @@ const Container = styled.div<{ $themeLoaded: boolean }>`
   }`}
 `;
 
+const ThemeLabel = styled.span<{ $theme: DefaultTheme }>`
+  color: ${props => props.$theme.colors.text[100]};
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+`;
+
+const ThemeSubtitle = styled.p<{ $theme: DefaultTheme }>`
+  margin: 0;
+  font-size: 9px;
+  font-weight: normal;
+  text-transform: none;
+  opacity: 0.7;
+  color: ${props => props.$theme.colors.text[100]};
+  letter-spacing: 0.3px;
+`;
+
 const ThemeButton = styled.button<ThemeButtonProps>`
   position: relative;
   padding: 10px 16px;
   border: none;
   background: transparent;
-  color: white;
+  color: ${props => props.$theme.colors.text[100]};
   font-family: "Courier New", Courier, monospace;
   font-size: 12px;
   font-weight: bold;
@@ -67,7 +116,7 @@ const ThemeButton = styled.button<ThemeButtonProps>`
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(59, 246, 137, 0.12);
     transform: translateY(-1px);
     color: white;
   }
@@ -96,48 +145,12 @@ const ThemeButton = styled.button<ThemeButtonProps>`
     outline: 2px solid rgba(255, 255, 255, 0.5);
     outline-offset: 2px;
   }
-
-  p {
-    margin: 0;
-    font-size: 9px;
-    font-weight: normal;
-    text-transform: none;
-    opacity: 0.7;
-    color: ${props => props.$theme.colors.text[200]};
-    letter-spacing: 0.3px;
-  }
-
-  /* Terminal-style cursor for active button */
-  ${props =>
-    props.$isActive &&
-    css`
-      &::before {
-        content: "|";
-        position: absolute;
-        right: 8px;
-        top: 50%;
-        transform: translateY(-50%);
-        animation: blink 1s infinite;
-        font-weight: bold;
-      }
-
-      @keyframes blink {
-        0%,
-        50% {
-          opacity: 1;
-        }
-        51%,
-        100% {
-          opacity: 0;
-        }
-      }
-    `}
 `;
 
-const TypingText = styled.div`
+const TypingText = styled.div<{ $theme: DefaultTheme }>`
   font-family: "Courier New", Courier, monospace;
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.8);
+  color: ${props => props.$theme.colors.text[100]};
   padding: 8px 16px 12px 16px;
   position: relative;
   overflow: hidden;
@@ -147,7 +160,7 @@ const TypingText = styled.div`
 
   /* Typing effect container */
   span {
-    color: white;
+    color: ${props => props.$theme.colors.text[100]};
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;
@@ -238,7 +251,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   };
 
   return (
-    <Container $themeLoaded={$themeLoaded}>
+    <Container $themeLoaded={$themeLoaded} $theme={currentTheme}>
       {themesList.map(({ key, label, theme }) => (
         <ThemeButton
           key={key}
@@ -255,8 +268,8 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
             height="54"
             loading="lazy"
           />
-          {label}
-          <p>{theme.subtitle}</p>
+          <ThemeLabel $theme={currentTheme}>{label}</ThemeLabel>
+          <ThemeSubtitle $theme={currentTheme}>{theme.subtitle}</ThemeSubtitle>
         </ThemeButton>
       ))}
       {
@@ -267,7 +280,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
         />
       }
       {!$themeLoaded && (
-        <TypingText>
+        <TypingText $theme={currentTheme}>
           <span>Wecome to {PERSONAL_DATA.personalInfo.shortName}'s PC</span>
           <p>Choose an OS view</p>
         </TypingText>

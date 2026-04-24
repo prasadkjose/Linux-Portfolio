@@ -48,6 +48,7 @@ function App() {
             backgroundImage:
               "radial-gradient(circle, hsl(240, 5%, 65%, 0.15) 1px, transparent 1px)",
             backgroundSize: "20px 20px",
+            overflow: "hidden",
           }}
         >
           <ShapeGrid
@@ -55,8 +56,8 @@ function App() {
             squareSize={10}
             hoverTrailAmount={18} // number of trailing hovered shapes (0 = no trail)
             direction="diagonal"
-            borderColor="#dcdcdd14"
-            hoverFillColor="#dcdcddff"
+            borderColor="rgba(59, 246, 137, 0.16)"
+            hoverFillColor={theme.colors.text[100]}
             shape="hexagon"
           />
           {!isMobileDevice() && <LoadingStatusBar />}

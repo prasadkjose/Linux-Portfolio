@@ -15,7 +15,7 @@ const theme: Themes = {
       primary: "#00D4FF",
       secondary: "#FF6B6B",
       text: {
-        100: "#ECEFF4",
+        100: "rgba(59, 246, 137, 0.9)",
         200: "#D8DEE9",
         300: "#99ddcc",
       },
