@@ -67,7 +67,7 @@ const DesktopLanding: React.FC<ThemeSwitcherProps> = ({
 
   const carouselPos = {
     initialX: isMobile ? 0 : window.innerWidth - 310,
-    initialY: isMobile ? window.innerHeight - 310 : 120,
+    initialY: isMobile ? window.innerHeight - 280 : 120,
   };
 
   return (
