@@ -143,7 +143,7 @@ export default function MobileWidgetButton({
   children,
   isMobile,
   widget,
-  preferredPosition = "top",
+  preferredPosition = "top-right",
   onClick,
   closeOnOutsideClick = true,
   disabled = false,
