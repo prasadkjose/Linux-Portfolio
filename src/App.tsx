@@ -52,12 +52,12 @@ function App() {
         >
           <ShapeGrid
             speed={0.1}
-            squareSize={10}
+            squareSize={100}
             hoverTrailAmount={18} // number of trailing hovered shapes (0 = no trail)
             direction="diagonal"
             borderColor="rgba(59, 246, 137, 0.16)"
             hoverFillColor={theme.colors.text[100]}
-            shape="hexagon"
+            shape="triangle"
           />
           {<LoadingStatusBar {...themeProps} />}
         </div>
