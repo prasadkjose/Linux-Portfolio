@@ -10,13 +10,14 @@ import { createVisit } from "../../services/databaseService";
 import { TOOLTIP_IDS } from "../tooltips/tooltips.config";
 import logger from "../../utils/logger";
 
+const FIRST_VISIT = "first_visit";
 interface ThemeButtonProps {
   $isActive: boolean;
   $theme: DefaultTheme;
 }
 
 const Container = styled.div<{ $themeLoaded: boolean; $theme: DefaultTheme }>`
-  position: fixed;
+  position: absolute;
   top: ${props => (!props.$themeLoaded ? "50%" : "60px")};
   left: ${props => (!props.$themeLoaded ? "50%" : "")};
   right: ${props => (!props.$themeLoaded ? null : "16px")};
@@ -31,7 +32,6 @@ const Container = styled.div<{ $themeLoaded: boolean; $theme: DefaultTheme }>`
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   width: auto;
-  overflow: hidden;
 
   // Skip the glow if the OS is selected
   ${props =>
@@ -238,14 +238,14 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       themeSwitcher(newTheme);
       set$themeLoaded(!themeLoaded);
       setIsBGChange(false);
-      const isFirstVisit = getFromSS("first_visit", true);
+      const isFirstVisit = getFromSS(FIRST_VISIT, true);
 
       // Log visit to database when theme loads
       if (isFirstVisit) {
         createVisit({ path: window.location.pathname }).catch(err =>
           logger.log(`Visit tracking skipped: ${err}`)
         );
-        setToSS("first_visit", false);
+        setToSS(FIRST_VISIT, false);
       }
     }
   };
@@ -273,11 +273,13 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
         </ThemeButton>
       ))}
       {
-        <Tooltip
-          id={TOOLTIP_IDS.THEME_SWITCHER_HINT}
-          showCondition={showTooltip && $themeLoaded}
-          onClose={() => setShowTooltip(false)}
-        />
+        <div style={{ position: "absolute", top: "60px", right: "0" }}>
+          <Tooltip
+            id={TOOLTIP_IDS.THEME_SWITCHER_HINT}
+            showCondition={showTooltip && $themeLoaded}
+            onClose={() => setShowTooltip(false)}
+          />
+        </div>
       }
       {!$themeLoaded && (
         <TypingText $theme={currentTheme}>
