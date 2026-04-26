@@ -8,7 +8,6 @@ import { ThemeSwitcherProps } from "./types/window";
 import { preloadResources } from "./utils/resource-utils";
 import ShapeGrid from "./components/Antigravity";
 import LoadingStatusBar from "./components/LoadingStatusBar";
-import { isMobileDevice } from "./utils/typeGuards";
 
 function App() {
   // themes
@@ -44,22 +43,23 @@ function App() {
             width: "100%",
             height: "100%",
             position: "absolute",
-            background: "#ffffff",
+            background: "#000000ff",
             backgroundImage:
               "radial-gradient(circle, hsl(240, 5%, 65%, 0.15) 1px, transparent 1px)",
             backgroundSize: "20px 20px",
+            overflow: "hidden",
           }}
         >
           <ShapeGrid
             speed={0.1}
-            squareSize={10}
+            squareSize={100}
             hoverTrailAmount={18} // number of trailing hovered shapes (0 = no trail)
             direction="diagonal"
-            borderColor="#998ead21"
-            hoverFillColor="#2b2b2b"
-            shape="hexagon"
+            borderColor="rgba(59, 246, 137, 0.16)"
+            hoverFillColor={theme.colors.text[100]}
+            shape="triangle"
           />
-          {!isMobileDevice() && <LoadingStatusBar />}
+          {<LoadingStatusBar {...themeProps} />}
         </div>
       ) : (
         <Suspense fallback={<SplashScreen {...themeProps} />}>

@@ -15,7 +15,7 @@ const theme: Themes = {
       primary: "#00D4FF",
       secondary: "#FF6B6B",
       text: {
-        100: "#ECEFF4",
+        100: "rgba(59, 246, 137, 0.9)",
         200: "#D8DEE9",
         300: "#99ddcc",
       },
@@ -24,6 +24,8 @@ const theme: Themes = {
   tech: {
     id: "ubuntu",
     name: "Ubuntu",
+    subtitle: "Engineering",
+    logo: "icons/ubuntu-logo.svg",
     colors: {
       body: "#77216e67;",
       scrollHandle: "#c2c2c2fd",
@@ -44,6 +46,8 @@ const theme: Themes = {
   fedora: {
     id: "fedora",
     name: "Fedora",
+    subtitle: "Consulting",
+    logo: "icons/fedora-logo.svg",
     colors: {
       body: "#3c6eb482",
       scrollHandle: "#2E3440",
@@ -63,6 +67,8 @@ const theme: Themes = {
   kali: {
     id: "kali",
     name: "Kali",
+    subtitle: "Security",
+    logo: "icons/kali-logo.svg",
     colors: {
       body: "#0c0c0cbe",
       scrollHandle: "#2E3440",

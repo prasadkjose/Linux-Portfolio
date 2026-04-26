@@ -10,13 +10,14 @@ import { createVisit } from "../../services/databaseService";
 import { TOOLTIP_IDS } from "../tooltips/tooltips.config";
 import logger from "../../utils/logger";
 
+const FIRST_VISIT = "first_visit";
 interface ThemeButtonProps {
   $isActive: boolean;
   $theme: DefaultTheme;
 }
 
-const Container = styled.div<{ $themeLoaded: boolean }>`
-  position: fixed;
+const Container = styled.div<{ $themeLoaded: boolean; $theme: DefaultTheme }>`
+  position: absolute;
   top: ${props => (!props.$themeLoaded ? "50%" : "60px")};
   left: ${props => (!props.$themeLoaded ? "50%" : "")};
   right: ${props => (!props.$themeLoaded ? null : "16px")};
@@ -26,11 +27,40 @@ const Container = styled.div<{ $themeLoaded: boolean }>`
   display: grid;
   grid-template-columns: 3fr 3fr 3fr;
   background: rgba(0, 0, 0, 0.96);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.34);
   border-radius: 8px;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   width: auto;
+
+  // Skip the glow if the OS is selected
+  ${props =>
+    !props.$themeLoaded &&
+    `&::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 8px;
+    padding: 2px;
+    background: linear-gradient(90deg, transparent 0%, ${props.$theme.colors.text[100]} 25%, transparent 50%);
+    background-size: 200% 100%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    animation: borderRun 5.5s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  @keyframes borderRun {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+`}
 
   // isMobile
   ${props =>
@@ -38,8 +68,27 @@ const Container = styled.div<{ $themeLoaded: boolean }>`
     `@media (max-width: 550px) {
     width: 100%;
     right: 0;
-    top: calc(100% - 86px);
+    top: calc(100% - 160px);
   }`}
+`;
+
+const ThemeLabel = styled.span<{ $theme: DefaultTheme }>`
+  color: ${props => props.$theme.colors.text[100]};
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+`;
+
+const ThemeSubtitle = styled.p<{ $theme: DefaultTheme }>`
+  margin: 0;
+  font-size: 9px;
+  font-weight: normal;
+  text-transform: none;
+  opacity: 0.7;
+  color: ${props => props.$theme.colors.text[100]};
+  letter-spacing: 0.3px;
 `;
 
 const ThemeButton = styled.button<ThemeButtonProps>`
@@ -47,7 +96,7 @@ const ThemeButton = styled.button<ThemeButtonProps>`
   padding: 10px 16px;
   border: none;
   background: transparent;
-  color: white;
+  color: ${props => props.$theme.colors.text[100]};
   font-family: "Courier New", Courier, monospace;
   font-size: 12px;
   font-weight: bold;
@@ -56,14 +105,18 @@ const ThemeButton = styled.button<ThemeButtonProps>`
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
 
-  &:last-child {
+  &:nth-last-child(2) {
     border-right: none;
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(59, 246, 137, 0.12);
     transform: translateY(-1px);
     color: white;
   }
@@ -92,38 +145,12 @@ const ThemeButton = styled.button<ThemeButtonProps>`
     outline: 2px solid rgba(255, 255, 255, 0.5);
     outline-offset: 2px;
   }
-
-  /* Terminal-style cursor for active button */
-  ${props =>
-    props.$isActive &&
-    css`
-      &::before {
-        content: "|";
-        position: absolute;
-        right: 8px;
-        top: 50%;
-        transform: translateY(-50%);
-        animation: blink 1s infinite;
-        font-weight: bold;
-      }
-
-      @keyframes blink {
-        0%,
-        50% {
-          opacity: 1;
-        }
-        51%,
-        100% {
-          opacity: 0;
-        }
-      }
-    `}
 `;
 
-const TypingText = styled.div`
+const TypingText = styled.div<{ $theme: DefaultTheme }>`
   font-family: "Courier New", Courier, monospace;
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.8);
+  color: ${props => props.$theme.colors.text[100]};
   padding: 8px 16px 12px 16px;
   position: relative;
   overflow: hidden;
@@ -133,7 +160,7 @@ const TypingText = styled.div`
 
   /* Typing effect container */
   span {
-    color: white;
+    color: ${props => props.$theme.colors.text[100]};
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;
@@ -211,20 +238,20 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       themeSwitcher(newTheme);
       set$themeLoaded(!themeLoaded);
       setIsBGChange(false);
-      const isFirstVisit = getFromSS("first_visit", true);
+      const isFirstVisit = getFromSS(FIRST_VISIT, true);
 
       // Log visit to database when theme loads
       if (isFirstVisit) {
         createVisit({ path: window.location.pathname }).catch(err =>
           logger.log(`Visit tracking skipped: ${err}`)
         );
-        setToSS("first_visit", false);
+        setToSS(FIRST_VISIT, false);
       }
     }
   };
 
   return (
-    <Container $themeLoaded={$themeLoaded}>
+    <Container $themeLoaded={$themeLoaded} $theme={currentTheme}>
       {themesList.map(({ key, label, theme }) => (
         <ThemeButton
           key={key}
@@ -234,18 +261,28 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
           aria-label={`Switch to ${label} theme`}
           title={`Switch to ${label} theme`}
         >
-          {label}
+          <img
+            src={theme.logo}
+            alt={`${label} logo`}
+            width="54"
+            height="54"
+            loading="lazy"
+          />
+          <ThemeLabel $theme={currentTheme}>{label}</ThemeLabel>
+          <ThemeSubtitle $theme={currentTheme}>{theme.subtitle}</ThemeSubtitle>
         </ThemeButton>
       ))}
       {
-        <Tooltip
-          id={TOOLTIP_IDS.THEME_SWITCHER_HINT}
-          showCondition={showTooltip && $themeLoaded}
-          onClose={() => setShowTooltip(false)}
-        />
+        <div style={{ position: "absolute", top: "60px", right: "0" }}>
+          <Tooltip
+            id={TOOLTIP_IDS.THEME_SWITCHER_HINT}
+            showCondition={showTooltip && $themeLoaded}
+            onClose={() => setShowTooltip(false)}
+          />
+        </div>
       }
       {!$themeLoaded && (
-        <TypingText>
+        <TypingText $theme={currentTheme}>
           <span>Wecome to {PERSONAL_DATA.personalInfo.shortName}'s PC</span>
           <p>Choose an OS view</p>
         </TypingText>
