@@ -15,7 +15,7 @@ const fadeSlideUp = keyframes`
   }
 `;
 
-const TooltipBubble = styled.div<{ $position: string }>`
+const TooltipBubble = styled.div<{ $position: string; $offsetY?: number }>`
   position: absolute;
   width: 180px;
   padding: 10px;
@@ -47,11 +47,11 @@ const TooltipBubble = styled.div<{ $position: string }>`
     transform: rotate(45deg);
   }
 
-  ${({ $position }) => {
+  ${({ $position, $offsetY = 0 }) => {
     switch ($position) {
       case "top-left":
         return `
-          top: -60px;
+          top: calc(-60px + ${$offsetY}px);
           left: 0;
           &::after {
             content: "";
@@ -62,7 +62,7 @@ const TooltipBubble = styled.div<{ $position: string }>`
         `;
       case "top-right":
         return `
-          top: -60px;
+          top: calc(-60px + ${$offsetY}px);
           right: 0;
           &::after {
             content: "";
@@ -73,7 +73,7 @@ const TooltipBubble = styled.div<{ $position: string }>`
         `;
       case "bottom-left":
         return `
-          top: 60px;
+          top: calc(60px + ${$offsetY}px);
           left: 0;
           &::after {
             content: "";
@@ -85,7 +85,7 @@ const TooltipBubble = styled.div<{ $position: string }>`
       case "bottom-right":
       default:
         return `
-          top: 60px;
+          top: calc(60px + ${$offsetY}px);
           right: 0;
           &::after {
             content: "";
@@ -102,6 +102,7 @@ export interface TooltipProps {
   id: string;
   showCondition?: boolean;
   onClose?: () => void;
+  offsetY?: number;
 }
 
 const TOOLTIPS_STORAGE_KEY = "tooltips:dismissed";
@@ -110,6 +111,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   id,
   showCondition = true,
   onClose,
+  offsetY = 0,
 }) => {
   const tooltipConfig = TOOLTIPS_CONFIG.filter(tooltip => tooltip.id === id)[0];
   const [visible, setVisible] = useState(false);
@@ -151,6 +153,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   return (
     <TooltipBubble
       $position={tooltipConfig.position}
+      $offsetY={offsetY}
       onClick={e => e.stopPropagation()}
     >
       <CloseButton
