@@ -9,6 +9,7 @@ import { getFromSS, setToSS } from "../../utils/storage";
 import { createVisit } from "../../services/databaseService";
 import { TOOLTIP_IDS } from "../tooltips/tooltips.config";
 import logger from "../../utils/logger";
+import { isMobileDevice } from "../../utils/typeGuards";
 
 const FIRST_VISIT = "first_visit";
 interface ThemeButtonProps {
@@ -273,13 +274,12 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
         </ThemeButton>
       ))}
       {
-        <div style={{ position: "absolute", top: "60px", right: "0" }}>
-          <Tooltip
-            id={TOOLTIP_IDS.THEME_SWITCHER_HINT}
-            showCondition={showTooltip && $themeLoaded}
-            onClose={() => setShowTooltip(false)}
-          />
-        </div>
+        <Tooltip
+          id={TOOLTIP_IDS.THEME_SWITCHER_HINT}
+          showCondition={showTooltip && $themeLoaded}
+          onClose={() => setShowTooltip(false)}
+          offsetY={!isMobileDevice() ? 60 : undefined}
+        />
       }
       {!$themeLoaded && (
         <TypingText $theme={currentTheme}>
