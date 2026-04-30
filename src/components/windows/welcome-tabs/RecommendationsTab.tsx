@@ -5,7 +5,7 @@ import { PERSONAL_DATA } from "../../../config/personalData.config";
 
 const RecommendationsSection = styled.section`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   padding: "32px 0" @media (max-width: 550px) {
     grid-template-columns: 1fr;
