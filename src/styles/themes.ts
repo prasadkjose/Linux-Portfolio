@@ -30,7 +30,7 @@ const theme: Themes = {
       body: "#77216e67;",
       scrollHandle: "#c2c2c2fd",
       scrollHandleHover: "#434C5E",
-      primary: "#c562bb67;",
+      primary: "#611e5aff;",
       secondary: "#FF6B6B",
       text: {
         100: "#ECEFF4",
@@ -52,7 +52,7 @@ const theme: Themes = {
       body: "#3c6eb482",
       scrollHandle: "#2E3440",
       scrollHandleHover: "#434C5E",
-      primary: "#6786b082",
+      primary: "#53729dff",
       secondary: "#FF6B6B",
       text: {
         100: "#ECEFF4",
@@ -73,7 +73,7 @@ const theme: Themes = {
       body: "#0c0c0cbe",
       scrollHandle: "#2E3440",
       scrollHandleHover: "#434C5E",
-      primary: "#4d4d4dbe",
+      primary: "#4d4d4dff",
       secondary: "#FF6B6B",
       text: {
         100: "#ECEFF4",

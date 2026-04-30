@@ -41,12 +41,17 @@ const FormLayout = styled.div`
 
   @media (max-width: 550px) {
     grid-template-columns: 1fr;
+    width: 100%;
+    align-self: unset;
   }
 `;
 
 const FormHeader = styled.div`
   margin-bottom: 32px;
   padding-left: 45px;
+  @media (max-width: 550px) {
+    padding-left: 0;
+  }
 `;
 
 const FormTitle = styled.h2`
@@ -247,7 +252,7 @@ const ContactInfo = styled.div`
   }
 
   @media (max-width: 576px) {
-    padding: 18px;
+    padding-bottom: 50px;
     position: static;
 
     h4 {

@@ -84,7 +84,7 @@ export const TabButton = styled.button<{
     padding: 12px 16px;
     text-align: left;
     width: 100%;
-    background: black;
+    background: rgba(40, 40, 40, 1);
 
     &:last-child {
       border-bottom: none;
@@ -94,7 +94,7 @@ export const TabButton = styled.button<{
       $isActive &&
       css`
         border-bottom: none;
-        background: rgba(0, 213, 255, 1);
+        background: ${({ theme }) => theme.colors.primary};
         color: #ffffffff;
 
         &::after {
@@ -174,20 +174,21 @@ export const MobileMenuIcon = styled.span<{ $isOpen: boolean }>`
   svg {
     width: 20px;
     height: 20px;
-    stroke: #00d4ff;
+    stroke: ${({ theme }) => theme.colors.primary};
   }
 `;
 
 export const MobileMenu = styled.div`
   display: flex;
   flex-direction: column;
-  background: rgba(24, 24, 24, 0.98);
+  background: rgba(40, 40, 40, 0.95);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   overflow-y: auto;
 
   @media (max-width: 550px) {
     display: contents;
     > * {
+      z-index: 1000;
       transform-origin: top center;
       animation: slideDown 0.28s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
